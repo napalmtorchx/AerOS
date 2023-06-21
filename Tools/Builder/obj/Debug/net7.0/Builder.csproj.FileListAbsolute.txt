@@ -6,6 +6,8 @@ C:\Users\Will\Desktop\AerOS\Tools\Builder\bin\Debug\net7.0\Builder.pdb
 C:\Users\Will\Desktop\AerOS\Tools\Builder\bin\Debug\net7.0\DiscUtils.Core.dll
 C:\Users\Will\Desktop\AerOS\Tools\Builder\bin\Debug\net7.0\DiscUtils.Iso9660.dll
 C:\Users\Will\Desktop\AerOS\Tools\Builder\bin\Debug\net7.0\DiscUtils.Streams.dll
+C:\Users\Will\Desktop\AerOS\Tools\Builder\bin\Debug\net7.0\BuilderLib.dll
+C:\Users\Will\Desktop\AerOS\Tools\Builder\bin\Debug\net7.0\BuilderLib.pdb
 C:\Users\Will\Desktop\AerOS\Tools\Builder\obj\Debug\net7.0\Builder.csproj.AssemblyReference.cache
 C:\Users\Will\Desktop\AerOS\Tools\Builder\obj\Debug\net7.0\Builder.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Will\Desktop\AerOS\Tools\Builder\obj\Debug\net7.0\Builder.AssemblyInfoInputs.cache

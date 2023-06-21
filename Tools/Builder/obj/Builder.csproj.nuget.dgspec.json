@@ -43,7 +43,7 @@
           "dependencies": {
             "DiscUtils.Iso9660": {
               "target": "Package",
-              "version": "[0.16.13, )"
+              "version": "[0.16.4, )"
             }
           },
           "imports": [

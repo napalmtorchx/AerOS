@@ -1,10 +1,6 @@
 #pragma once
 #include <lib/types.h>
 
-#ifdef __cplusplus
-extc {
-#endif
-
 typedef struct 
 {
     int quot;   // Quotient of the division
@@ -121,7 +117,3 @@ ldiv_t ldiv(long numer, long denom);
 
 /// @brief Divides two long long integers and returns the quotient and remainder. @param numer The numerator. @param denom The denominator. @return The quotient and remainder as a structure of type lldiv_t.
 lldiv_t lldiv(long long numer, long long denom);
-
-#ifdef __cplusplus
-}
-#endif

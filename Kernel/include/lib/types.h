@@ -4,10 +4,7 @@
 #include <stdarg.h>
 #include <stdalign.h>
 #include <stdnoreturn.h>
-
-#ifndef __cplusplus
-    #include <stdbool.h>
-#endif
+#include <stdbool.h>
 
 #define attr_pack        __attribute__((packed))
 #define attr_align(x)    __attribute__((aligned(x)))
@@ -26,7 +23,3 @@
 #define KILOBYTE 1024L
 #define MEGABYTE (KILOBYTE * 1024L)
 #define GIGABYTE (MEGABYTE * 1024L)
-
-#ifdef __cplusplus
-    #define extc extern "C"
-#endif

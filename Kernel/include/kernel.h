@@ -4,17 +4,5 @@
 #include <lib/stdio.h>
 #include <lib/stdlib.h>
 #include <lib/string.h>
+#include <lib/kresult.h>
 #include <core/multiboot.h>
-
-namespace aeros
-{
-    class Kernel
-    {
-        public:
-            static multiboot_t* multiboot;
-
-        public:
-            static void boot();
-            static void main();
-    };
-}

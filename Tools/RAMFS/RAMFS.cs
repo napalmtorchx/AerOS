@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading;
+using AerOS.Builder.Library;
+
+namespace AerOS.RAMFS;
 
 public struct RAMFile
 {
@@ -46,7 +49,7 @@ public struct RAMFile
 
     public void SetName(string name)
     {
-        if (name.Length >= MaxNameLength) { Debug.Error("File name excceeds 80 characters - " + name); }
+        if (name.Length >= MaxNameLength) { Debug.Error("File name excceeds 80 characters - '%s'\n", name); }
         Array.Fill(Name, (char)0);
         Array.Copy(name.ToCharArray(), Name, name.Length);
     }
@@ -125,7 +128,7 @@ public class RAMFileSystem
         Array.Copy(Data, data, data.Length);
         Header = new RAMFSHeader();
         Header.Read(Data, 0);
-        Debug.OK("Initialized RAMFS");
+        Debug.Log("Initialized RAMFS\n");
     }
 
     public RAMFileSystem(uint max_files, uint sz)
@@ -133,12 +136,12 @@ public class RAMFileSystem
         Data = new byte[(max_files * RAMFile.EntrySz) + sz];
         Header = new RAMFSHeader(28, (max_files * RAMFile.EntrySz), 28 + (max_files * RAMFile.EntrySz), sz, 0, 0, max_files);
         Array.Copy(Header.Write(), 0, Data, 0, 28);
-        Debug.Info("Created RAMFS - Max:" + max_files + " Size:" + sz + " bytes");
+        Debug.Log("Created RAMFS - Max:%u Size:%u bytes\n", max_files, sz);
     }
 
     public RAMFile AddFile(string name, byte[] data, bool hidden = false)
     {
-        if (data == null || data.Length == 0) { Debug.Error("Attempt to create blank file"); return new RAMFile(); }
+        if (data == null || data.Length == 0) { Debug.Log("Attempt to create blank file"); return new RAMFile(); }
 
         int i = GetNextIndex();
         if (i == -1) { Debug.Error("Maximum amount of files reached"); return new RAMFile(); }
@@ -149,7 +152,7 @@ public class RAMFileSystem
         Header.DataPosition += (uint)data.Length;
         Header.Count++;
         Array.Copy(Header.Write(), 0, Data, 0, 28);
-        Debug.Info("Added file - Name:" + name + " Hidden:" + (hidden ? "1" : "0") + " Size:" + data.Length);
+        Debug.Log("Added file - Name:%s Hidden:%d Size:%d bytes\n", name, (hidden ? 1 : 0), data.Length);
         return GetFile(i);
     }
 

@@ -1,10 +1,6 @@
 #pragma once
 #include <lib/types.h>
 
-#ifdef __cplusplus
-extc {
-#endif
-
 typedef struct
 {
     char*  name;
@@ -104,7 +100,3 @@ int ferror(FILE *stream);
 
 /// @brief Prints an error message to the standard error stream. @param str The error message to be printed.
 void perror(const char *str);
-
-#ifdef __cplusplus
-}
-#endif

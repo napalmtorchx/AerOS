@@ -13,3 +13,6 @@ C:\Users\Will\Desktop\AerOS\Tools\RAMFS\obj\Debug\net7.0\refint\RAMFS.dll
 C:\Users\Will\Desktop\AerOS\Tools\RAMFS\obj\Debug\net7.0\RAMFS.pdb
 C:\Users\Will\Desktop\AerOS\Tools\RAMFS\obj\Debug\net7.0\RAMFS.genruntimeconfig.cache
 C:\Users\Will\Desktop\AerOS\Tools\RAMFS\obj\Debug\net7.0\ref\RAMFS.dll
+C:\Users\Will\Desktop\AerOS\Tools\RAMFS\bin\Debug\net7.0\BuilderLib.dll
+C:\Users\Will\Desktop\AerOS\Tools\RAMFS\bin\Debug\net7.0\BuilderLib.pdb
+C:\Users\Will\Desktop\AerOS\Tools\RAMFS\obj\Debug\net7.0\RAMFS.csproj.CopyComplete

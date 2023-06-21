@@ -1,6 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+using AerOS.Builder.Library;
+
+namespace AerOS.RAMFS;
 
 public static class Program
 {
@@ -8,22 +12,26 @@ public static class Program
 
     private static void Main(string[] args)
     {
-        Debug.Info("AerOS RAMFS Utility");
-
-        RAMFS = new RAMFileSystem(1024, 33554432);
-        SaveImage("../../Images/ramdisk.img");   
+        Debug.Log("AerOS RAMFS Utility\n");
+        RegisterCommands();
+        
+        if (args.Length == 0) { Debug.Error("No input file specified."); }
+        else
+        {
+            if (!File.Exists(args[0])) { Debug.Error("Unable to locate command file at '%s'", args[0]); }
+            string[] lines = File.ReadAllLines(args[0]);
+            foreach (string line in lines) { CommandParser.Execute(line); }
+        }
+        Environment.Exit(0);
     }
 
-    public static void SaveImage(string fname)
+    private static void RegisterCommands()
     {
-        File.WriteAllBytes(fname, RAMFS.Data);
-        Debug.Info("Saved image file to '" + fname + "'");
-    }
-
-    public static void ImportFile(string src, string dest, bool hidden = false)
-    {
-        if (!File.Exists(src)) { Debug.Error("Unable to locate file '" + src + "'"); return; }
-        byte[] data = File.ReadAllBytes(src);
-        RAMFS.AddFile(dest, data, hidden);
+        CommandParser.Register(CommandDeclarations.NEW);
+        CommandParser.Register(CommandDeclarations.SAVE);
+        CommandParser.Register(CommandDeclarations.LOAD);
+        CommandParser.Register(CommandDeclarations.ADD);
+        CommandParser.Register(CommandDeclarations.ADDN);
+        CommandParser.Register(CommandDeclarations.LIST);
     }
 }

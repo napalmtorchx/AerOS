@@ -1,10 +1,6 @@
 #pragma once
 #include <lib/types.h>
 
-#ifdef __cplusplus
-extc {
-#endif
-
 /// @brief Checks if a character is alphanumeric. @param c Character to be checked. @return Non-zero value if the character is alphanumeric, zero otherwise.
 int isalnum(int c);
 
@@ -43,7 +39,3 @@ int tolower(int c);
 
 /// @brief Converts a character to uppercase. @param c Character to be converted. @return Uppercase equivalent of the character if it is a lowercase letter, otherwise returns the character itself.
 int toupper(int c);
-
-#ifdef __cplusplus
-}
-#endif

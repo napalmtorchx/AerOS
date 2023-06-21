@@ -1,10 +1,6 @@
 #pragma once
 #include <lib/types.h>
 
-#ifdef __cplusplus
-extc {
-#endif
-
 /// @brief Calculates the length of a string. @param str Pointer to the null-terminated string. @return Length of the string.
 size_t strlen(const char* str);
 
@@ -43,7 +39,3 @@ void* memmove(void* dest, const void* src, size_t n);
 
 /// @brief Locates the first occurrence of a character in a block of memory. @param str Pointer to the memory block to search. @param c Character to be located. @param n Number of bytes to search. @return Pointer to the located character or NULL if not found.
 void* memchr(const void* ptr, int c, size_t n);
-
-#ifdef __cplusplus
-}
-#endif

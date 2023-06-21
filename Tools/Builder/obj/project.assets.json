@@ -2,10 +2,10 @@
   "version": 3,
   "targets": {
     "net7.0": {
-      "DiscUtils.Core/0.16.13": {
+      "DiscUtils.Core/0.16.4": {
         "type": "package",
         "dependencies": {
-          "DiscUtils.Streams": "0.16.13",
+          "DiscUtils.Streams": "0.16.4",
           "System.Security.AccessControl": "5.0.0"
         },
         "compile": {
@@ -19,10 +19,10 @@
           }
         }
       },
-      "DiscUtils.Iso9660/0.16.13": {
+      "DiscUtils.Iso9660/0.16.4": {
         "type": "package",
         "dependencies": {
-          "DiscUtils.Core": "0.16.13"
+          "DiscUtils.Core": "0.16.4"
         },
         "compile": {
           "lib/net5.0/DiscUtils.Iso9660.dll": {
@@ -35,7 +35,7 @@
           }
         }
       },
-      "DiscUtils.Streams/0.16.13": {
+      "DiscUtils.Streams/0.16.4": {
         "type": "package",
         "compile": {
           "lib/net5.0/DiscUtils.Streams.dll": {
@@ -106,14 +106,14 @@
     }
   },
   "libraries": {
-    "DiscUtils.Core/0.16.13": {
-      "sha512": "TU/Ns5RMa3060K7AsSDqG94/H7eaWaz1XoYuCUur40Mg+t0/ubtKqxCffkoiB1e/cFMGvHL0evFoY6uDL9Ocmw==",
+    "DiscUtils.Core/0.16.4": {
+      "sha512": "SMDmxsNmTTrq3bqxZTGBQrVwHMmEQyLPTqypP+bAKDW6iVRnp3zu9dBfuwDjOW0lXcydFBrRWJRxyYN0zweigw==",
       "type": "package",
-      "path": "discutils.core/0.16.13",
+      "path": "discutils.core/0.16.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "discutils.core.0.16.13.nupkg.sha512",
+        "discutils.core.0.16.4.nupkg.sha512",
         "discutils.core.nuspec",
         "lib/net40/DiscUtils.Core.dll",
         "lib/net40/DiscUtils.Core.xml",
@@ -125,14 +125,14 @@
         "lib/netstandard2.0/DiscUtils.Core.xml"
       ]
     },
-    "DiscUtils.Iso9660/0.16.13": {
-      "sha512": "hT0DbN+sIqg5Bu3/sCQUuKLwIrceF9BZvn7AeRe+f2iY0p4mgN9xEmXpFWQshnBBxN9r75364agBHDeb5owiUA==",
+    "DiscUtils.Iso9660/0.16.4": {
+      "sha512": "ybBsU+nxlOjGc8Z+JBxkebSrlgOdIXypNksCpaK5xHQFMy6laXZlwQo4NeXbLnP5soilii6LW0vtJOkI+KZ8/g==",
       "type": "package",
-      "path": "discutils.iso9660/0.16.13",
+      "path": "discutils.iso9660/0.16.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "discutils.iso9660.0.16.13.nupkg.sha512",
+        "discutils.iso9660.0.16.4.nupkg.sha512",
         "discutils.iso9660.nuspec",
         "lib/net40/DiscUtils.Iso9660.dll",
         "lib/net40/DiscUtils.Iso9660.xml",
@@ -144,14 +144,14 @@
         "lib/netstandard2.0/DiscUtils.Iso9660.xml"
       ]
     },
-    "DiscUtils.Streams/0.16.13": {
-      "sha512": "BSrywAX2mmvt6j00u6VQYQLtxc6jDniK2aP4p0q20bbTGXImtW4N26eUZYKfkW9aj6XLaqISFgtWfssKURixeA==",
+    "DiscUtils.Streams/0.16.4": {
+      "sha512": "sbE/MTFqNwhBH4I5kFLjEN/YUsGzcx3o3gT4ICQxwedBt2YIek8RWnOvjTpoyquW0517r51IaFL0QdrDK4s9mQ==",
       "type": "package",
-      "path": "discutils.streams/0.16.13",
+      "path": "discutils.streams/0.16.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "discutils.streams.0.16.13.nupkg.sha512",
+        "discutils.streams.0.16.4.nupkg.sha512",
         "discutils.streams.nuspec",
         "lib/net40/DiscUtils.Streams.dll",
         "lib/net40/DiscUtils.Streams.xml",
@@ -286,7 +286,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "DiscUtils.Iso9660 >= 0.16.13"
+      "DiscUtils.Iso9660 >= 0.16.4"
     ]
   },
   "packageFolders": {
@@ -331,7 +331,7 @@
         "dependencies": {
           "DiscUtils.Iso9660": {
             "target": "Package",
-            "version": "[0.16.13, )"
+            "version": "[0.16.4, )"
           }
         },
         "imports": [
