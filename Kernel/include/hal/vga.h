@@ -33,3 +33,4 @@ typedef struct
 } __attribute__((packed)) console_char_t;
 void vga_init();
 void print(const char* str);
+void printc(const char* str, uint8_t color);
