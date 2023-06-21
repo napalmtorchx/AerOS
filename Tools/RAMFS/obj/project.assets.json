@@ -1,40 +1,60 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {}
+    "net7.0": {
+      "BuilderLib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/BuilderLib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BuilderLib.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "BuilderLib/1.0.0": {
+      "type": "project",
+      "path": "../BuilderLib/BuilderLib.csproj",
+      "msbuildProject": "../BuilderLib/BuilderLib.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net7.0": []
+    "net7.0": [
+      "BuilderLib >= 1.0.0"
+    ]
   },
   "packageFolders": {
-    "C:\\Users\\Will\\.nuget\\packages\\": {}
+    "/home/devil/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\RAMFS\\RAMFS.csproj",
+      "projectUniqueName": "/home/devil/AerOS/Tools/RAMFS/RAMFS.csproj",
       "projectName": "RAMFS",
-      "projectPath": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\RAMFS\\RAMFS.csproj",
-      "packagesPath": "C:\\Users\\Will\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\RAMFS\\obj\\",
+      "projectPath": "/home/devil/AerOS/Tools/RAMFS/RAMFS.csproj",
+      "packagesPath": "/home/devil/.nuget/packages/",
+      "outputPath": "/home/devil/AerOS/Tools/RAMFS/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Will\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/home/devil/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\Will\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/home/devil/AerOS/Tools/BuilderLib/BuilderLib.csproj": {
+              "projectPath": "/home/devil/AerOS/Tools/BuilderLib/BuilderLib.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -62,7 +82,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/devil/.dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
       }
     }
   }

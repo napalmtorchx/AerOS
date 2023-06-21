@@ -23,3 +23,15 @@ C:/Users/Will/Desktop/AerOS/Tools/BuilderLib/obj/Debug/net7.0/ref/BuilderLib.dll
 /Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/obj/Debug/net7.0/refint/BuilderLib.dll
 /Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.pdb
 /Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/obj/Debug/net7.0/ref/BuilderLib.dll
+/home/devil/AerOS/Tools/BuilderLib/bin/Debug/net7.0/BuilderLib.deps.json
+/home/devil/AerOS/Tools/BuilderLib/bin/Debug/net7.0/BuilderLib.dll
+/home/devil/AerOS/Tools/BuilderLib/bin/Debug/net7.0/BuilderLib.pdb
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.csproj.AssemblyReference.cache
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.GeneratedMSBuildEditorConfig.editorconfig
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.AssemblyInfoInputs.cache
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.AssemblyInfo.cs
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.csproj.CoreCompileInputs.cache
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.dll
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/refint/BuilderLib.dll
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/BuilderLib.pdb
+/home/devil/AerOS/Tools/BuilderLib/obj/Debug/net7.0/ref/BuilderLib.dll
