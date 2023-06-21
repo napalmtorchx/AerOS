@@ -22,5 +22,5 @@ MK_RAMDISK Kernel/build_ramdisk.script
 MK_ISO ../Images/AerOS.iso ../Tools/Limine/limine.cfg ../Bin/kernel.elf ../Images/ramdisk.img
 LIMINE ../Images/AerOS.iso --force-mbr
 PIPE
-RUN  Tools/VMWare/vmware_mach.vmx
-;RUN -cdrom AerOS.iso -m 2048M -serial stdio
+; RUN  Tools/VMWare/vmware_mach.vmx
+RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio
