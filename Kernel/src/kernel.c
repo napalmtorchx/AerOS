@@ -8,7 +8,7 @@ void kernel_main(void* mboot)
         vram[i] = 'X';
         vram[i + 1] = 0x1E;
     }
-    serial_init();
-    serial_string("Test\n");
-    serial_string("Test 2");
+    debug_init();
+    debug_println("Test");
+    debug_print("Test 2");
 }

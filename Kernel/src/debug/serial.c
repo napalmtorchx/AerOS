@@ -1,7 +1,7 @@
 #include <std/ports.h>
 #include <debug/serial.h>
 #include <std/string.h>
-// @brief Init the Serial on COM Port 0x3F8
+/// @brief Init the Serial on COM Port 0x3F8
 void serial_init()
 {
 
@@ -42,11 +42,20 @@ void write_serial(char a) {
  
    outb(COM_PORT,a);
 }
-void serial_string(char* str)
+/// @brief print a @param string to serial output without a new line
+/// @param str
+void serial_print(char* str)
 {
     for(int i=0; i < strlen(str); i++)
     {
         char out = str[i];
         write_serial(out);
     }
+}
+/// @brief  @brief print a @param string to serial with a new line
+/// @param str 
+void serial_println(char* str)
+{
+    serial_print(str);
+    write_serial('\n');
 }
