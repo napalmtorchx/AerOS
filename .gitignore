@@ -7,4 +7,5 @@
 *.editorconfig
 .vscode/
 .fleet/
-bin/*
+/**/bin/*
+/**/obj/*
