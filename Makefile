@@ -14,9 +14,9 @@ debugpipe: $(builderlib)
 ramfs: $(builderlib)
 	$(DOTNET_PATH) build $(RAMFS_DIR)/RAMFS.csproj
 
-macos: $(builder)
+macos: builder ramfs
 	$(BUILDER_DIR)/bin/Debug/net7.0/Builder Kernel/macos.script
-linux: $(builder)
+linux: builder ramfs
 	$(BUILDER_DIR)/bin/Debug/net7.0/Builder Kernel/Linux.script
-windows: $(builder)
+windows: builder debugpipe ramfs
 	$(BUILDER_DIR)/bin/Debug/net7.0/Builder Kernel/builder.script
