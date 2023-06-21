@@ -5,5 +5,3 @@
 void debug_init();
 void debug_print(char* str);
 void debug_println(char* str);
-void debug_serial(char a);
-

@@ -6,4 +6,4 @@
 #include <lib/string.h>
 #include <lib/kresult.h>
 #include <core/multiboot.h>
-#include <debug/serial.h>
+#include <hal/vga.h>
