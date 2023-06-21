@@ -9,3 +9,4 @@
 .fleet/
 /**/bin/*
 /**/obj/*
+Tools/VMWare/vmware_mach-*.vmem
