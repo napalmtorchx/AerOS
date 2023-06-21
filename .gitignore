@@ -1,7 +1,10 @@
-/.vscode
 /Images
 /Tools/GCC/
 /Tools/Builder/bin/
 /Tools/RAMFS/bin/
 *.exe
 *.dll
+*.cache
+*.editorconfig
+.vscode/
+.fleet/
