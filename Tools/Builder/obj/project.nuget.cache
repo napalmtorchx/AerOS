@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "tl407keHfH5uXSFdDadFZp/uvpLOiEnFn6PvwJN4vJMHi80hl9yUdBu0yj09NTCSDQmo0BQqnx5wwJCt3tffGg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\Builder\\Builder.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Will\\.nuget\\packages\\discutils.core\\0.16.13\\discutils.core.0.16.13.nupkg.sha512",
+    "C:\\Users\\Will\\.nuget\\packages\\discutils.iso9660\\0.16.13\\discutils.iso9660.0.16.13.nupkg.sha512",
+    "C:\\Users\\Will\\.nuget\\packages\\discutils.streams\\0.16.13\\discutils.streams.0.16.13.nupkg.sha512",
+    "C:\\Users\\Will\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\Will\\.nuget\\packages\\system.security.accesscontrol\\5.0.0\\system.security.accesscontrol.5.0.0.nupkg.sha512",
+    "C:\\Users\\Will\\.nuget\\packages\\system.security.principal.windows\\5.0.0\\system.security.principal.windows.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
