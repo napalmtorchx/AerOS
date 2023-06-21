@@ -7,7 +7,7 @@ SET_PIPE      Tools/DebugPipe/bin/Debug/net7.0/DebugPipe
 SET_RAMFSMGR  Tools/RAMFS/bin/Debug/net7.0/RAMFS
 SET_EMULATOR  qemu-system-i386
 ;SET_EMULATOR C:\Program Files\qemu\qemu-system-i386.exe
-
+;SET_EMULATOR  vmplayer
 SET_DIR  Kernel
 RMMK_DIR ../Bin
 

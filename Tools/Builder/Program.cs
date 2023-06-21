@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using AerOS.Builder.Library;
 
 namespace AerOS.Builder;
@@ -20,7 +21,9 @@ public static class Program
             string[] lines = File.ReadAllLines(args[0]);
             foreach (string line in lines) { if (line.StartsWith(";")) { continue; } CommandParser.Execute(line); }
         }
-      //Console.Read(); // why? -nick
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+            Console.Read(); // why? -nick // lets just enable it for our special snowflake -kev
+        }
     }
 
     private static void RegisterCommands()
