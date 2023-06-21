@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XfwU1y2rEepzinrOS94JFsOf0nehl1cIWqjDPncLo3BuoSa6nlJRd0BbakDvfBSINNSy6Kwh3jJU87t5W8zjFw==",
+  "dgSpecHash": "SV0U+ZqI5gStQ1Xnvi0+4UwOYWujyWkliKfOitBkASVrH5bSd0psdYARtpPc+K/rwwWi/i1+zcziB4p8CGsQSg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\BuilderLib\\BuilderLib.csproj",
+  "projectFilePath": "/Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/BuilderLib.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

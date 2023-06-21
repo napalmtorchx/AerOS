@@ -1,28 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\BuilderLib\\BuilderLib.csproj": {}
+    "/Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/BuilderLib.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\BuilderLib\\BuilderLib.csproj": {
+    "/Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/BuilderLib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\BuilderLib\\BuilderLib.csproj",
+        "projectUniqueName": "/Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/BuilderLib.csproj",
         "projectName": "BuilderLib",
-        "projectPath": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\BuilderLib\\BuilderLib.csproj",
-        "packagesPath": "C:\\Users\\Will\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Will\\Desktop\\AerOS\\Tools\\BuilderLib\\obj\\",
+        "projectPath": "/Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/BuilderLib.csproj",
+        "packagesPath": "/Users/nicolaciardi/.nuget/packages/",
+        "outputPath": "/Users/nicolaciardi/source/repos/AerOS/Tools/BuilderLib/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Will\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/nicolaciardi/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Users\\Will\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -56,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100-preview.4.23260.5/RuntimeIdentifierGraph.json"
         }
       }
     }
