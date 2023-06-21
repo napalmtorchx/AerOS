@@ -6,4 +6,5 @@ void kernel_main(void* mboot)
     debug_init();
     debug_println("Test");
     debug_print("Test 2");
+    print("Penis is the new Hello World\nHello Nico");
 }
