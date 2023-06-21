@@ -8,6 +8,7 @@ using System.Diagnostics;
 using AerOS.Builder.Library;
 using Debug = AerOS.Builder.Library.Debug;
 using DiscUtils.Iso9660;
+using System.Runtime.InteropServices;
 
 namespace AerOS.Builder;
 
@@ -317,7 +318,11 @@ public static class CommandHandlers
     {
         string iso_file  = args[1];
         string proc_args = args[2];
-        Process proc = StartProcess(Global.Limine + "limine-deploy.exe", proc_args + " " + Global.Path + iso_file);
+
+        string exec = "limine-deploy";
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) { exec += ".exe"; }
+
+        Process proc = StartProcess(Global.Limine + exec, proc_args + " " + Global.Path + iso_file);
         proc.WaitForExit();
 
         if (proc.ExitCode != 0) { Debug.Error("Failed to deploy limine bootloader"); return; }
