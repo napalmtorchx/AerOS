@@ -20,7 +20,7 @@ public static class Program
             string[] lines = File.ReadAllLines(args[0]);
             foreach (string line in lines) { if (line.StartsWith(";")) { continue; } CommandParser.Execute(line); }
         }
-        Console.Read();
+      //Console.Read(); // why? -nick
     }
 
     private static void RegisterCommands()
