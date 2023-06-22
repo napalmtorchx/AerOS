@@ -1,11 +1,7 @@
 #pragma once
 #include <lib/types.h>
 
-typedef struct
-{
-    char*  name;
-    size_t sz;
-} attr_pack file_t;
+typedef struct file_t file_t;
 typedef file_t FILE;
 
 /// @brief Prints formatted data to the standard output stream. @param format The format string. @return The number of characters printed.

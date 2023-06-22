@@ -12,6 +12,8 @@
 #include <core/multiboot.h>
 #include <core/memory/memmgr.h>
 #include <core/memory/heap.h>
+#include <core/fs/ramfs.h>
+#include <core/fs/virtfs.h>
 #include <debug/debug.h>
 #include <debug/tests.h>
 #include <graphics/color.h>
@@ -42,3 +44,4 @@ uintptr_t kernel_stack_end();
 size_t    kernel_stack_size();
 
 multiboot_t* mboot_get();
+ramfs_t* bootfs_get();

@@ -27,9 +27,13 @@ char* strcat(char* dest, const char* src);
 
 char* stradd(char* str, char c);
 
-void   strswap(char* x, char* y);
+void strswap(char* x, char* y);
 
-char*  strrev(char* str);
+char* strrev(char* str);
+
+char* strback(char* str);
+
+char* strdup(const char* str);
 
 /// @brief Copies a block of memory. @param dest Pointer to the destination memory block. @param src Pointer to the source memory block. @param n Number of bytes to copy. @return Pointer to the destination memory block.
 void* memcpy(void* dest, const void* src, size_t n);

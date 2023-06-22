@@ -91,6 +91,21 @@ void strswap(char* x, char* y)
     *y = t;
 }
 
+char* strback(char* str)
+{
+    if (str == NULL) { return NULL; }
+    str[strlen(str) - 1] = 0;
+    return str;
+}
+
+char* strdup(const char* str)
+{
+    if (str == NULL) { return NULL; }
+    char* dup = (char*)malloc(strlen(str) + 1);
+    strcpy(dup, str);
+    return dup;
+}
+
 char* strrev(char* str)
 {
     if (str == NULL) { return NULL; }

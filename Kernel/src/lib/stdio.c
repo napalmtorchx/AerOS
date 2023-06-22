@@ -108,3 +108,9 @@ int printf(const char* fmt, ...)
     vprintf(fmt, args);
     va_end(args);
 }
+
+FILE *fopen(const char *filename, const char *mode) { return virtfs_fopen(filename, mode); }
+
+int fclose(FILE* stream) { return virtfs_fclose(stream); }
+
+size_t fread(void *ptr, size_t size, size_t count, FILE *stream) { return virtfs_fread(ptr, size, count, stream); }

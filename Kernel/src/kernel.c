@@ -6,6 +6,7 @@ extern uint32_t _stack_top;
 extern uint32_t _stack_bottom;
 
 static multiboot_t* _multiboot;
+static ramfs_t      _bootfs;
 
 void kernel_main(multiboot_t* mboot)
 {
@@ -26,7 +27,21 @@ void kernel_boot()
     memmgr_init();
     heap_init();
     devmgr_init();
+    virtfs_init();    
 
+    // RAMFS TESTING
+    FILE* file = fopen("A:/hello.txt", "r");
+    if (file == NULL) { debug_error("Failed to locate file 'A:/hello.txt'"); }
+    else
+    {
+        char* filedata = malloc(file->sz);
+        fread(filedata, file->sz, 1, file);
+        fclose(file);
+
+        debug_log("File contents:\n%s\n", filedata);
+    }
+
+    // CONSOLE TESTING
     vbe_device_t* vbe = devmgr_try_from_name("vbe_controller");
     if (vbe != NULL)
     {
@@ -59,3 +74,5 @@ uintptr_t kernel_stack_end() { return (uint32_t)&_stack_top; }
 size_t kernel_stack_size() { return kernel_stack_end() - kernel_stack_start(); }
 
 multiboot_t* mboot_get() { return _multiboot; }
+
+ramfs_t* bootfs_get(void) { return &_bootfs; }
