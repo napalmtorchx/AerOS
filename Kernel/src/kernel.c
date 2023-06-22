@@ -25,6 +25,7 @@ void kernel_boot()
     idt_init();
     memmgr_init();
     devmgr_init();
+    vbe_clear(0xFF007F7F);
 }
 
 void kernel_loop()

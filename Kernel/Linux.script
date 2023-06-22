@@ -13,7 +13,7 @@ RMMK_DIR ../Bin
 
 ASSEMBLE_PATH    ../Bin            src      -felf32
 
-COMPILE_PATH     ../Bin            src      -IKernel/include -nostdlib -ffreestanding -Wall -Wno-unused-variable -Wno-unused-parameter
+COMPILE_PATH     ../Bin            src      -IKernel/include -nostdlib -ffreestanding -Wall -Wno-unused-variable -Wno-unused-parameter -g
 
 SET_DIR  Kernel
 LINK_PATH        ../Bin/kernel.elf ../Bin         -T  Kernel/linker.ld
