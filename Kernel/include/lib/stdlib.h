@@ -65,25 +65,25 @@ char* getenv(const char* name);
 int system(const char* command);
 
 /// @brief Converts a string to a double-precision floating-point number. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @return The converted double-precision floating-point number.
-double strtod(const char* str, char* *endptr);
+double strtod(const char* str, char** endptr);
 
 /// @brief Converts a string to a single-precision floating-point number. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @return The converted single-precision floating-point number.
-float strtof(const char* str, char* *endptr);
+float strtof(const char* str, char** endptr);
 
 /// @brief Converts a string to a long double-precision floating-point number. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @return The converted long double-precision floating-point number.
-long double strtold(const char* str, char* *endptr);
+long double strtold(const char* str, char** endptr);
 
 /// @brief Converts a string to a long integer. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @param base The number base used in the conversion. @return The converted long integer.
-long strtol(const char* str, char* *endptr, int base);
+long strtol(const char* str, char** endptr, int base);
 
 /// @brief Converts a string to a long long integer. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @param base The number base used in the conversion. @return The converted long long integer.
-long long strtoll(const char* str, char* *endptr, int base);
+long long strtoll(const char* str, char** endptr, int base);
 
 /// @brief Converts a string to an unsigned long integer. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @param base The number base used in the conversion. @return The converted unsigned long integer.
-unsigned long strtoul(const char* str, char* *endptr, int base);
+unsigned long strtoul(const char* str, char** endptr, int base);
 
 /// @brief Converts a string to an unsigned long long integer. @param str The string to convert. @param endptr A pointer to the character after the converted part of the string. @param base The number base used in the conversion. @return The converted unsigned long long integer.
-unsigned long long strtoull(const char* str, char* *endptr, int base);
+unsigned long long strtoull(const char* str, char** endptr, int base);
 
 /// @brief Sorts an array using the quicksort algorithm. @param base The base address of the array to be sorted. @param nmemb The number of elements in the array. @param size The size of each element. @param compar The comparison function used to determine the order of elements.
 void qsort(void* base, size_t nmemb, size_t size, int (*compar)(const void* , const void* ));
