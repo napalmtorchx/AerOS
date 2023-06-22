@@ -1,1 +1,1 @@
-start ../OSMaker/bin/debug/net7.0/OSMaker.exe ../OSMaker/test.script
+start ../OSMaker/bin/debug/net7.0/OSMaker.exe Kernel/build_new.script
