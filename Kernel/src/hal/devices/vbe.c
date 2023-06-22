@@ -74,10 +74,8 @@ int vbe_stop(vbe_device_t* dev)
 }
 void vbe_string(char* str)
 {
-    for(int i=0; i < strlen(str); i++)
-    {
-        ssfn_putc(str[i]);
-    }
+while(*str)
+    ssfn_putc(ssfn_utf8(&str));
 }
 bool vbe_setmode(int w, int h)
 {

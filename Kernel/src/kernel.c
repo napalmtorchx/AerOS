@@ -32,7 +32,7 @@ void kernel_boot()
     vbe_load_font("A:/unifont.sfn");
     vbe_clear(0xFF007F7F);
 
-    printf("Hello world\n%s","Testing 123");
+    printf("Hello world\n%s","Testing 123 äöüß - è");
 }
 
 void kernel_loop()
