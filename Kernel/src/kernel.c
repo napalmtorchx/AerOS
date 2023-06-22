@@ -29,32 +29,10 @@ void kernel_boot()
     devmgr_init();
     virtfs_init();    
 
-    // RAMFS TESTING
-    FILE* file = fopen("A:/hello.txt", "r");
-    if (file == NULL) { debug_error("Failed to locate file 'A:/hello.txt'"); }
-    else
-    {
-        char* filedata = malloc(file->sz);
-        fread(filedata, file->sz, 1, file);
-        fclose(file);
-
-        debug_log("File contents:\n%s\n", filedata);
-    }
-
-    // CONSOLE TESTING
-    /*vbe_device_t* vbe = devmgr_try_from_name("vbe_controller");
-    if (vbe != NULL)
-    {
-        font_t* font           = font_create_psf((const psf_hdr_t*)FONT_DEFAULT_DATA, 1, 0);
-        image_t console_buffer = image_create(vbe->w, vbe->h);
-        console_t console      = console_create(console_buffer, &font, COLOR_YELLOW, COLOR_DARKRED);   
-
-        image_fill(&console.img, 0, 0, vbe->w, vbe->h, COLOR_DARKMAGENTA);
-        image_drawchar(&console.img, 32, 32, 'X', COLOR_YELLOW, COLOR_BLACK, font);
-        memcpy(vbe->fbptr, console.img.buffer, vbe->w * vbe->h * 4);
-    }*/
     vbe_load_font("A:/unifont.sfn");
-    vbe_string("Hello");
+    vbe_clear(0xFF007F7F);
+
+    vbe_string("Hello world\nTesting 123");
 }
 
 void kernel_loop()

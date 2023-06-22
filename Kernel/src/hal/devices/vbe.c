@@ -56,6 +56,9 @@ void vbe_load_font(const char* path)
         ssfn_font_t* filedata = (ssfn_font_t*)malloc(file->sz);
         fread(filedata, file->sz, 1, file);
         fclose(file);
+
+        debug_hexdump(filedata, 0, 256);
+
         ssfn_src = filedata;     /* the bitmap font to use */
         ssfn_dst.ptr = (uint32_t*)_vbe.fbptr;                  /* framebuffer address and bytes per line */
         ssfn_dst.p = (uint16_t)_vbe.mode_hdr->pitch;
