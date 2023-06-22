@@ -8,4 +8,9 @@ void kernel_main(void* mboot)
         vram[i] = 'X';
         vram[i + 1] = 0x1E;
     }
+
+    while (true)
+    {
+        
+    }
 }

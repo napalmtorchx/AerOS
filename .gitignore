@@ -2,10 +2,13 @@
 /Tools/GCC/
 /Tools/Builder/bin/
 /Tools/RAMFS/bin/
+/Bin
 *.exe
 *.dll
 *.cache
 *.pdb
+*.o
+*.elf
 *.editorconfig
 .vscode/
 .fleet/
