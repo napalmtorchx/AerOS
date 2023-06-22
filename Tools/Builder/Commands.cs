@@ -321,7 +321,7 @@ public static class CommandHandlers
 
         string exec = "limine-deploy";
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) { exec += ".exe"; }
-        else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { exec += ".mac"; }
+        else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) { exec += "-mac"; }
         Process proc = StartProcess(Global.Limine + exec, proc_args + " " + Global.Path + iso_file);
         proc.WaitForExit();
 
