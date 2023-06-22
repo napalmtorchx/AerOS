@@ -1,10 +1,11 @@
 #pragma once
 #include <lib/types.h>
+#include <lib/kresult.h>
 
 typedef struct device_t device_t;
 
-typedef bool (*device_start_t)(device_t* dev, void* arg);
-typedef int  (*device_stop_t)(device_t* dev);
+typedef KRESULT (*device_start_t)(device_t* dev, void* arg);
+typedef KRESULT  (*device_stop_t)(device_t* dev);
 
 typedef uint32_t duid_t;
 

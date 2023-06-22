@@ -11,6 +11,8 @@
 #include <hal/vga.h>
 #include <hal/uart.h>
 #include <hal/ports.h>
+#include <hal/device.h>
 #include <hal/devmgr.h>
+#include <hal/devices/test_device.h>
 
 
