@@ -1,36 +1,51 @@
 #pragma once
 #include <lib/types.h>
+#include <hal/device.h>
 
 typedef enum
 {
-  vga_color_black,
-  vga_color_blue,
-  vga_color_green,
-  vga_color_cyan,
-  vga_color_red,
-  vga_color_magenta,
-  vga_color_brown,
-  vga_color_light_gray,
-  vga_color_dark_gray,
-  vga_color_light_blue,
-  vga_color_light_green,
-  vga_color_light_cyan,
-  vga_color_light_red,
-  vga_color_light_magenta,
-  vga_color_yellow,
-  vga_color_white
-} console_color_t;
+    VGA_BLACK,
+    VGA_DARKBLUE,
+    VGA_DARKGREEN,
+    VGA_DARKCYAN,
+    VGA_DARKRED,
+    VGA_DARKMAGENTA,
+    VGA_DARKYELLOW,
+    VGA_GRAY,
+    VGA_DARKGRAY,
+    VGA_BLUE,
+    VGA_GREEN,
+    VGA_CYAN,
+    VGA_RED,
+    VGA_MAGENTA,
+    VGA_YELLOW,
+    VGA_WHITE,
+} VGA_COLOR;
 
 typedef struct
 {
-  console_color_t fg : 4;
-  console_color_t bg : 4;
-} __attribute__((packed)) attribute_t;
-typedef struct
-{
-  char data;
-  attribute_t attrib;
-} __attribute__((packed)) console_char_t;
-void vga_init();
-void print(const char* str);
-void printc(const char* str, uint8_t color);
+    device_t  base;
+    uint16_t  w,  h;
+    uint16_t  cx, cy;
+    VGA_COLOR fg, bg;
+    bool      text_mode;
+    uint8_t*  fbptr;
+} vga_device_t;
+
+void vga_init(void);
+bool vga_start(vga_device_t* dev, VGA_COLOR bg);
+int  vga_stop(vga_device_t* dev);
+void vga_clear(VGA_COLOR bg);
+void vga_drawchar(int x, int y, char c, VGA_COLOR fg, VGA_COLOR bg);
+void vga_drawstr(int x, int y, const char* str, VGA_COLOR fg, VGA_COLOR bg);
+void vga_newline(void);
+void vga_delete(void);
+void vga_scroll(void);
+void vga_putc(char c);
+void vga_write(const char* str);
+void vga_writeln(const char* str);
+void vga_setpos(int x, int y);
+
+uint8_t vga_pack(VGA_COLOR fg, VGA_COLOR bg);
+
+vga_device_t* vga_get(void);

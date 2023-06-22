@@ -20,6 +20,7 @@ void kernel_boot()
     debug_init();
     debug_print("Starting AerOS v2.0...\nBootloader:");
     debug_println(_multiboot->bootloader_name);
+
     memmgr_init();
     devmgr_init();
 }

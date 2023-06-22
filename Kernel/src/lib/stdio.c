@@ -1,11 +1,13 @@
 #include <lib/types.h>
+#include <kernel.h>
+
 #define PRINT_BUFFSZ 0x10000
 #define PRINT_WORKSZ 0x2000
 
-char _buffer[PRINT_BUFFSZ];
-char _workbuff[PRINT_WORKSZ];
+static char _buffer[PRINT_BUFFSZ];
+static char _workbuff[PRINT_WORKSZ];
 
-void vsprintf(char* buff, const char* fmt, va_list args)
+int vsprintf(char* buff, const char* fmt, va_list args)
 {
     if (buff == NULL || strlen(fmt) == 0) { return; }
     while (*fmt != 0)
@@ -83,27 +85,23 @@ void vsprintf(char* buff, const char* fmt, va_list args)
         fmt++;
     }
 }
-void sprintf(char* buff, const char* fmt, ...)
+
+int sprintf(char* buff, const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);
     vsprintf(buff, fmt, args);
     va_end(args);
 }
-void vprintf(const char* fmt, va_list args)
+
+int vprintf(const char* fmt, va_list args)
 {
     memset(_buffer, 0, PRINT_BUFFSZ);
     vsprintf(_buffer, fmt, args);
-    print(_buffer);
+    vga_write(_buffer);
 }
 
-void d_vprintf(const char* fmt, va_list args)
-{
-    memset(_buffer, 0, PRINT_BUFFSZ);
-    vsprintf(_buffer, fmt, args);
-    uart_write(_buffer);
-}
-void printf(const char* fmt, ...)
+int printf(const char* fmt, ...)
 {
     va_list args;
     va_start(args, fmt);

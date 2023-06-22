@@ -34,3 +34,6 @@
 #define ANSI_BG_MAGENTA        "\x1b[105m"
 #define ANSI_BG_CYAN           "\x1b[106m"
 #define ANSI_BG_WHITE          "\x1b[107m"
+
+uint8_t ansi_fg_to_vga(uint8_t ansi_code, uint8_t def_result);
+uint8_t ansi_bg_to_vga(uint8_t ansi_code, uint8_t def_result);
