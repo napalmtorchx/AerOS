@@ -42,7 +42,7 @@ void kernel_boot()
     }
 
     // CONSOLE TESTING
-    vbe_device_t* vbe = devmgr_try_from_name("vbe_controller");
+    /*vbe_device_t* vbe = devmgr_try_from_name("vbe_controller");
     if (vbe != NULL)
     {
         font_t* font           = font_create_psf((const psf_hdr_t*)FONT_DEFAULT_DATA, 1, 0);
@@ -52,7 +52,9 @@ void kernel_boot()
         image_fill(&console.img, 0, 0, vbe->w, vbe->h, COLOR_DARKMAGENTA);
         image_drawchar(&console.img, 32, 32, 'X', COLOR_YELLOW, COLOR_BLACK, font);
         memcpy(vbe->fbptr, console.img.buffer, vbe->w * vbe->h * 4);
-    }
+    }*/
+    vbe_load_font("A:/unifont.bin");
+    vbe_string("Hello");
 }
 
 void kernel_loop()
