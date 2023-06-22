@@ -34,12 +34,12 @@ uintptr_t kernel_addr_start() { return (uint32_t)&_kernel_start; }
 
 uintptr_t kernel_addr_end() { return (uint32_t)&_kernel_end; }
 
-size_t kernel_size() { return krnl_get_addr_end() - krnl_get_addr(); }
+size_t kernel_size() { return kernel_addr_end() - kernel_addr_start(); }
 
 uintptr_t kernel_stack_start() { return (uint32_t)&_stack_bottom; }
 
 uintptr_t kernel_stack_end() { return (uint32_t)&_stack_top; }
 
-size_t kernel_stack_size() { return krnl_get_stk_top() - krnl_get_stk_btm(); }
+size_t kernel_stack_size() { return kernel_stack_end() - kernel_stack_start(); }
 
 multiboot_t* mboot_get() { return _multiboot; }
