@@ -99,6 +99,7 @@ int vprintf(const char* fmt, va_list args)
     memset(_buffer, 0, PRINT_BUFFSZ);
     vsprintf(_buffer, fmt, args);
     vga_write(_buffer);
+    uart_write(_buffer);
 }
 
 int printf(const char* fmt, ...)

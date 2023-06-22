@@ -19,3 +19,4 @@ void debug_print(const char* str);
 void debug_println(const char* str);
 void debug_log(const char* str, ...);
 void debug_error(const char* str, ...);
+void debug_hexdump(void* ptr, uintptr_t start, size_t sz);
