@@ -1,4 +1,5 @@
 /Tools/GCC/
+/Tools/VMWare/AerOS.vdmk
 /Bin
 *.exe
 *.dll
