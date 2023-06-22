@@ -20,6 +20,12 @@ int sprintf(char *str, const char *format, ...);
 /// @brief Stores formatted data in a sized buffer. @param str The destination buffer. @param size The size of the buffer. @param format The format string. @return The number of characters that would have been written, excluding the null terminator.
 int snprintf(char *str, size_t size, const char *format, ...);
 
+/// @brief Writes formatted data to a character string. @param str The output character string. @param format The format string. @param ap The variable argument list. @return The number of characters written.
+int vsprintf(char* str, const char* format, va_list ap);
+
+/// @brief Writes formatted data to the standard output stream. @param format The format string. @param ap The variable argument list. @return The number of characters written.
+int vprintf(const char* format, va_list ap);
+
 /// @brief Reads formatted data from the standard input stream. @param format The format string. @return The number of input items successfully matched and assigned.
 int scanf(const char *format, ...);
 

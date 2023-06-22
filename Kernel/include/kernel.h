@@ -17,7 +17,6 @@
 #include <hal/devices/test_device.h>
 #include <hal/devices/vga.h>
 
-
 void kernel_boot();
 void kernel_loop();
 
