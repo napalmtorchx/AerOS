@@ -9,6 +9,7 @@ void devmgr_init(void)
 {
     _duid = DUID_MIN;
 
+    vga_init();
     testdev_init();
 
     //debug_out("%s Initialized device manager\n", DEBUG_OK);

@@ -1,4 +1,4 @@
-#include <hal/vga.h>
+#include <hal/devices/vga.h>
 #include <hal/ports.h>
 console_char_t* vram = 0xB8000;
 uint8_t vga_width = 80;

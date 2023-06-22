@@ -8,11 +8,11 @@
 #include <lib/math.h>
 #include <core/multiboot.h>
 #include <core/debug.h>
-#include <hal/vga.h>
 #include <hal/uart.h>
 #include <hal/ports.h>
 #include <hal/device.h>
 #include <hal/devmgr.h>
 #include <hal/devices/test_device.h>
+#include <hal/devices/vga.h>
 
 
