@@ -7,7 +7,8 @@
 #include <lib/kresult.h>
 #include <lib/math.h>
 #include <core/multiboot.h>
-#include <core/debug.h>
+#include <debug/debug.h>
+#include <debug/tests.h>
 #include <hal/uart.h>
 #include <hal/ports.h>
 #include <hal/device.h>
@@ -16,3 +17,7 @@
 #include <hal/devices/vga.h>
 
 
+void kernel_boot(void);
+void kernel_loop(void);
+
+multiboot_t* mboot_get(void);

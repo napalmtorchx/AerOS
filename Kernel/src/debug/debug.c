@@ -1,4 +1,4 @@
-#include <core/debug.h>
+#include <debug/debug.h>
 #include <kernel.h>
 
 void debug_init()

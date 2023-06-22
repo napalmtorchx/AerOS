@@ -68,7 +68,7 @@ typedef struct
     uintptr_t       drives_length;
     uintptr_t       drives_addr;
     uintptr_t       config_table;
-    const char*     boot_loader_name;
+    const char*     bootloader_name;
     uintptr_t       apm_table;
     vbe_ctrl_t*     vbe_control_info;
     uintptr_t       vbe_mode_info;
