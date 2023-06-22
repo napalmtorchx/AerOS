@@ -14,10 +14,10 @@ void image_fill(image_t* img, int x, int y, int w, int h, COLOR color)
     int xx, yy, i;
     for (i = 0; i < w * h; i++)
     {
-        yy = (i / w);
+        yy = y + (i / w);
         if (yy >= img->h) { return; }
 
-        xx = (i % w);
+        xx = x + (i % w);
         if (xx >= img->w) { continue; }
 
         img->buffer[yy * img->w + xx] = color;

@@ -33,6 +33,10 @@ void kernel_boot()
         font_t* font           = font_create_psf((const psf_hdr_t*)FONT_DEFAULT_DATA, 1, 0);
         image_t console_buffer = image_create(vbe->w, vbe->h);
         console_t console      = console_create(console_buffer, &font, COLOR_YELLOW, COLOR_DARKRED);   
+
+        image_fill(&console.img, 0, 0, vbe->w, vbe->h, COLOR_DARKMAGENTA);
+        image_drawchar(&console.img, 32, 32, 'X', COLOR_YELLOW, COLOR_BLACK, font);
+        memcpy(vbe->fbptr, console.img.buffer, vbe->w * vbe->h * 4);
     }
 }
 
