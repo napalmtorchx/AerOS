@@ -1,0 +1,22 @@
+SET_ASSEMBLER nasm
+SET_COMPILER  i686-elf-gcc
+SET_LINKER    i686-elf-ld
+SET_OBJDUMP   i686-elf-objdump
+SET_LIMINE    Tools/Limine/
+SET_RAMFSMGR  Tools/RAMFS/bin/Debug/net7.0/RAMFS
+SET_EMULATOR  qemu-system-i386
+
+SET_DIR  Kernel
+RMMK_DIR ../Bin
+
+ASSEMBLE_PATH    ../Bin            src      -felf32
+
+COMPILE_PATH     ../Bin            src      -IKernel/include -nostdlib -ffreestanding -Wall -Wno-unused-variable -Wno-unused-parameter
+
+SET_DIR  Kernel
+LINK_PATH        ../Bin/kernel.elf ../Bin         -T  Kernel/linker.ld
+
+MK_RAMDISK Kernel/build_ramdisk.script
+MK_ISO ../Images/AerOS.iso ../Tools/Limine/limine.cfg ../Bin/kernel.elf ../Images/ramdisk.img
+LIMINE ../Images/AerOS.iso --force-mbr
+RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio 
