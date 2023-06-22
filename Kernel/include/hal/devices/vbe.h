@@ -1,9 +1,9 @@
 #pragma once
 #include <lib/types.h>
+#include <lib/numerics/point.h>
+#include <graphics/color.h>
 #include <core/multiboot.h>
 #include <hal/device.h>
-
-typedef uint32_t pixel_t;
 
 typedef struct
 {
@@ -15,10 +15,10 @@ typedef struct
 } vbe_device_t;
 
 void vbe_init(void);
-bool vbe_start(vbe_device_t* dev, pixel_t bg);
+bool vbe_start(vbe_device_t* dev, COLOR bg);
 int  vbe_stop(vbe_device_t* dev);
 bool vbe_setmode(int w, int h);
-void vbe_swap(pixel_t* src);
-void vbe_clear(pixel_t bg);
-void vbe_blit(int x, int y, pixel_t color);
-void vbe_fill(int x, int y, int w, int h, pixel_t color);
+void vbe_swap(COLOR* src);
+void vbe_clear(COLOR bg);
+void vbe_blit(int x, int y, COLOR color);
+void vbe_fill(int x, int y, int w, int h, COLOR color);

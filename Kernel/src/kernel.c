@@ -24,7 +24,16 @@ void kernel_boot()
     gdt_init();
     idt_init();
     memmgr_init();
+    heap_init();
     devmgr_init();
+
+    vbe_device_t* vbe = devmgr_try_from_name("vbe_controller");
+    if (vbe != NULL)
+    {
+        font_t* font           = font_create_psf((const psf_hdr_t*)FONT_DEFAULT_DATA, 1, 0);
+        image_t console_buffer = image_create(vbe->w, vbe->h);
+        console_t console      = console_create(console_buffer, &font, COLOR_YELLOW, COLOR_DARKRED);   
+    }
 }
 
 void kernel_loop()

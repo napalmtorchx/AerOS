@@ -38,7 +38,7 @@ void vbe_getheaders(void)
     _vbe.mode_hdr = (vbe_mode_t*)mboot_get()->vbe_mode;
 }
 
-bool vbe_start(vbe_device_t* dev, pixel_t bg)
+bool vbe_start(vbe_device_t* dev, COLOR bg)
 {
     vbe_setmode(640, 480);
     vbe_clear(bg);
@@ -87,23 +87,23 @@ bool vbe_setmode(int w, int h)
     return false;
 }
 
-void vbe_swap(pixel_t* src)
+void vbe_swap(COLOR* src)
 {
     memcpy(_vbe.fbptr, src, _vbe.w * _vbe.h * 4);
 }
 
-void vbe_clear(pixel_t bg)
+void vbe_clear(COLOR bg)
 {
     memset(_vbe.fbptr, bg, _vbe.w * _vbe.h * 4);
 }
 
-void vbe_blit(int x, int y, pixel_t color)
+void vbe_blit(int x, int y, COLOR color)
 {
     if ((uint32_t)x >= _vbe.w || (uint32_t)y >= _vbe.h) { return; }
     _vbe.fbptr[y * _vbe.w + x] = color;
 }
 
-void vbe_fill(int x, int y, int w, int h, pixel_t color)
+void vbe_fill(int x, int y, int w, int h, COLOR color)
 {
     for (int i = 0; i < w * h; i++) { vbe_blit(x + (i % w), y + (i / w), color); }
 }

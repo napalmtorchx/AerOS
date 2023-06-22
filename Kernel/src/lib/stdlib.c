@@ -1,13 +1,34 @@
 #include <lib/stdlib.h>
 #include <kernel.h>
 
-char* _itoa_rev(char *buffer, int i, int j)
+void* malloc(size_t size)
+{
+    return heap_alloc(size, true);
+}
+
+void* calloc(size_t nmemb, size_t size)
+{
+    return heap_alloc(nmemb * size, true);
+}
+
+void* realloc(void* ptr, size_t size)
+{
+    debug_error("realloc(%p, %u) - Not yet implemented\n", ptr, size);
+    return NULL;
+}
+
+void free(void* ptr)
+{
+    heap_free(ptr);
+}
+
+char* itoa_rev(char *buffer, int i, int j)
 {
     while (i < j) { strswap(&buffer[i++], &buffer[j--]); }
     return buffer;
 }
 
-void _ultoa(unsigned long value, char* result, int base)
+void ultoa(unsigned long value, char* result, int base)
 {
     unsigned char index;
     char buffer[32];
@@ -23,7 +44,7 @@ void _ultoa(unsigned long value, char* result, int base)
     *result = 0;
 }
 
-void _ftoa_rev(char* str, int len)
+void ftoa_rev(char* str, int len)
 {
     int i = 0, j = len - 1, temp;
     while (i < j) 
@@ -36,18 +57,17 @@ void _ftoa_rev(char* str, int len)
     }
 }
 
-int _ftoa_conv(int x, char str[], int d)
+int ftoa_conv(int x, char str[], int d)
 {
     int i = 0;
     while (x) { str[i++] = (x % 10) + '0'; x = x / 10; }
 
     while (i < d) { str[i++] = '0'; }
 
-    _ftoa_rev(str, i);
+    ftoa_rev(str, i);
     str[i] = '\0';
     return i;
 }
-
 
 int atoi(const char* str) { return (int)atoll(str); }
 
@@ -92,12 +112,12 @@ char* itoa(int num, char* buff, int base)
     if (i == 0) { buff[i++] = '0'; }
     if (num < 0 && base == 10) { buff[i++] = '-'; }
     buff[i] = '\0';
-    return _itoa_rev(buff, 0, i - 1);
+    return itoa_rev(buff, 0, i - 1);
 }
 
 char* ltoa(uint32_t num, char* buff, int base)
 {
-    _ultoa(num, buff, base); 
+    ultoa(num, buff, base); 
     return buff;
 }
 
@@ -105,13 +125,13 @@ char* ftoa(float num, char* buff, int afterdot)
 {
     int ipart = (int)num;
     float fpart = num - (float)ipart;
-    int i = _ftoa_conv(ipart, buff, 0);
+    int i = ftoa_conv(ipart, buff, 0);
 
     if (afterdot != 0) 
     {
         buff[i] = '.';
         fpart = fpart * powf(10, afterdot);
-        _ftoa_conv((int)fpart, buff + i + 1, afterdot);
+        ftoa_conv((int)fpart, buff + i + 1, afterdot);
     }
     return buff;
 }

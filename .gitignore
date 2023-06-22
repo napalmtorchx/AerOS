@@ -9,6 +9,7 @@
 *.elf
 *.log
 *.vmx
+*.iso
 *.scoreboard
 *.editorconfig
 *.vdmk
