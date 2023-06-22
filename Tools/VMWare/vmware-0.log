@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2023-06-21T21:52:05.696Z In(05) vmx Log for VMware Player pid=16340 version=17.0.1 build=build-21139696 option=Release
 2023-06-21T21:52:05.696Z In(05) vmx The host is x86_64.
 2023-06-21T21:52:05.696Z In(05) vmx Host codepage=windows-1252 encoding=windows-1252
@@ -1137,3 +1138,458 @@
 2023-06-22T02:29:35.288Z In(05) vmx VMX exit (0).
 2023-06-22T02:29:35.288Z In(05) vmx OBJLIB-LIB: ObjLib cleanup done.
 2023-06-22T02:29:35.288Z In(05) vmx AIOMGR-S : stat o=3 r=27 w=0 i=0 br=120304 bw=0
+=======
+2023-06-21T20:26:29.057Z In(05) vmx Log for VMware Player pid=108283 version=17.0.2 build=build-21581411 option=Release
+2023-06-21T20:26:29.057Z In(05) vmx The host is x86_64.
+2023-06-21T20:26:29.057Z In(05) vmx Host codepage=UTF-8 encoding=UTF-8
+2023-06-21T20:26:29.057Z In(05) vmx Host is Linux 6.3.8-arch1-1 Arch Linux Arch Linux rolling
+2023-06-21T20:26:29.057Z In(05) vmx Host offset from UTC is +02:00.
+2023-06-21T20:26:29.050Z In(05) vmx VTHREAD 139672868076544 "vmx" tid 108283
+2023-06-21T20:26:29.051Z In(05) vmx LOCALE C.UTF-8 -> NULL
+2023-06-21T20:26:29.051Z In(05) vmx Msg_SetLocaleEx: HostLocale=UTF-8 UserLocale=NULL
+2023-06-21T20:26:29.051Z In(05) vmx DictionaryLoad: Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+2023-06-21T20:26:29.051Z In(05) vmx Msg_Reset:
+2023-06-21T20:26:29.051Z In(05) vmx [msg.dictionary.load.openFailed] Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+2023-06-21T20:26:29.051Z In(05) vmx ----------------------------------------
+2023-06-21T20:26:29.051Z In(05) vmx ConfigDB: Failed to load /usr/lib/vmware/settings
+2023-06-21T20:26:29.051Z In(05) vmx DictionaryLoad: Cannot open file "/home/devil/.vmware/config": No such file or directory.
+2023-06-21T20:26:29.051Z In(05) vmx Msg_Reset:
+2023-06-21T20:26:29.051Z In(05) vmx [msg.dictionary.load.openFailed] Cannot open file "/home/devil/.vmware/config": No such file or directory.
+2023-06-21T20:26:29.051Z In(05) vmx ----------------------------------------
+2023-06-21T20:26:29.051Z In(05) vmx ConfigDB: Failed to load ~/.vmware/config
+2023-06-21T20:26:29.051Z In(05) vmx OBJLIB-LIB: Objlib initialized.
+2023-06-21T20:26:29.052Z In(05) vmx DictionaryLoad: Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+2023-06-21T20:26:29.052Z In(05) vmx [msg.dictionary.load.openFailed] Cannot open file "/usr/lib/vmware/settings": No such file or directory.
+2023-06-21T20:26:29.052Z In(05) vmx PREF Optional preferences file not found at /usr/lib/vmware/settings. Using default values.
+2023-06-21T20:26:29.052Z In(05) vmx DictionaryLoad: Cannot open file "/home/devil/.vmware/config": No such file or directory.
+2023-06-21T20:26:29.052Z In(05) vmx [msg.dictionary.load.openFailed] Cannot open file "/home/devil/.vmware/config": No such file or directory.
+2023-06-21T20:26:29.052Z In(05) vmx PREF Optional preferences file not found at /home/devil/.vmware/config. Using default values.
+2023-06-21T20:26:29.052Z In(05) vmx lib/ssl: OpenSSL using RAND_OpenSSL for RAND
+2023-06-21T20:26:29.052Z In(05) vmx lib/ssl: protocol list tls1.2
+2023-06-21T20:26:29.052Z In(05) vmx lib/ssl: protocol list tls1.2 (openssl flags 0x36000000)
+2023-06-21T20:26:29.052Z In(05) vmx lib/ssl: cipher list ECDHE+AESGCM:RSA+AESGCM:ECDHE+AES:RSA+AES
+2023-06-21T20:26:29.052Z In(05) vmx lib/ssl: curves list prime256v1:secp384r1:secp521r1
+2023-06-21T20:26:29.061Z Wa(03) vmx HostinfoReadDistroFile: Cannot work with empty file.
+2023-06-21T20:26:29.063Z In(05) vmx Hostname=B450
+2023-06-21T20:26:29.063Z In(05) vmx IP=127.0.0.1 (lo)
+2023-06-21T20:26:29.063Z In(05) vmx IP=192.168.178.62 (enp9s0)
+2023-06-21T20:26:29.063Z In(05) vmx IP=192.168.80.1 (vmnet1)
+2023-06-21T20:26:29.063Z In(05) vmx IP=172.16.9.1 (vmnet8)
+2023-06-21T20:26:29.063Z In(05) vmx System uptime 19100250000 us
+2023-06-21T20:26:29.063Z In(05) vmx Command line: "/usr/lib/vmware/bin/vmware-vmx" "-ssnapshot.numRollingTiers=0" "-s" "vmx.stdio.keep=TRUE" "-#" "product=4;name=VMware Player;version=17.0.2;buildnumber=21581411;licensename=VMware Player;licenseversion=17.0;" "-@" "duplex=3;msgs=ui" "/home/devil/AerOS/Tools/VMWare/vmware_mach.vmx"
+2023-06-21T20:26:29.063Z In(05) vmx Msg_SetLocaleEx: HostLocale=UTF-8 UserLocale=NULL
+2023-06-21T20:26:29.063Z In(05) vmx Duplex socket: 3
+2023-06-21T20:26:29.076Z In(05) vmx WQPoolAllocPoll : pollIx = 1, signalHandle = 9
+2023-06-21T20:26:29.076Z In(05) vmx WQPoolAllocPoll : pollIx = 2, signalHandle = 11
+2023-06-21T20:26:29.076Z In(05) vmx VigorTransport listening on fd 12
+2023-06-21T20:26:29.076Z In(05) vmx Vigor_Init 1
+2023-06-21T20:26:29.076Z In(05) vmx Connecting 'ui' to fd '3' with user '(null)'
+2023-06-21T20:26:29.076Z In(05) vmx VmdbAddConnection: cnxPath=/db/connection/#1/, cnxIx=1
+2023-06-21T20:26:29.094Z In(05) vmx /home/devil/AerOS/Tools/VMWare/vmware_mach.vmx: Setup symlink /var/run/vmware/6d691f688f397f8822dd4654f0889e950118a45d541caa81b7c9ac5ea61e7d7d -> /var/run/vmware/1000/19100250000_108283
+2023-06-21T20:26:29.094Z In(05) vmx Vix: [mainDispatch.c:488]: VMAutomation: Initializing VMAutomation.
+2023-06-21T20:26:29.094Z In(05) vmx Vix: [mainDispatch.c:740]: VMAutomationOpenListenerSocket() listening
+2023-06-21T20:26:29.096Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=1 additionalError=0
+2023-06-21T20:26:29.096Z In(05) vmx Transitioned vmx/execState/val to poweredOff
+2023-06-21T20:26:29.096Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2023-06-21T20:26:29.096Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=2, newAppState=1877, success=1 additionalError=0
+2023-06-21T20:26:29.096Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=3, newAppState=1881, success=1 additionalError=0
+2023-06-21T20:26:29.097Z In(05) vmx FeatureCompat: No EVC masks.
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID vendor: AuthenticAMD
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID family: 0x17 model: 0x60 stepping: 0x1
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID codename: Zen
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID name: AMD Ryzen 5 4500 6-Core Processor              
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000000, 0: 0x00000010 0x68747541 0x444d4163 0x69746e65
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000001, 0: 0x00860f01 0x050c0800 0x7ef8320b 0x178bfbff
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000002, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000003, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000004, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000005, 0: 0x00000040 0x00000040 0x00000003 0x00000011
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000006, 0: 0x00000004 0x00000000 0x00000001 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000007, 0: 0x00000000 0x219c91a9 0x00400004 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000008, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000009, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000a, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000b, 0: 0x00000001 0x00000002 0x00000100 0x00000005
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000b, 1: 0x00000007 0x0000000c 0x00000201 0x00000005
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000b, 2: 0x00000000 0x00000000 0x00000002 0x00000005
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000c, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 0: 0x00000207 0x00000340 0x00000380 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 1: 0x0000000f 0x00000340 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 2: 0x00000100 0x00000240 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 3: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 4: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 5: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 6: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 7: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 8: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000d, 9: 0x00000040 0x00000340 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000e, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000f, 0: 0x00000000 0x000000ff 0x00000000 0x00000002
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 0000000f, 1: 0x00000000 0x00000040 0x000000ff 0x00000007
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000010, 0: 0x00000000 0x00000002 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000010, 1: 0x0000000f 0x00000000 0x00000004 0x0000000f
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000010, 2: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 00000010, 3: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 80000000, 0: 0x80000020 0x68747541 0x444d4163 0x69746e65
+2023-06-21T20:26:29.097Z In(05) vmx hostCPUID level 80000001, 0: 0x00860f01 0x20000000 0x75c237ff 0x2fd3fbff
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000002, 0: 0x20444d41 0x657a7952 0x2035206e 0x30303534
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000003, 0: 0x432d3620 0x2065726f 0x636f7250 0x6f737365
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000004, 0: 0x20202072 0x20202020 0x20202020 0x00202020
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000005, 0: 0xff40ff40 0xff40ff40 0x20080140 0x20080140
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000006, 0: 0x48006400 0x68006400 0x02006140 0x00409140
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000007, 0: 0x00000000 0x0000001b 0x00000000 0x00006799
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000008, 0: 0x00003030 0x090cf757 0x0000700b 0x00010000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000009, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000000a, 0: 0x00000001 0x00008000 0x00000000 0x0013bcff
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000000b, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000000c, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000000d, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000000e, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000000f, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000010, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000011, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000012, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000013, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000014, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000015, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000016, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000017, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000018, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000019, 0: 0xf040f040 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001a, 0: 0x00000006 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001b, 0: 0x000003ff 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001c, 0: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001d, 0: 0x00004121 0x01c0003f 0x0000003f 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001d, 1: 0x00004122 0x01c0003f 0x0000003f 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001d, 2: 0x00004143 0x01c0003f 0x000003ff 0x00000002
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001d, 3: 0x00014163 0x03c0003f 0x00000fff 0x00000001
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001d, 4: 0x00000000 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001e, 0: 0x00000005 0x00000102 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 8000001f, 0: 0x0001000f 0x0000012f 0x0000000e 0x00000001
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000020, 0: 0x00000000 0x00000002 0x00000000 0x00000000
+2023-06-21T20:26:29.098Z In(05) vmx hostCPUID level 80000020, 1: 0x0000000b 0x00000000 0x00000000 0x0000000f
+2023-06-21T20:26:29.098Z In(05) vmx CPUID differences from hostCPUID.
+2023-06-21T20:26:29.098Z In(05) vmx Physical APIC IDs: 1,8,13,10,3,5,0,12,4,9,11,2
+2023-06-21T20:26:29.098Z In(05) vmx Physical X2APIC IDs: 0-5,8-13
+2023-06-21T20:26:29.098Z In(05) vmx Physical Extended APIC IDs: 11-12,8-10,5,4,3,2,0-1,13
+2023-06-21T20:26:29.098Z In(05) vmx Physical Compute Unit IDs: 5-6,4(x2),5,2(x2),1(x2),0(x2),6
+2023-06-21T20:26:29.098Z In(05) vmx Physical Node IDs: 0(x12)
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR       0x3a =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x480 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x481 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x482 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x483 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x484 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x485 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x486 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x487 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x488 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x489 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x48a =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x48b =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x48c =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x48d =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x48e =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x48f =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x490 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x491 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x492 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR 0xc0010114 =                0x8
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR       0xce =         0x80000000
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x10a =                  0
+2023-06-21T20:26:29.098Z In(05) vmx Common: MSR      0x122 =                  0
+2023-06-21T20:26:29.098Z In(05) vmx UTIL: Current file descriptor limit: soft 524288, hard 524288.
+2023-06-21T20:26:29.098Z In(05) vmx VMMon_GetkHzEstimate: Calculated 3607828 kHz
+2023-06-21T20:26:29.098Z In(05) vmx TSC Hz estimates: vmmon 3607828000, cpuinfo 4200104000, cpufreq 4208203000 sysctlfreq 0. Using 3607828000 Hz
+2023-06-21T20:26:29.098Z In(05) vmx TSC first measured delta 396
+2023-06-21T20:26:29.098Z In(05) vmx TSC min delta 396
+2023-06-21T20:26:29.098Z In(05) vmx PTSC: RefClockToPTSC 0 @ 1000000Hz -> 0 @ 3607828000Hz
+2023-06-21T20:26:29.098Z In(05) vmx PTSC: RefClockToPTSC ((x * 3783081853) >> 20) + -518886059641
+2023-06-21T20:26:29.098Z In(05) vmx PTSC: tscOffset -68849997950304
+2023-06-21T20:26:29.098Z In(05) vmx PTSC: using TSC
+2023-06-21T20:26:29.098Z In(05) vmx PTSC: hardware TSCs are synchronized.
+2023-06-21T20:26:29.098Z In(05) vmx PTSC: current PTSC=95472
+2023-06-21T20:26:29.099Z In(05) vmx WQPoolAllocPoll : pollIx = 3, signalHandle = 17
+2023-06-21T20:26:29.099Z In(05) vmx MKSXlib: Initialized thread-safe Xlib
+2023-06-21T20:26:29.099Z In(05) vmx [0x558737D2F000-0x558737E52180): /usr/lib/vmware/bin/vmware-vmx
+2023-06-21T20:26:29.117Z In(05) vmx ConfigCheck: No rules file found. Checks are disabled.
+2023-06-21T20:26:29.117Z In(05) vmx changing directory to /home/devil/AerOS/Tools/VMWare/.
+2023-06-21T20:26:29.117Z In(05) vmx Config file: /home/devil/AerOS/Tools/VMWare/vmware_mach.vmx
+2023-06-21T20:26:29.117Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2023-06-21T20:26:29.117Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=2, newAppState=1878, success=1 additionalError=0
+2023-06-21T20:26:29.137Z Wa(03) vmx PowerOn
+2023-06-21T20:26:29.137Z In(05) vmx VMX_PowerOn: VMX build 21581411, UI build 21581411
+2023-06-21T20:26:29.137Z In(05) vmx libnuma.so found and in use.
+2023-06-21T20:26:29.139Z In(05) vmx NUMA topology found.
+2023-06-21T20:26:29.139Z In(05) vmx NUMA node 0: 15858MB, cpus 0x00000fff 0x00000000 0x00000000 0x00000000
+2023-06-21T20:26:29.142Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1871, success=1 additionalError=0
+2023-06-21T20:26:29.143Z In(05) vmx VMXSTATS: Successfully created statsfile: vmware_mach.scoreboard
+2023-06-21T20:26:29.143Z In(05) vmx VMXSTATS: Update Product Information: VMware Player	17.0.2	build-21581411	Release  TotalBlockSize: 64
+2023-06-21T20:26:29.143Z In(05) vmx HOST sysname Linux, nodename B450, release 6.3.8-arch1-1, version #1 SMP PREEMPT_DYNAMIC Wed, 14 Jun 2023 20:10:31 +0000, machine x86_64
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- GLOBAL SETTINGS /usr/lib/vmware/settings
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- NON PERSISTENT (null)
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- USER PREFERENCES /home/devil/.vmware/preferences
+2023-06-21T20:26:29.143Z In(05) vmx DICT   pref.lastUpdateCheckSec = "1687379102"
+2023-06-21T20:26:29.143Z In(05) vmx DICT pref.keyboardAndMouse.vmHotKey.enabled = "FALSE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT pref.keyboardAndMouse.vmHotKey.count = "0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT pref.vmplayer.firstRunDismissedVersion = "17.0.2"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- USER DEFAULTS /home/devil/.vmware/config
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- HOST DEFAULTS /etc/vmware/config
+2023-06-21T20:26:29.143Z In(05) vmx DICT                    libdir = "/usr/lib/vmware"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                    bindir = "/usr/bin"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             initscriptdir = "/etc/init.d"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           gksu.rootMethod = "sudo"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                NETWORKING = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            authd.fullpath = "/usr/sbin/vmware-authd"
+2023-06-21T20:26:29.143Z In(05) vmx DICT       product.buildNumber = "21581411"
+2023-06-21T20:26:29.143Z In(05) vmx DICT    player.product.version = "17.0.2"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        vix.config.version = "1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             telemetryUUID = "962ee18b-1071-11ee-a5fc-7085c29943d0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.autoSoftwareUpdateEnabled.epoch = "2900565629"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.dataCollectionEnabled.epoch = "2210223543"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.componentDownloadEnabled = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.transferVersion = "1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT              product.name = "VMware Player"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           product.version = "17.0.2"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                acceptEULA = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             acceptOVFEULA = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.autoSoftwareUpdateEnabled = "no"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.dataCollectionEnabled = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.dataCollectionEnabled.initialized = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- SITE DEFAULTS /usr/lib/vmware/config
+2023-06-21T20:26:29.143Z In(05) vmx DICT                  tag.help = "introduction.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT   tag.configurationEditor = "config_editor_newvm.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.ideConfig = "devices_virtualdrive.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          tag.floppyConfig = "devices_floppy.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           tag.mouseConfig = "devices_mouse.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.netConfig = "devices_netadapter.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        tag.parallelConfig = "devices_parallel.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          tag.serialConfig = "devices_serial.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           tag.soundConfig = "devices_sound.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.memConfig = "configvm_memory.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            tag.miscConfig = "configvm.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.usbConfig = "devices_usb.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         tag.displayConfig = "configvm_display-problems.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                 tag.tools = "vmtools.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- NONPERSISTENT
+2023-06-21T20:26:29.143Z In(05) vmx DICT  snapshot.numRollingTiers = "0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            vmx.stdio.keep = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             gui.available = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- COMMAND LINE
+2023-06-21T20:26:29.143Z In(05) vmx DICT  snapshot.numRollingTiers = "0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            vmx.stdio.keep = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             gui.available = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- RECORDING
+2023-06-21T20:26:29.143Z In(05) vmx DICT  snapshot.numRollingTiers = "0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            vmx.stdio.keep = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             gui.available = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- CONFIGURATION /home/devil/AerOS/Tools/VMWare/vmware_mach.vmx 
+2023-06-21T20:26:29.143Z In(05) vmx DICT            config.version = "8"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         virtualHW.version = "20"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        pciBridge0.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        pciBridge4.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT     pciBridge4.virtualDev = "pcieRootPort"
+2023-06-21T20:26:29.143Z In(05) vmx DICT      pciBridge4.functions = "8"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        pciBridge5.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT     pciBridge5.virtualDev = "pcieRootPort"
+2023-06-21T20:26:29.143Z In(05) vmx DICT      pciBridge5.functions = "8"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        pciBridge6.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT     pciBridge6.virtualDev = "pcieRootPort"
+2023-06-21T20:26:29.143Z In(05) vmx DICT      pciBridge6.functions = "8"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        pciBridge7.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT     pciBridge7.virtualDev = "pcieRootPort"
+2023-06-21T20:26:29.143Z In(05) vmx DICT      pciBridge7.functions = "8"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             vmci0.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             hpet0.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                     nvram = "AerOS.nvram"
+2023-06-21T20:26:29.143Z In(05) vmx DICT virtualHW.productCompatibility = "hosted"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          gui.exitOnCLIHLT = "FALSE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        powerType.powerOff = "soft"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         powerType.powerOn = "soft"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         powerType.suspend = "soft"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           powerType.reset = "soft"
+2023-06-21T20:26:29.143Z In(05) vmx DICT               displayName = "AerOS"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                   guestOS = "other"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            tools.syncTime = "FALSE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          sound.autoDetect = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            sound.fileName = "-1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             sound.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT      cpuid.coresPerSocket = "1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                   memsize = "768"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           ide1:1.fileName = "AerOS.vmdk"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            ide1:1.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         ide1:0.deviceType = "cdrom-image"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           ide1:0.fileName = "../../Images/AerOS.iso"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            ide1:0.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  ethernet0.connectionType = "nat"
+2023-06-21T20:26:29.143Z In(05) vmx DICT     ethernet0.addressType = "generated"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         ethernet0.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           floppy0.present = "FALSE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           serial0.present = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          serial0.fileType = "pipe"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          serial0.fileName = "\\.\pipe\AerOS"
+2023-06-21T20:26:29.143Z In(05) vmx DICT     serial0.pipe.endPoint = "client"
+2023-06-21T20:26:29.143Z In(05) vmx DICT       serial0.tryNoRxLoss = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT      numa.autosize.cookie = "10012"
+2023-06-21T20:26:29.143Z In(05) vmx DICT numa.autosize.vcpu.maxPerVirtualNode = "1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                 uuid.bios = "56 4d 0d c2 1a 52 77 41-58 41 e4 0d 58 8b 6c 39"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             uuid.location = "56 4d 0d c2 1a 52 77 41-58 41 e4 0d 58 8b 6c 39"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  pciBridge0.pciSlotNumber = "17"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  pciBridge4.pciSlotNumber = "21"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  pciBridge5.pciSlotNumber = "22"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  pciBridge6.pciSlotNumber = "23"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  pciBridge7.pciSlotNumber = "24"
+2023-06-21T20:26:29.143Z In(05) vmx DICT   ethernet0.pciSlotNumber = "32"
+2023-06-21T20:26:29.143Z In(05) vmx DICT       sound.pciSlotNumber = "33"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             svga.vramSize = "268435456"
+2023-06-21T20:26:29.143Z In(05) vmx DICT  vmotion.checkpointFBSize = "134217728"
+2023-06-21T20:26:29.143Z In(05) vmx DICT vmotion.checkpointSVGAPrimarySize = "268435456"
+2023-06-21T20:26:29.143Z In(05) vmx DICT   vmotion.svga.mobMaxSize = "268435456"
+2023-06-21T20:26:29.143Z In(05) vmx DICT vmotion.svga.graphicsMemoryKB = "262144"
+2023-06-21T20:26:29.143Z In(05) vmx DICT ethernet0.generatedAddress = "00:0c:29:8b:6c:39"
+2023-06-21T20:26:29.143Z In(05) vmx DICT ethernet0.generatedAddressOffset = "0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                  vmci0.id = "1929905709"
+2023-06-21T20:26:29.143Z In(05) vmx DICT    monitor.phys_bits_used = "45"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             cleanShutdown = "TRUE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT              softPowerOff = "FALSE"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        extendedConfigFile = "vmware_mach.vmxf"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         vmxstats.filename = "vmware_mach.scoreboard"
+2023-06-21T20:26:29.143Z In(05) vmx DICT               ide0:0.redo = ""
+2023-06-21T20:26:29.143Z In(05) vmx DICT               ide1:1.redo = ""
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- USER DEFAULTS ~/.vmware/config 
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- HOST DEFAULTS /etc/vmware/config 
+2023-06-21T20:26:29.143Z In(05) vmx DICT                    libdir = "/usr/lib/vmware"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                    bindir = "/usr/bin"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             initscriptdir = "/etc/init.d"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           gksu.rootMethod = "sudo"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                NETWORKING = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            authd.fullpath = "/usr/sbin/vmware-authd"
+2023-06-21T20:26:29.143Z In(05) vmx DICT       product.buildNumber = "21581411"
+2023-06-21T20:26:29.143Z In(05) vmx DICT    player.product.version = "17.0.2"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        vix.config.version = "1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             telemetryUUID = "962ee18b-1071-11ee-a5fc-7085c29943d0"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.autoSoftwareUpdateEnabled.epoch = "2900565629"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.dataCollectionEnabled.epoch = "2210223543"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.componentDownloadEnabled = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.transferVersion = "1"
+2023-06-21T20:26:29.143Z In(05) vmx DICT              product.name = "VMware Player"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           product.version = "17.0.2"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                acceptEULA = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             acceptOVFEULA = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.autoSoftwareUpdateEnabled = "no"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.dataCollectionEnabled = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT installerDefaults.dataCollectionEnabled.initialized = "yes"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- SITE DEFAULTS /usr/lib/vmware/config 
+2023-06-21T20:26:29.143Z In(05) vmx DICT                  tag.help = "introduction.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT   tag.configurationEditor = "config_editor_newvm.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.ideConfig = "devices_virtualdrive.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          tag.floppyConfig = "devices_floppy.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           tag.mouseConfig = "devices_mouse.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.netConfig = "devices_netadapter.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT        tag.parallelConfig = "devices_parallel.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT          tag.serialConfig = "devices_serial.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT           tag.soundConfig = "devices_sound.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.memConfig = "configvm_memory.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT            tag.miscConfig = "configvm.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT             tag.usbConfig = "devices_usb.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT         tag.displayConfig = "configvm_display-problems.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT                 tag.tools = "vmtools.htm"
+2023-06-21T20:26:29.143Z In(05) vmx DICT --- GLOBAL SETTINGS /usr/lib/vmware/settings 
+2023-06-21T20:26:29.143Z In(05) vmx Powering on guestOS 'other' using the configuration for 'other'.
+2023-06-21T20:26:29.143Z In(05) vmx ToolsISO: open of /usr/lib/vmware/isoimages/isoimages_manifest.txt.sig failed: Could not find the file
+2023-06-21T20:26:29.143Z In(05) vmx ToolsISO: Unable to read signature file '/usr/lib/vmware/isoimages/isoimages_manifest.txt.sig', ignoring.
+2023-06-21T20:26:29.144Z In(05) vmx ToolsISO: Guest 'other' not found in Tools image map file '/usr/lib/vmware/isoimages/isoimages_manifest.txt'
+2023-06-21T20:26:29.144Z In(05) vmx ToolsISO: Updated cached value for imageName to '(null)'.
+2023-06-21T20:26:29.144Z In(05) vmx GuestOS: GuestOS_GetToolsImageName: Failed to get Tools ISO image path.
+2023-06-21T20:26:29.144Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2023-06-21T20:26:29.144Z In(05) vmx DEVSWAP: GuestOS does not require LSI adapter swap.
+2023-06-21T20:26:29.145Z In(05) vmx Monitor Mode: CPL0
+2023-06-21T20:26:29.151Z In(05) vmx MemSched_EarlyPowerOn: balloon minGuestSize 6553 (80% of min required size 8192)
+2023-06-21T20:26:29.151Z In(05) vmx OvhdMem_PowerOn: initial admission: paged   672394 nonpaged    35627 anonymous     4696
+2023-06-21T20:26:29.151Z In(05) vmx VMMEM: Initial Reservation: 2784MB (MainMem=768MB)
+2023-06-21T20:26:29.152Z In(05) vmx llc: maximum vcpus per LLC: 1
+2023-06-21T20:26:29.152Z In(05) vmx llc: vLLC size: 1
+2023-06-21T20:26:29.152Z In(05) vmx MemSched: reserved mem (in MB) min 128 max 13888 recommended 13888
+2023-06-21T20:26:29.152Z In(05) vmx MemSched: pg 672394 np 35627 anon 4696 mem 196608
+2023-06-21T20:26:29.152Z In(05) vmx MemSched: numvm 1 locked pages: num 0 max 3547136
+2023-06-21T20:26:29.152Z In(05) vmx MemSched: locked Page Limit: host 3926806 config 3555328
+2023-06-21T20:26:29.152Z In(05) vmx MemSched: minmempct 50 minalloc 0 admitted 1
+2023-06-21T20:26:29.152Z In(05) vmx Host: Disabling thread priority boosting to work around Linux SMP bug.
+2023-06-21T20:26:29.152Z In(05) vmx VMXSTATS: Registering 1 stats: vmx.logDropChars
+2023-06-21T20:26:29.152Z In(05) vmx VMXSTATS: Registering 2 stats: vmx.logBytesLogged
+2023-06-21T20:26:29.152Z In(05) vmx VMXSTATS: Registering 3 stats: vmx.numTimesLogDrop
+2023-06-21T20:26:29.152Z In(05) vmx LICENSE: Running unlicensed VMX (VMware Player)
+2023-06-21T20:26:29.152Z In(05) vthread-108304 VTHREAD 139672853866176 "vthread-108304" tid 108304
+2023-06-21T20:26:29.152Z In(05) vmx PolicyVMXFindPolicyKey: policy file does not exist.
+2023-06-21T20:26:29.152Z In(05) vmx PolicyVMXFindPolicyKey: policy file does not exist.
+2023-06-21T20:26:29.153Z In(05) vmx Host PA size: 48 bits. Guest PA size: 45 bits.
+2023-06-21T20:26:29.153Z In(05) vmx ToolsISO: open of /usr/lib/vmware/isoimages/isoimages_manifest.txt.sig failed: Could not find the file
+2023-06-21T20:26:29.153Z In(05) vmx ToolsISO: Unable to read signature file '/usr/lib/vmware/isoimages/isoimages_manifest.txt.sig', ignoring.
+2023-06-21T20:26:29.153Z In(05) vmx ToolsISO: Guest 'other' not found in Tools image map file '/usr/lib/vmware/isoimages/isoimages_manifest.txt'
+2023-06-21T20:26:29.153Z In(05) vmx ToolsISO: Updated cached value for imageName to '(null)'.
+2023-06-21T20:26:29.153Z In(05) vmx GuestOS: GuestOS_GetToolsImageName: Failed to get Tools ISO image path.
+2023-06-21T20:26:29.153Z In(05) deviceThread VTHREAD 139672845473472 "deviceThread" tid 108305
+2023-06-21T20:26:29.153Z In(05) deviceThread Device thread is alive
+2023-06-21T20:26:29.153Z In(05) vmx Host AMD-V Capabilities:
+2023-06-21T20:26:29.153Z In(05) vmx SVM Revision:           1
+2023-06-21T20:26:29.153Z In(05) vmx ASIDs Supported:        32768
+2023-06-21T20:26:29.153Z In(05) vmx Nested Paging:          yes
+2023-06-21T20:26:29.153Z In(05) vmx SVM GMET:               yes
+2023-06-21T20:26:29.153Z In(05) vmx SVM SSS Control:        no
+2023-06-21T20:26:29.153Z In(05) vmx LBR Virtualization:     yes
+2023-06-21T20:26:29.153Z In(05) vmx SVM Lock:               yes
+2023-06-21T20:26:29.153Z In(05) vmx NRIP Save:              yes
+2023-06-21T20:26:29.153Z In(05) vmx TSC Rate MSR:           yes
+2023-06-21T20:26:29.153Z In(05) vmx VMCB Clean Bits:        yes
+2023-06-21T20:26:29.153Z In(05) vmx Flush by ASID:          yes
+2023-06-21T20:26:29.153Z In(05) vmx Decode Assists:         yes
+2023-06-21T20:26:29.154Z In(05) vmx Pause Filter:           yes
+2023-06-21T20:26:29.154Z In(05) vmx Pause Filter Threshold: yes
+2023-06-21T20:26:29.154Z In(05) vmx Monitor_PowerOn: HostedVSMP skew tracking is disabled
+2023-06-21T20:26:29.154Z In(05) vmx vmm-modules: [vmm.vmm, vmce-vmce.vmm, viommu-none.vmm, vprobe-none.vmm, hv-svm.vmm, gphys-npt.vmm, callstack-none.vmm, gi-none.vmm, gmm-none.vmm, !tdxSharedVMData=0x0, !vmSamples=0x0, !theIOSpace=0x40, !ttGPPerVcpu=0x6e00, {UseUnwind}=0x0, numVCPUsAsAddr=0x1, {SharedAreaReservations}=0x6e40, {rodataSize}=0x1ff60, {textAddr}=0xfffffffffc000000, {textSize}=0x8734b, <MonSrcFile>]
+2023-06-21T20:26:29.154Z In(05) vmx vmm-vcpus:   1
+2023-06-21T20:26:29.157Z In(05) vmx KHZEstimate 3607828
+2023-06-21T20:26:29.157Z In(05) vmx MHZEstimate 3608
+2023-06-21T20:26:29.157Z In(05) vmx NumVCPUs 1
+2023-06-21T20:26:29.158Z In(05) vmx UUIDHostSearch: UUID is reported as '70 85 c2 99 43 d0 00 00-00 00 00 00 00 00 00 00'.
+2023-06-21T20:26:29.158Z In(05) vmx Msg_Question:
+2023-06-21T20:26:29.158Z In(05) vmx [msg.uuid.altered] This virtual machine might have been moved or copied.
+2023-06-21T20:26:29.158Z In(05)+ vmx In order to configure certain management and networking features, VMware Player needs to know if this virtual machine was moved or copied. 
+2023-06-21T20:26:29.158Z In(05)+ vmx 
+2023-06-21T20:26:29.158Z In(05)+ vmx If you don't know, answer "I Co_pied It".
+2023-06-21T20:26:29.158Z In(05)+ vmx 
+2023-06-21T20:26:29.158Z In(05) vmx ----------------------------------------
+2023-06-21T20:26:33.565Z Wa(03) vmx Ignoring interrupt while virtual machine is not running.
+2023-06-21T20:26:33.565Z Wa(03) vmx Interrupt ignored.
+2023-06-21T20:26:36.098Z In(05) vmx MsgQuestion: msg.uuid.altered reply=0
+2023-06-21T20:26:36.099Z In(05) vmx Module 'UUIDVMX' power on failed.
+2023-06-21T20:26:36.099Z In(05) vmx VMX_PowerOn: ModuleTable_PowerOn = 0
+2023-06-21T20:26:36.099Z In(05) deviceThread Device thread is exiting
+2023-06-21T20:26:36.099Z In(05) vmx Vix: [mainDispatch.c:1171]: VMAutomationPowerOff: Powering off.
+2023-06-21T20:26:36.099Z Wa(03) vmx /home/devil/AerOS/Tools/VMWare/vmware_mach.vmx: Cannot remove symlink /var/run/vmware/1000/19100250000_108283/configFile: No such file or directory
+2023-06-21T20:26:36.099Z In(05) vmx Policy_SavePolicyFile: invalid arguments to function.
+2023-06-21T20:26:36.099Z In(05) vmx PolicyVMX_Exit: Could not write out policies: 15.
+2023-06-21T20:26:36.099Z In(05) vmx WORKER: asyncOps=0 maxActiveOps=0 maxPending=0 maxCompleted=0
+2023-06-21T20:26:36.100Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=1, newAppState=1873, success=1 additionalError=0
+2023-06-21T20:26:36.100Z In(05) vmx VMXSTATS: Ready to cleanup and munmap 7F0820277000.
+2023-06-21T20:26:36.100Z In(05) vmx 
+2023-06-21T20:26:36.100Z In(05)+ vmx Power on failure messages: Failed to start the virtual machine.
+2023-06-21T20:26:36.100Z In(05)+ vmx 
+2023-06-21T20:26:36.100Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=1 additionalError=0
+2023-06-21T20:26:36.100Z In(05) vmx Transitioned vmx/execState/val to poweredOff
+2023-06-21T20:26:36.100Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=0 additionalError=0
+2023-06-21T20:26:36.100Z In(05) vmx Vix: [mainDispatch.c:4251]: Error VIX_E_FAIL in VMAutomation_ReportPowerOpFinished(): Unknown error
+2023-06-21T20:26:36.101Z In(05) vmx Vix: [mainDispatch.c:4211]: VMAutomation_ReportPowerOpFinished: statevar=0, newAppState=1870, success=1 additionalError=0
+2023-06-21T20:26:36.101Z In(05) vmx Transitioned vmx/execState/val to poweredOff
+2023-06-21T20:26:36.101Z In(05) vmx WQPoolFreePoll : pollIx = 3, signalHandle = 17
+2023-06-21T20:26:36.101Z In(05) vmx Vix: [mainDispatch.c:817]: VMAutomation_LateShutdown()
+2023-06-21T20:26:36.101Z In(05) vmx Vix: [mainDispatch.c:772]: VMAutomationCloseListenerSocket. Closing listener socket.
+2023-06-21T20:26:36.101Z In(05) vmx Flushing VMX VMDB connections
+2023-06-21T20:26:36.101Z In(05) vmx VmdbDbRemoveCnx: Removing Cnx from Db for '/db/connection/#1/'
+2023-06-21T20:26:36.102Z In(05) vmx VmdbCnxDisconnect: Disconnect: closed pipe for pub cnx '/db/connection/#1/' (0)
+2023-06-21T20:26:36.102Z In(05) vmx VigorTransport_ServerDestroy: server destroyed.
+2023-06-21T20:26:36.102Z In(05) vmx WQPoolFreePoll : pollIx = 2, signalHandle = 8
+2023-06-21T20:26:36.102Z In(05) vmx WQPoolFreePoll : pollIx = 1, signalHandle = 9
+2023-06-21T20:26:36.106Z In(05) vmx VMX exit (0).
+2023-06-21T20:26:36.106Z In(05) vmx OBJLIB-LIB: ObjLib cleanup done.
+>>>>>>> 547d9a2fcc70e0f6952a7a80c3f11ee636ad888d
