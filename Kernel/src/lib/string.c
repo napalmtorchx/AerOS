@@ -76,12 +76,31 @@ char* strcat(char* dest, const char* src)
 
 void* memcpy(void* dest, const void* src, size_t n)
 {
-    
+    uint32_t  num_dwords = n / 4;
+    uint32_t  num_bytes  = n % 4;
+    uint32_t* dest32     = (uint32_t*)dest;
+    uint32_t* src32      = (uint32_t*)src;
+    uint8_t*  dest8      = ((uint8_t*)dest) + num_dwords * 4;
+    uint8_t*  src8       = ((uint8_t*)src) + num_dwords * 4;
+    inline_asm("cld;rep movsl" : "+D"(dest32), "+S"(src32), "+c"(num_dwords) : : "memory");
+    inline_asm("cld;rep movsb" : "+D"(dest8),  "+S"(src8),  "+c"(num_bytes)  : : "memory");
+    return dest;
 }
 
 void* memset(void* ptr, int c, size_t n)
 {
-    for (size_t i = 0; i < n; i++) { ((uint8_t*)ptr)[i] = c; }
+    uint32_t  num_dwords = n / 4;
+    uint32_t  num_bytes  = n % 4;
+    uint32_t* dest32     = (uint32_t*)ptr;
+    uint8_t*  dest8      = ((uint8_t*)ptr) + num_dwords * 4;
+    inline_asm("cld;rep stosl" : "+D"(dest32), "+c"(num_dwords) : "a"(c) : "memory");
+    inline_asm("cld;rep stosb" : "+D"(dest8),  "+c"(num_bytes)  : "a"(c) : "memory");
+    return ptr;
+}
+
+void* memset16(void* ptr, uint16_t v, size_t n)
+{
+    return (uint16_t*)memset(ptr, (v << 16) | v, n);
 }
 
 int memcmp(const void* ptr1, const void* ptr2, size_t n)
@@ -112,4 +131,12 @@ void* memchr(const void* ptr, int c, size_t n)
         p++;
     }
     return NULL;
+}
+
+uint32_t memalign(uint32_t value, uint32_t align)
+{
+    uint32_t out = value;
+    out &= (0xFFFFFFFF - (align - 1));
+    if (out < value) { out += align; }
+    return out;
 }

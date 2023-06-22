@@ -31,6 +31,9 @@ void* memcpy(void* dest, const void* src, size_t n);
 /// @brief Fills a block of memory with a constant byte. @param str Pointer to the memory block to fill. @param c Value to be set (as an int). @param n Number of bytes to fill. @return Pointer to the filled memory block.
 void* memset(void* ptr, int c, size_t n);
 
+/// @brief Sets the first 'n' elements of the array pointed to by 'ptr' to the value (16-bit unsigned integer) and returns a pointer to the modified array. @param ptr Pointer to the array to be modified. @param v The value to set the elements to. @param n Number of elements to set. @return Pointer to the modified array.
+void* memset16(void* ptr, uint16_t v, size_t n);
+
 /// @brief Compares two blocks of memory. @param str1 Pointer to the first memory block to compare. @param str2 Pointer to the second memory block to compare. @param n Number of bytes to compare. @return Integer less than, equal to, or greater than zero if str1 is found to be less than, equal to, or greater than str2, respectively.
 int memcmp(const void* ptr1, const void* ptr2, size_t n);
 
@@ -39,3 +42,6 @@ void* memmove(void* dest, const void* src, size_t n);
 
 /// @brief Locates the first occurrence of a character in a block of memory. @param str Pointer to the memory block to search. @param c Character to be located. @param n Number of bytes to search. @return Pointer to the located character or NULL if not found.
 void* memchr(const void* ptr, int c, size_t n);
+
+/// @brief Returns the smallest multiple of 'align' that is greater than or equal to 'value'. @param value The value to align. @param align The alignment value. @return The aligned value. 
+uint32_t memalign(uint32_t value, uint32_t align);
