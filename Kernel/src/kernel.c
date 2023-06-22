@@ -18,9 +18,8 @@ void kernel_main(multiboot_t* mboot)
 void kernel_boot()
 {
     debug_init();
-    debug_print("Staring AerOS v2.0...\nBootloader:");
+    debug_print("Starting AerOS v2.0...\nBootloader:");
     debug_println(_multiboot->bootloader_name);
-
     memmgr_init();
     devmgr_init();
 }
@@ -35,12 +34,12 @@ uintptr_t kernel_addr_start() { return (uint32_t)&_kernel_start; }
 
 uintptr_t kernel_addr_end() { return (uint32_t)&_kernel_end; }
 
-size_t kernel_size() { return kernel_addr_end() - kernel_addr_start(); }
+size_t kernel_size() { return krnl_get_addr_end() - krnl_get_addr(); }
 
 uintptr_t kernel_stack_start() { return (uint32_t)&_stack_bottom; }
 
 uintptr_t kernel_stack_end() { return (uint32_t)&_stack_top; }
 
-size_t kernel_stack_size() { return kernel_stack_end() - kernel_stack_start(); }
+size_t kernel_stack_size() { return krnl_get_stk_top() - krnl_get_stk_btm(); }
 
 multiboot_t* mboot_get() { return _multiboot; }
