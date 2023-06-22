@@ -44,16 +44,26 @@ bool vbe_start(vbe_device_t* dev, COLOR bg)
 {
     vbe_setmode(640, 480);
     vbe_clear(bg);
-    //ssfn_src = &;     /* the bitmap font to use */
-    ssfn_dst.ptr = _vbe.fbptr;                  /* framebuffer address and bytes per line */
-    ssfn_dst.p = 4096;
-    ssfn_dst.fg = 0xFFFFFFFF;                   /* colors, white on black */
-    ssfn_dst.bg = 0;
-    ssfn_dst.x = 0;                           /* coordinates to draw to */
-    ssfn_dst.y = 0;
     return true;
 }
-
+void vbe_load_font(const char* path)
+{
+    FILE* file = fopen(path, "r");
+    if (file == NULL) { debug_error("Failed to locate file '%s'",path); }
+    else
+    {
+        ssfn_font_t* filedata = (ssfn_font_t*)malloc(file->sz);
+        fread(filedata, file->sz, 1, file);
+        fclose(file);
+        ssfn_src = filedata;     /* the bitmap font to use */
+        ssfn_dst.ptr = (uint8_t*)_vbe.fbptr;                  /* framebuffer address and bytes per line */
+        ssfn_dst.p = (uint16_t)_vbe.mode_hdr->pitch;
+        ssfn_dst.fg = 0xFFFFFFFF;                   /* colors, white on black */
+        ssfn_dst.bg = 0;
+        ssfn_dst.x = 0;                           /* coordinates to draw to */
+        ssfn_dst.y = 0;
+    }
+}
 int vbe_stop(vbe_device_t* dev)
 {
     return true;
