@@ -41,3 +41,5 @@ void heap_free(heap_t *heap, alloc_entry_t entry);
 alloc_entry_t heap_get_alloc_info(heap_t *heap, uintptr_t addr);
 
 size_t heap_get_used_mem(heap_t *heap);
+
+heap_t init_kernel_heap();

@@ -27,8 +27,7 @@ void kernel_boot()
     idt_init();
     memmgr_init();
 //  heap_init();
-    _kernel_heap = heap_create(kernel_addr_end(), 
-                               (uintptr_t)memmgr_amount_installed(0) - sizeof(alloc_entry_t));
+    _kernel_heap = init_kernel_heap();
     devmgr_init();
     virtfs_init();    
 

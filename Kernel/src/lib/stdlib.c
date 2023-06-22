@@ -25,7 +25,8 @@ void* realloc(void* ptr, size_t size)
 
 void free(void* ptr)
 {
-    heap_free(kernel_heap_ref(), heap_get_alloc_info(kernel_heap_ref(), (uintptr_t)ptr));
+    heap_free(kernel_heap_ref(),
+              heap_get_alloc_info(kernel_heap_ref(), (uintptr_t)ptr - kernel_heap_ref()->base));
 }
 
 char* itoa_rev(char *buffer, int i, int j)
