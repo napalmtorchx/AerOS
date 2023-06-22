@@ -1,6 +1,8 @@
 #include <hal/devices/vbe.h>
 #include <kernel.h>
-
+#define SSFN_CONSOLEBITMAP_TRUECOLOR
+#define _STDINT_H
+#include <lib/ssfn.h>
 #define VBE_CTRL_PTR 0x80000
 #define LNG_PTR(seg, off) ((seg << 4) | off)
 #define REAL_PTR(arr) LNG_PTR(arr[1], arr[0])
