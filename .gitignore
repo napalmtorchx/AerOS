@@ -1,5 +1,6 @@
 /Images
 /Tools/GCC/
+/Bin
 *.exe
 *.dll
 *.cache

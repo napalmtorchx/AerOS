@@ -1,6 +1,7 @@
-#include <std/ports.h>
-#include <debug/serial.h>
+#include <hal/ports.h>
+#include <hal/serial.h>
 #include <lib/string.h>
+
 /// @brief Init the Serial on COM Port 0x3F8
 void debug_init()
 {

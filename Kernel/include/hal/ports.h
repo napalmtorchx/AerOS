@@ -1,10 +1,5 @@
 #pragma once
-#include <stdint.h>
-#include <stdbool.h>
-
-#ifndef __cplusplus
-#include <stdbool.h>
-#endif
+#include <lib/types.h>
 
 /**
  * @brief this enum type defines the kind of

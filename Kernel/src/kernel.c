@@ -1,5 +1,6 @@
 #include <kernel.h>
-#include <debug/serial.h>
+#include <hal/serial.h>
+
 void kernel_main(void* mboot)
 {
     vga_init();
