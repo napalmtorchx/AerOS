@@ -83,6 +83,28 @@ char* stradd(char* str, char c)
     return str;
 }
 
+
+void strswap(char* x, char* y)
+{
+    char t = *x; 
+    *x  = *y; 
+    *y = t;
+}
+
+char* strrev(char* str)
+{
+    if (str == NULL) { return NULL; }
+    size_t sz = strlen(str);
+
+    int i, j, temp;
+    for (i = 0, j = sz - 1; i < j; i++, j--) 
+    {
+        temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+    }
+}
+
 void* memcpy(void* dest, const void* src, size_t n)
 {
     uint32_t  num_dwords = n / 4;
