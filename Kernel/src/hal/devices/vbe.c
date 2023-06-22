@@ -44,7 +44,13 @@ bool vbe_start(vbe_device_t* dev, COLOR bg)
 {
     vbe_setmode(640, 480);
     vbe_clear(bg);
-
+    //ssfn_src = &;     /* the bitmap font to use */
+    ssfn_dst.ptr = _vbe.fbptr;                  /* framebuffer address and bytes per line */
+    ssfn_dst.p = 4096;
+    ssfn_dst.fg = 0xFFFFFFFF;                   /* colors, white on black */
+    ssfn_dst.bg = 0;
+    ssfn_dst.x = 0;                           /* coordinates to draw to */
+    ssfn_dst.y = 0;
     return true;
 }
 
@@ -52,7 +58,13 @@ int vbe_stop(vbe_device_t* dev)
 {
     return true;
 }
-
+void vbe_string(char* str)
+{
+    for(int i=0; i < strlen(str); i++)
+    {
+        ssfn_putc(str[i]);
+    }
+}
 bool vbe_setmode(int w, int h)
 {
     vbe_getheaders();
