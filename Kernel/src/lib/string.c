@@ -74,6 +74,15 @@ char* strcat(char* dest, const char* src)
     return orig_dest;
 }
 
+char* stradd(char* str, char c)
+{
+    if (str == NULL) { return NULL; }
+    uint64_t len = strlen(str);
+    str[len] = (char)c;
+    str[len + 1] = 0;
+    return str;
+}
+
 void* memcpy(void* dest, const void* src, size_t n)
 {
     uint32_t  num_dwords = n / 4;

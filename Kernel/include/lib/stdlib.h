@@ -40,6 +40,14 @@ long atol(const char* str);
 /// @brief Converts a string to a long long integer. @param str The string to convert. @return The converted long long integer value.
 long long atoll(const char* str);
 
+char* itoa(int num, char* buff, int base);
+
+char* ltoa(uint32_t num, char* buff, int base);
+
+char* ftoa(float num, char* buff, int afterdot);
+
+char* xtoa(uint32_t num, char* buff, uint8_t sz);
+
 /// @brief Generates a pseudo-random integer. @return The generated pseudo-random integer.
 int rand();
 

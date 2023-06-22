@@ -1,6 +1,54 @@
 #include <lib/stdlib.h>
 #include <kernel.h>
 
+char* _itoa_rev(char *buffer, int i, int j)
+{
+    while (i < j) { strswap(&buffer[i++], &buffer[j--]); }
+    return buffer;
+}
+
+void _ultoa(unsigned long value, char* result, int base)
+{
+    unsigned char index;
+    char buffer[32];
+    index = 32;
+    do 
+    {
+        buffer[--index] = '0' + (value % base);
+        if ( buffer[index] > '9') { buffer[index] += 'A' - ':'; }
+        value /= base;
+    } while (value != 0);
+
+    do { *result++ = buffer[index++]; } while (index < 32);
+    *result = 0;
+}
+
+void _ftoa_rev(char* str, int len)
+{
+    int i = 0, j = len - 1, temp;
+    while (i < j) 
+    {
+        temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+        i++;
+        j--;
+    }
+}
+
+int _ftoa_conv(int x, char str[], int d)
+{
+    int i = 0;
+    while (x) { str[i++] = (x % 10) + '0'; x = x / 10; }
+
+    while (i < d) { str[i++] = '0'; }
+
+    _ftoa_rev(str, i);
+    str[i] = '\0';
+    return i;
+}
+
+
 int atoi(const char* str) { return (int)atoll(str); }
 
 long atol(const char* str) { return (long)atoll(str); }
@@ -25,6 +73,80 @@ long long atoll(const char* str)
         ++str;
     }
     return sign * result;
+}
+
+
+char* itoa(int num, char* buff, int base)
+{
+    if (base < 2 || base > 32) { return buff; }
+
+    int i = 0, n = abs(num); 
+    while (n)
+    {
+        int r = n % base;
+        if (r >= 10) { buff[i++] = 65 + (r - 10); }
+        else { buff[i++] = 48 + r; }
+        n = n / base;
+    }
+
+    if (i == 0) { buff[i++] = '0'; }
+    if (num < 0 && base == 10) { buff[i++] = '-'; }
+    buff[i] = '\0';
+    return _itoa_rev(buff, 0, i - 1);
+}
+
+char* ltoa(uint32_t num, char* buff, int base)
+{
+    _ultoa(num, buff, base); 
+    return buff;
+}
+
+char* ftoa(float num, char* buff, int afterdot)
+{
+    int ipart = (int)num;
+    float fpart = num - (float)ipart;
+    int i = _ftoa_conv(ipart, buff, 0);
+
+    if (afterdot != 0) 
+    {
+        buff[i] = '.';
+        fpart = fpart * powf(10, afterdot);
+        _ftoa_conv((int)fpart, buff + i + 1, afterdot);
+    }
+    return buff;
+}
+
+char* xtoa(uint32_t num, char* buff, uint8_t sz)
+{
+    static const char hexvals[] = "0123456789ABCDEF";
+
+    char* start = buff;
+    start[0] = 0;
+
+    if (sz == 1)
+    {
+        *buff = hexvals[(uint8_t)((num & 0xF0) >> 4)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x0F))];
+    }
+    else if (sz == 2)
+    {
+        *buff = hexvals[(uint8_t)((num & 0xF000) >> 12)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x0F00) >> 8)];  buff++;
+        *buff = hexvals[(uint8_t)((num & 0x00F0) >> 4)];  buff++;
+        *buff = hexvals[(uint8_t)((num & 0x000F))]; 
+    }
+    else if (sz == 4)
+    {
+        *buff = hexvals[(uint8_t)((num & 0xF0000000) >> 28)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x0F000000) >> 24)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x00F00000) >> 20)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x000F0000) >> 16)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x0000F000) >> 12)]; buff++;
+        *buff = hexvals[(uint8_t)((num & 0x00000F00) >> 8)];  buff++;
+        *buff = hexvals[(uint8_t)((num & 0x000000F0) >> 4)];  buff++;
+        *buff = hexvals[(uint8_t)((num & 0x0000000F))];
+    }
+    return start;
 }
 
 double strtod(const char* str, char** endptr) { return (double)strtold(str, endptr); }

@@ -25,6 +25,8 @@ char* strncpy(char* dest, const char* src, size_t n);
 /// @brief Concatenates two strings. @param dest Pointer to the destination null-terminated string. @param src Pointer to the source null-terminated string. @return Pointer to the destination string.
 char* strcat(char* dest, const char* src);
 
+char* stradd(char* str, char c);
+
 /// @brief Copies a block of memory. @param dest Pointer to the destination memory block. @param src Pointer to the source memory block. @param n Number of bytes to copy. @return Pointer to the destination memory block.
 void* memcpy(void* dest, const void* src, size_t n);
 
