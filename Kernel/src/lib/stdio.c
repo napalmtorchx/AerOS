@@ -1,6 +1,6 @@
 #include <lib/types.h>
 #include <kernel.h>
-
+#include <hal/devices/vbe.h>
 #define PRINT_BUFFSZ 0x10000
 #define PRINT_WORKSZ 0x2000
 
@@ -98,6 +98,7 @@ int vprintf(const char* fmt, va_list args)
 {
     memset(_buffer, 0, PRINT_BUFFSZ);
     vsprintf(_buffer, fmt, args);
+    vbe_string(_buffer);
     vga_write(_buffer);
     uart_write(_buffer);
 }
