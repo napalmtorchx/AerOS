@@ -7,6 +7,7 @@
 #include <lib/kresult.h>
 #include <lib/math.h>
 #include <core/multiboot.h>
+#include <core/memory/memmgr.h>
 #include <debug/debug.h>
 #include <debug/tests.h>
 #include <hal/uart.h>
