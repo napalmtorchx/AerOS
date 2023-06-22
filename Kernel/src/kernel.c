@@ -53,7 +53,7 @@ void kernel_boot()
         image_drawchar(&console.img, 32, 32, 'X', COLOR_YELLOW, COLOR_BLACK, font);
         memcpy(vbe->fbptr, console.img.buffer, vbe->w * vbe->h * 4);
     }*/
-    vbe_load_font("A:/unifont.bin");
+    vbe_load_font("A:/unifont.sfn");
     vbe_string("Hello");
 }
 

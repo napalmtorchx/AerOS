@@ -1,6 +1,7 @@
 #include <hal/devices/vbe.h>
 #include <kernel.h>
 #define SSFN_CONSOLEBITMAP_TRUECOLOR
+#define SSFN_CONSOLEBITMAP_CONTROL
 #define _STDINT_H
 #include <lib/ssfn.h>
 #define VBE_CTRL_PTR 0x80000
@@ -56,7 +57,7 @@ void vbe_load_font(const char* path)
         fread(filedata, file->sz, 1, file);
         fclose(file);
         ssfn_src = filedata;     /* the bitmap font to use */
-        ssfn_dst.ptr = (uint8_t*)_vbe.fbptr;                  /* framebuffer address and bytes per line */
+        ssfn_dst.ptr = (uint32_t*)_vbe.fbptr;                  /* framebuffer address and bytes per line */
         ssfn_dst.p = (uint16_t)_vbe.mode_hdr->pitch;
         ssfn_dst.fg = 0xFFFFFFFF;                   /* colors, white on black */
         ssfn_dst.bg = 0;
