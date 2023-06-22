@@ -34,6 +34,7 @@ void kernel_boot()
         image_t console_buffer = image_create(vbe->w, vbe->h);
         console_t console      = console_create(console_buffer, &font, COLOR_YELLOW, COLOR_DARKRED);   
     }
+    vbe_clear(0xFF007F7F);
 }
 
 void kernel_loop()
