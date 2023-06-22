@@ -7,3 +7,4 @@
 #include <lib/kresult.h>
 #include <core/multiboot.h>
 #include <hal/vga.h>
+#include <hal/serial.h>

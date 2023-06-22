@@ -1,4 +1,5 @@
 #include <hal/vga.h>
+#include <hal/ports.h>
 console_char_t* vram = 0xB8000;
 uint8_t vga_width = 80;
 uint8_t vga_height = 25;
@@ -6,6 +7,28 @@ int console_width = 0;
 int console_height = 0;
 uint8_t fgcolor = vga_color_white;
 uint8_t bgcolor = vga_color_black;
+void enable_cursor(uint8_t cursor_start, uint8_t cursor_end)
+{
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, (inb(0x3D5) & 0xC0) | cursor_start);
+ 
+	outb(0x3D4, 0x0B);
+	outb(0x3D5, (inb(0x3D5) & 0xE0) | cursor_end);
+}
+void update_cursor(int x, int y)
+{
+	uint16_t pos = y * vga_width + x;
+ 
+	outb(0x3D4, 0x0F);
+	outb(0x3D5, (uint8_t) (pos & 0xFF));
+	outb(0x3D4, 0x0E);
+	outb(0x3D5, (uint8_t) ((pos >> 8) & 0xFF));
+}
+void disable_cursor()
+{
+	outb(0x3D4, 0x0A);
+	outb(0x3D5, 0x20);
+}
 console_char_t* vga_entry(unsigned char uc, uint8_t color, size_t in) 
 {
     vram[in].data = uc;
@@ -29,6 +52,7 @@ void vga_init()
 			vga_entry_c(' ',fgcolor,bgcolor,index);
         }
     }
+	enable_cursor(0,15);
 }
 /// @brief clean the screen with @param color
 void clear(console_color_t color)
@@ -73,6 +97,7 @@ void putc(char c)
 		console_height = 0;
 		console_width = 0;
 	}
+	update_cursor(console_width,console_height);
 }
 /// @brief Put characted with FG Color
 /// @param c 
@@ -108,6 +133,7 @@ void putc_color(char c, uint8_t color)
 		console_height = 0;
 		console_width = 0;
 	}
+	update_cursor(console_width,console_height);
 } 
 /// @brief  print string to screen
 /// @param str 

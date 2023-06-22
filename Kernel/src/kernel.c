@@ -1,5 +1,4 @@
 #include <kernel.h>
-#include <hal/serial.h>
 
 void kernel_main(void* mboot)
 {
