@@ -1,243 +1,168 @@
 #include <core/memory/heap.h>
 #include <kernel.h>
 
-static memblk_t*  _memblk_ents;
-static memblk_t*  _memblk_data;
-static heapblk_t* _heapblks;
-
-void heap_init(void)
+heap_t heap_create(uintptr_t base, uintptr_t alloc_stack_base)
 {
-    uint32_t total = memmgr_amount_installed(0);
-    uint32_t sz = total - (total / 8);
-
-    _memblk_ents = memmgr_alloc(HEAP_COUNT * sizeof(heapblk_t), MEM_HEAP);
-    _memblk_data = memmgr_alloc(sz, MEM_HEAP);
-
-    _heapblks = (memblk_t*)_memblk_ents->addr;
-
-    heap_create((heapblk_t){ _memblk_data->addr, _memblk_data->sz, HEAPSTATE_FREE, NULL });
-
-    debug_log("%s Initialized heap - Size:%a\n", DEBUG_OK, _memblk_data->sz); 
+	// initialize the heap
+    return (heap_t) { base, (alloc_entry_t *)alloc_stack_base, 0 };
 }
 
-void heap_print(bool cmd)
-{
-    static const char* LN1   = "|-heap-entries-------------------------------|\n";
-    static const char* LN2   = "|%s ADDR              STATE   SIZE    THREAD   %s|\n";
-    static const char* LNDIV = "|--------------------------------------------|\n";
-
-    if (cmd) { printf(LN1); printf(LNDIV); printf(LN2, ANSI_FG_DARKGRAY, ANSI_RESET); printf(LNDIV); }
-    else { debug_log(LN1); debug_log(LNDIV); debug_log(LN2, ANSI_FG_DARKGRAY, ANSI_RESET); printf(LNDIV); }
-
-    char line[47];
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state == HEAPSTATE_INVALID) { continue; }
-
-        memset(line, 0, sizeof(line));
-        sprintf(line, "| %8x-%8x %s %a", _heapblks[i].addr, _heapblks[i].addr + _heapblks[i].sz, heap_statestr(_heapblks[i].state), _heapblks[i].sz);
-        while (strlen(line) < 35) { stradd(line, ' '); }
-        if (cmd) { printf("%s %8x |\n", line, 0); }
-        else  { debug_log("%s %8x |\n", line, 0); }
+alloc_entry_t heap_push_entry(heap_t *heap, alloc_entry_t entry) {
+    if (heap->alloc_entries_count != 0) {
+        alloc_entry_t prev_entry = *(heap->alloc_stack_base);
+        entry.offset_start = prev_entry.offset_end;
+        entry.offset_end += entry.offset_start;
+    } else {
+        entry.offset_start = 0;
+    }
+  
+    // push entry into stack
+	*(--heap->alloc_stack_base) = entry;
+    heap->alloc_entries_count++;
+  
+	return entry;
+}
+alloc_entry_t heap_insert_entry(heap_t *heap, alloc_entry_t entry, uintptr_t index) {
+    // increase stack space by 1 entry
+	heap->alloc_stack_base--;
+  
+	// make space at given index
+	for (uintptr_t i = 0; i < index; i++)
+    heap->alloc_stack_base[i] = heap->alloc_stack_base[i + 1];
+  
+    if (index != 0) {
+        entry.offset_start = heap->alloc_stack_base[index + 1].offset_end;
+        entry.offset_end += entry.offset_start;
     }
 
-    if (cmd) { printf(LNDIV); } else { debug_log(LNDIV); }
+	// set new entry
+    heap->alloc_stack_base[index] = entry;
+    heap->alloc_entries_count++;
+  
+	return entry;
 }
-
-void* heap_alloc(size_t sz, bool zerofill)
-{
-    heapblk_t* blk = heap_request(memalign(sz, HEAP_ALIGN));
-    if (zerofill) { memset(blk->addr, 0, blk->sz); }
-    blk->thread = NULL;
-    debug_log("%s ADDR:%8x-%8x SIZE:%a(%a)\n", DEBUG_MALLOC, blk->addr, blk->addr + blk->sz, blk->sz, sz);
-    return (void*)blk->addr;
-}
-
-void heap_free(void* ptr)
-{
-    if (ptr == NULL) { debug_error("heap_free(%8x) - Null pointer", ptr); return; }
-    if (ptr < _memblk_data->addr || ptr > _memblk_data->addr + _memblk_data->sz) { debug_error("heap_free(%8x) - Pointer is not located on heap", ptr); return; }
-
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].addr == (uintptr_t)ptr && _heapblks[i].state == HEAPSTATE_USED)
-        {
-            _heapblks[i].state = HEAPSTATE_FREE;
-            debug_log("%s ADDR:%8x-%8x SIZE:%a\n", DEBUG_FREE, _heapblks[i].addr, _heapblks[i].addr + _heapblks[i].sz, _heapblks[i].sz);
-            size_t collected = heap_collect();
-            if (collected > 0) { debug_log("%s Collected %u free heap entries\n", DEBUG_INFO, collected); }
-            return;
-        }
-    }
-    debug_error("heap_free(%8x) - Failed to free pointer", ptr);
-}
-
-size_t heap_collect(void)
-{
-    heapblk_t* blk = NULL;
-    size_t i, c = 0;
-
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state != HEAPSTATE_FREE) { continue; }
-        blk = heap_nearest(&_heapblks[i]);
-        if (blk != NULL) { c += heap_merge(&_heapblks[i], blk); }
+bool heap_delete_entry(heap_t *heap, size_t index) {
+  if (index >= heap->alloc_entries_count) return false;
+  
+	// overwrite entry
+	for (size_t i = index; i > 0; i--) {
+        heap->alloc_stack_base[i] = heap->alloc_stack_base[i - 1];
     }
 
-    blk = heap_nearest(&_heapblks[0]);
-    if (blk != NULL) { c += heap_merge(&_heapblks[0], blk); }
-    return c;
+	// reduce stack space by 1 entry
+	heap->alloc_stack_base++;
+    heap->alloc_entries_count--;
+  
+	return true;
+}
+size_t heap_find_entry_index(heap_t *heap, alloc_entry_t entry) {
+    for (uintptr_t i = 0; i < heap->alloc_entries_count; i++) { 
+        // if offsets start and end correspond to the given ones, return the found index
+        if (heap->alloc_stack_base[i].offset_start == entry.offset_start &&
+            heap->alloc_stack_base[i].offset_end   == entry.offset_end) return i;
+    }
+  
+	return -1;
+}
+alloc_entry_t heap_find_entry_from_address(heap_t *heap, uintptr_t address) {
+    for (uintptr_t i = 0; i < heap->alloc_entries_count; i++) {
+        // if the entry contains the given address, return the found entry
+        if (heap->alloc_stack_base[i].offset_start <= address &&
+            heap->alloc_stack_base[i].offset_end   > address)
+                return heap->alloc_stack_base[i];
+    }
+  
+	return (alloc_entry_t) {
+    .offset_end = 0xFFFFFFFF
+  };
 }
 
-bool heap_merge(heapblk_t* blk1, heapblk_t* blk2)
-{
-    if (blk1 == NULL || blk2 == NULL) { return false; }
-    if (blk1->addr > blk2->addr) { blk1->addr = blk2->addr; }
-    blk1->sz += blk2->sz;
-    heap_remove(blk2);
-    return true;
-}
+alloc_entry_t heap_alloc(
+    heap_t *heap,
+    size_t sz,
+    alloc_type_t type,
+    alloc_data_type_t data_type) {
+    
+    // create the template entry
+    alloc_entry_t entry = (alloc_entry_t) {
+        .offset_start = INT32_MAX,
+        .offset_end = sz,
+        .data_type = data_type,
+        .type = type
+    };
 
-heapblk_t* heap_request(size_t sz)
-{
-    if (sz == 0 || sz > _memblk_data->sz) { debug_error("heap_request(%a) - Invalid size", sz); return NULL; }
+    // push new entry if the allocation stack is not populated
+    if (heap->alloc_entries_count == 0 || heap->alloc_entries_count == 1)
+        entry = heap_push_entry(heap, entry);
 
-    size_t i;
-    for (i = 0; i < HEAP_COUNT; i++)
+    if (entry.offset_start != INT32_MAX) goto alloc_end;
+
+    // check for available space
+    uint32_t count;
+    for (count = 0; count < heap->alloc_entries_count; count++)
     {
-        if (_heapblks[i].sz == sz && _heapblks[i].state == HEAPSTATE_FREE)
-        {
-            _heapblks[i].state = HEAPSTATE_USED;
-            return &_heapblks[i];
-        }
+        alloc_entry_t entry = heap->alloc_stack_base[count];
+        alloc_entry_t next_entry = heap->alloc_stack_base[count + 1];
+
+        if (entry.offset_start - next_entry.offset_end >= sz) break;
     }
 
-    for (i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].sz > sz && _heapblks[i].state == HEAPSTATE_FREE)
-        {
-            heapblk_t* blk = heap_create((heapblk_t){ _heapblks[i].addr, sz, HEAPSTATE_USED, NULL });
-            _heapblks[i].addr += sz;
-            _heapblks[i].sz   -= sz;
-            return blk;
-        }
+    if (count == heap->alloc_entries_count) {
+        // push new entry if we hit stack top
+        entry = heap_push_entry(heap, entry);
+    } else {
+        // insert entry between available space
+        entry = heap_insert_entry(heap, entry, count + 1);
     }
 
-    debug_error("heap_request(%a) - Request for allocated memory block failed", sz);
-    return NULL;
-}
+    alloc_end:
 
-heapblk_t* heap_next(void)
-{
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state == HEAPSTATE_INVALID) { return &_heapblks[i]; }
+    debug_log(DEBUG_MALLOC "ADDR:%8x-%8x SIZE:%a(%a)\n",
+              entry.offset_start,
+              entry.offset_end, 
+              entry.offset_end - entry.offset_start,
+              sz);
+
+    return entry;
+}
+void heap_free(heap_t *heap, alloc_entry_t entry) {
+    heap_delete_entry(heap, heap_find_entry_index(heap, entry));
+    debug_log(DEBUG_FREE "ADDR:%8x-%8x SIZE:%a\n",
+              entry.offset_start,
+              entry.offset_end,
+              entry.offset_end - entry.offset_start);
+}
+alloc_entry_t heap_get_alloc_info(heap_t *heap, uintptr_t addr) {
+    // locate entry
+    alloc_entry_t entry = heap_find_entry_from_address(heap, addr);
+    return entry;
+}
+size_t heap_get_used_mem(heap_t *heap) {
+    size_t total = 0;
+
+    // count the total used memory
+    for (int i = 0; i < heap->alloc_entries_count; i++) {
+        total += heap->alloc_stack_base[i].offset_end - heap->alloc_stack_base[i].offset_start; 
     }
-    return NULL;
+    return total;
 }
 
-heapblk_t* heap_nearest(heapblk_t* blk)
-{
-    if (blk == NULL) { return NULL; }
-
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state != HEAPSTATE_FREE) { continue; }
-        if (_heapblks[i].addr + _heapblks[i].sz == blk->addr) { return &_heapblks[i]; }
-        if (blk->addr - blk->sz == _heapblks[i].addr) { return &_heapblks[i]; }
+char *heap_convert_type(alloc_type_t type) {
+    switch (type) {
+        case HEAP_ALLOC_TYPE_DIRECT:    return "direct";
+        case HEAP_ALLOC_TYPE_NEW:       return "new operator";
+        case HEAP_ALLOC_TYPE_NEW_ARRAY: return "new[] operator";
+        
+        default: return "unknown";
     }
-    return NULL;
 }
-
-heapblk_t* heap_create(heapblk_t blk)
-{
-    if (!heap_validate(&blk)) { debug_error("heap_create(%8x, %a, %d, %8x) - Invalid block", blk.addr, blk.sz, blk.state, blk.thread); return NULL; }
-
-    heapblk_t* outblk = heap_next();
-    *outblk = blk;
-    return outblk;
-}
-
-void heap_remove(heapblk_t* blk)
-{
-    if (blk == NULL) { debug_error("heap_remove(%8x) - Null pointer", blk); return; }
-
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (&_heapblks[i] == blk)
-        {
-            _heapblks[i] = (heapblk_t){ 0, 0, HEAPSTATE_INVALID, NULL };
-            return;
-        }
-    }
-    debug_error("heap_remove(%8x) - Failed to remove heapblk", blk);
-}
-
-heapblk_t* heap_from_addr(void* ptr)
-{
-    if (ptr == NULL) { return NULL; }
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state != HEAPSTATE_USED) { continue; }
-        if (_heapblks[i].addr == (uintptr_t)ptr) { return &_heapblks[i]; }
-    }
-    return NULL;
-}
-
-heapblk_t* heap_from_index(int index)
-{
-    if (index < 0 || index >= HEAP_COUNT) { return NULL; }
-    return &_heapblks[index];
-}
-
-bool heap_validate(heapblk_t* blk)
-{
-    if (blk->addr < _memblk_data->addr || blk->addr > _memblk_data->addr + _memblk_data->sz) { return false; }
-    if (blk->sz == 0 || blk->state == HEAPSTATE_INVALID) { return false; }
-    return true;
-}
-
-size_t heap_count_type(HEAPSTATE state)
-{
-    size_t count = 0;
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state == state) { count++; }
-    }
-    return count;
-}
-
-size_t heap_amount_total(void)
-{
-    return _memblk_data->sz;
-}
-
-size_t heap_amount_free(void)
-{
-    size_t bytes = 0;
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state == HEAPSTATE_FREE) { bytes += _heapblks[i].sz; }
-    }
-    return bytes;
-}
-
-size_t heap_amount_used(void)
-{
-    size_t bytes = 0;
-    for (size_t i = 0; i < HEAP_COUNT; i++)
-    {
-        if (_heapblks[i].state == HEAPSTATE_USED) { bytes += _heapblks[i].sz; }
-    }
-    return bytes;
-}
-
-const char* heap_statestr(HEAPSTATE state)
-{
-    switch (state)
-    {
-        default:             { return "invalid"; }
-        case HEAPSTATE_FREE: { return "free   "; }
-        case HEAPSTATE_USED: { return "used   "; }
+char *heap_convert_data_type(alloc_data_type_t data_type) {
+    switch (data_type) {
+        case HEAP_ALLOC_DATA_TYPE_OTHER:    return "other";
+        case HEAP_ALLOC_DATA_TYPE_INTEGER:  return "integer";
+        case HEAP_ALLOC_DATA_TYPE_STRING:   return "string";
+        case HEAP_ALLOC_DATA_TYPE_ARRAY:    return "array";
+    
+        default: return "unknown";
     }
 }

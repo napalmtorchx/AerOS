@@ -35,6 +35,8 @@
 void kernel_boot();
 void kernel_loop();
 
+heap_t* kernel_heap_ref();
+
 uintptr_t kernel_addr_start();
 uintptr_t kernel_addr_end();
 size_t    kernel_size();
