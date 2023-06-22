@@ -14,8 +14,13 @@
 #include <hal/ports.h>
 #include <hal/device.h>
 #include <hal/devmgr.h>
+#include <hal/ints/gdt.h>
+#include <hal/ints/idt.h>
+#include <hal/ints/pic.h>
+#include <hal/ints/realmode.h>
 #include <hal/devices/test_device.h>
 #include <hal/devices/vga.h>
+#include <hal/devices/vbe.h>
 
 void kernel_boot();
 void kernel_loop();
