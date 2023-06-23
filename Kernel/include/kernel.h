@@ -30,9 +30,10 @@
 #include <hal/ints/idt.h>
 #include <hal/ints/pic.h>
 #include <hal/ints/realmode.h>
-#include <hal/devices/test_device.h>
-#include <hal/devices/vga.h>
-#include <hal/devices/vbe.h>
+#include <hal/devices/video/vga.h>
+#include <hal/devices/video/vbe.h>
+#include <hal/devices/sys/pit.h>
+#include <hal/devices/sys/rtc.h>
 
 void kernel_boot();
 void kernel_loop();

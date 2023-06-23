@@ -1,6 +1,6 @@
 #include <lib/types.h>
 #include <kernel.h>
-#include <hal/devices/vbe.h>
+
 #define PRINT_BUFFSZ 0x10000
 #define PRINT_WORKSZ 0x2000
 

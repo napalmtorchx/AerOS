@@ -1,4 +1,4 @@
-#include <hal/devices/vbe.h>
+#include <hal/devices/video/vbe.h>
 #include <graphics/ssfn.h>
 #include <kernel.h>
 

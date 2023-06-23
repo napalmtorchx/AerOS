@@ -11,7 +11,8 @@ void devmgr_init()
 
     vga_init();
     vbe_init();
-    testdev_init();
+    pit_init();
+    rtc_init();
 
     debug_log("%s Initialized device manager\n", DEBUG_OK);
 }

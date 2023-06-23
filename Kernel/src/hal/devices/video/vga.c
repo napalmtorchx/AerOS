@@ -1,4 +1,4 @@
-#include <hal/devices/vga.h>
+#include <hal/devices/video/vga.h>
 #include <kernel.h>
 
 static vga_device_t _vga;
