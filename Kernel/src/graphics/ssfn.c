@@ -23,15 +23,25 @@ const char *ssfn_errstr[] = { "",
  */
 uint32_t ssfn_utf8(char **s)
 {
-    uint32_t c = **s;
-
-    if((**s & 128) != 0) {
-        if(!(**s & 32)) { c = ((**s & 0x1F)<<6)|(*(*s+1) & 0x3F); *s += 1; } else
-        if(!(**s & 16)) { c = ((**s & 0xF)<<12)|((*(*s+1) & 0x3F)<<6)|(*(*s+2) & 0x3F); *s += 2; } else
-        if(!(**s & 8)) { c = ((**s & 0x7)<<18)|((*(*s+1) & 0x3F)<<12)|((*(*s+2) & 0x3F)<<6)|(*(*s+3) & 0x3F); *s += 3; }
-        else c = 0;
+    uint32_t c = 0, c2 = 0, c3 = 0, c4 = 0, d = 0;
+    if(!s || !*s) return 0;
+    c = (uint32_t)(unsigned char)*(*s)++;
+    if(c >= 0x80) {
+        if((c & 0xE0) == 0xC0) {
+            c2 = (uint32_t)(unsigned char)*(*s)++;
+            c = ((c & 0x1F)<<6) | (c2 & 0x3F);
+        } else if((c & 0xF0) == 0xE0) {
+            c2 = (uint32_t)(unsigned char)*(*s)++;
+            c3 = (uint32_t)(unsigned char)*(*s)++;
+            c = ((c & 0x0F)<<12) | ((c2 & 0x3F)<<6) | (c3 & 0x3F);
+        } else if((c & 0xF8) == 0xF0) {
+            c2 = (uint32_t)(unsigned char)*(*s)++;
+            c3 = (uint32_t)(unsigned char)*(*s)++;
+            c4 = (uint32_t)(unsigned char)*(*s)++;
+            d = ((c & 0x07)<<18) | ((c2 & 0x3F)<<12) | ((c3 & 0x3F)<<6) | (c4 & 0x3F);
+            if(d > 0xFFFF) { c = 0xFFFD; } else { c = d; }
+        } else { c = 0xFFFD; }
     }
-    (*s)++;
     return c;
 }
 
