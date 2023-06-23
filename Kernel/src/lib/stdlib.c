@@ -3,12 +3,18 @@
 
 void* malloc(size_t size)
 {
-    return heap_alloc(size, true);
+    return heap_alloc(kernel_heap_ref(),
+                      size,
+                      HEAP_ALLOC_TYPE_DIRECT,
+                      HEAP_ALLOC_DATA_TYPE_OTHER).offset_start + kernel_heap_ref()->base;
 }
 
 void* calloc(size_t nmemb, size_t size)
 {
-    return heap_alloc(nmemb * size, true);
+    return heap_alloc(kernel_heap_ref(),
+                      nmemb * size,
+                      HEAP_ALLOC_TYPE_DIRECT,
+                      HEAP_ALLOC_DATA_TYPE_OTHER).offset_start + kernel_heap_ref()->base;
 }
 
 void* realloc(void* ptr, size_t size)
@@ -19,7 +25,8 @@ void* realloc(void* ptr, size_t size)
 
 void free(void* ptr)
 {
-    heap_free(ptr);
+    heap_free(kernel_heap_ref(),
+              heap_get_alloc_info(kernel_heap_ref(), (uintptr_t)ptr - kernel_heap_ref()->base));
 }
 
 char* itoa_rev(char *buffer, int i, int j)

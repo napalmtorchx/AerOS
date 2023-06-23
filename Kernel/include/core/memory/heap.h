@@ -1,50 +1,45 @@
 #pragma once
+
 #include <lib/types.h>
-#include <core/memory/memmgr.h>
 
-#define HEAP_ALIGN 0x1000
-#define HEAP_COUNT 32768
+#ifndef __cplusplus
+#include <stdbool.h>
+#endif
 
-typedef enum
-{
-    HEAPSTATE_INVALID,
-    HEAPSTATE_FREE,
-    HEAPSTATE_USED,
-} HEAPSTATE;
+typedef enum alloc_data_type {
+  HEAP_ALLOC_DATA_TYPE_OTHER,
+  HEAP_ALLOC_DATA_TYPE_INTEGER,
+  HEAP_ALLOC_DATA_TYPE_STRING,
+  HEAP_ALLOC_DATA_TYPE_ARRAY
+} alloc_data_type_t;
+typedef enum alloc_type {
+  HEAP_ALLOC_TYPE_DIRECT,
+  HEAP_ALLOC_TYPE_NEW,
+  HEAP_ALLOC_TYPE_NEW_ARRAY
+} alloc_type_t;
 
-typedef struct
-{
-    uintptr_t addr;
-    size_t    sz;
-    HEAPSTATE state;
-    void*     thread;
-} attr_pack heapblk_t;
+typedef struct alloc_entry {
+  uintptr_t offset_start;
+  uintptr_t offset_end;
+  alloc_data_type_t data_type : 4;
+  alloc_type_t type : 4;
+} attr_pack alloc_entry_t;
+typedef struct heap {
+  uintptr_t base;
+  alloc_entry_t *alloc_stack_base;
+  uint32_t alloc_entries_count;
+} heap_t;
 
-void heap_init(void);
-void heap_print(bool cmd);
+heap_t heap_create(uintptr_t base, uintptr_t alloc_stack_base);
 
-void* heap_alloc(size_t sz, bool zerofill);
-void heap_free(void* ptr);
-size_t heap_collect(void);
-bool heap_merge(heapblk_t* blk1, heapblk_t* blk2);
+alloc_entry_t heap_alloc(
+    heap_t *heap,
+    size_t sz,
+    alloc_type_t type,
+    alloc_data_type_t data_type);
+void heap_free(heap_t *heap, alloc_entry_t entry);
+alloc_entry_t heap_get_alloc_info(heap_t *heap, uintptr_t addr);
 
-heapblk_t* heap_request(size_t sz);
-heapblk_t* heap_next(void);
-heapblk_t* heap_nearest(heapblk_t* blk);
-heapblk_t* heap_create(heapblk_t blk);
-void       heap_remove(heapblk_t* blk);
+size_t heap_get_used_mem(heap_t *heap);
 
-heapblk_t* heap_from_addr(void* ptr);
-heapblk_t* heap_from_index(int index);
-
-bool heap_validate(heapblk_t* blk);
-
-size_t heap_count_type(HEAPSTATE state);
-size_t heap_amount_total(void);
-size_t heap_amount_free(void);
-size_t heap_amount_used(void);
-
-const char* heap_statestr(HEAPSTATE state);
-
-
-
+heap_t init_kernel_heap();

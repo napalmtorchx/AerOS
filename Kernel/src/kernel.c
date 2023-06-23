@@ -7,6 +7,7 @@ extern uint32_t _stack_bottom;
 
 static multiboot_t* _multiboot;
 static ramfs_t      _bootfs;
+static heap_t       _kernel_heap;
 
 void kernel_main(multiboot_t* mboot)
 {
@@ -25,7 +26,8 @@ void kernel_boot()
     gdt_init();
     idt_init();
     memmgr_init();
-    heap_init();
+//  heap_init();
+    _kernel_heap = init_kernel_heap();
     devmgr_init();
     virtfs_init();    
 
@@ -71,3 +73,5 @@ size_t kernel_stack_size() { return kernel_stack_end() - kernel_stack_start(); }
 multiboot_t* mboot_get() { return _multiboot; }
 
 ramfs_t* bootfs_get(void) { return &_bootfs; }
+
+heap_t* kernel_heap_ref() { return &_kernel_heap; }
