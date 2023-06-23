@@ -10,7 +10,8 @@ static ramfs_t      _bootfs;
 static heap_t       _kernel_heap;
 static font_t*      _sysfont;
 static console_t    _console;
-
+//add this is a char array so we can change its value later on with a different font
+char* font = "A:/unifont.sfn";
 void kernel_main(multiboot_t* mboot)
 {
     _multiboot = mboot;
@@ -35,7 +36,7 @@ void kernel_boot()
     fpu_init();
 
     // attempt to load system font
-    FILE* file = fopen("A:/unifont.sfn", "r");
+    FILE* file = fopen(font, "r");
     if (file == NULL) { debug_log("%s Failed to locate file 'A:/unifont.sfn'\n", DEBUG_ERROR); }
     else
     {

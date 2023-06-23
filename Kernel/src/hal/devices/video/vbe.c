@@ -22,7 +22,14 @@ void vbe_init(void)
     devmgr_register(&_vbe);
     devmgr_start(_vbe.base.uid, 0xFF000000);
 }
-
+void vbe_disable()
+{
+    irq_context16_t regs;
+    memset(&regs, 0, sizeof(irq_context16_t));
+    regs.ax = 0x4F02;
+    regs.bx = 0x0003;
+    int32(0x10, &regs);
+}
 void vbe_getheaders(void)
 {
     vbe_ctrl_t* ctrlinfo = (vbe_ctrl_t*)VBE_CTRL_PTR;
