@@ -1,0 +1,3 @@
+new 4096 4194304
+addn Images/BOOTFS
+save Images/ramdisk.img

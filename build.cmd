@@ -1,0 +1,1 @@
+start ../OSMaker/bin/debug/net7.0/OSMaker.exe Kernel/build_new.script
