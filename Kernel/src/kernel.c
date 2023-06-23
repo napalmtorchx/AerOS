@@ -68,7 +68,7 @@ void kernel_boot()
         .data_sz = 0,
 
     };
-
+    
     // runtime test
     runtime_t runtime = runtime_create((uint8_t*)&exec, sizeof(exec) + sizeof(prog), 0x10000);
 }
@@ -80,7 +80,9 @@ void kernel_loop()
     time_t t;
     int sec, fps, frames;
     console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%uMB\n", heap_get_used_mem(&_kernel_heap) / MEGABYTE, heap_get_total_mem(&_kernel_heap) / MEGABYTE);
-
+    char*       buff  = (char*)malloc(1024);
+    console_printf(kconsole_get(), vbe_available_resolutions(buff));
+    free(buff);
     while (true)
     {
         frames++;
@@ -93,7 +95,7 @@ void kernel_loop()
 
             char buff[64];
             memset(buff, 0, sizeof(buff));
-            console_printf(kconsole_get(), "FPS:%d Time:%s\n", fps, timestr(&t, buff, TIMEFORMAT_STANDARD, true));
+       //     console_printf(kconsole_get(), "FPS:%d Time:%s\n", fps, timestr(&t, buff, TIMEFORMAT_STANDARD, true));
         }
         
     }   

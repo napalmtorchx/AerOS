@@ -46,6 +46,31 @@ void vbe_getheaders(void)
     _vbe.mode_hdr = (vbe_mode_t*)mboot_get()->vbe_mode;
 }
 
+/// @brief List all available VBE resolutions, separated by newline it needs @param buff which should be atleast a 1kb char array buffer and needs to be freed after use.
+
+char* vbe_available_resolutions(char* buff)
+{
+    vbe_getheaders();
+    vbe_mode_t* minfo = (vbe_mode_t*)(VBE_CTRL_PTR + sizeof(vbe_ctrl_t) + 512);
+    uint16_t*   modes = (uint16_t*)REAL_PTR(_vbe.ctrl_hdr->videomode);
+    
+    int i = 0;
+
+    while (modes[i] != 0xFFFF)
+    {
+        irq_context16_t regs;
+        memset(&regs, 0, sizeof(irq_context16_t));
+        regs.ax = 0x4F01;
+        regs.cx = modes[i];
+        regs.es = SEG(minfo);
+        regs.di = OFF(minfo);
+        int32(0x10, &regs);
+
+        if (minfo->bpp == 32) buff += sprintf(buff, "%dx%d\n", minfo->res_x, minfo->res_y);
+        i++;
+    }
+    return buff;
+}
 bool vbe_start(vbe_device_t* dev, COLOR bg)
 {
     vbe_setmode(640, 480);
