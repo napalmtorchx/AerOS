@@ -10,7 +10,8 @@ static ramfs_t      _bootfs;
 static heap_t       _kernel_heap;
 static font_t*      _sysfont;
 static console_t    _console;
-
+//add this is a char array so we can change its value later on with a different font
+char* font = "A:/unifont.sfn";
 void kernel_main(multiboot_t* mboot)
 {
     _multiboot = mboot;
@@ -35,7 +36,7 @@ void kernel_boot()
     fpu_init();
 
     // attempt to load system font
-    FILE* file = fopen("A:/unifont.sfn", "r");
+    FILE* file = fopen(font, "r");
     if (file == NULL) { debug_log("%s Failed to locate file 'A:/unifont.sfn'\n", DEBUG_ERROR); }
     else
     {
@@ -49,6 +50,9 @@ void kernel_boot()
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
     _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_BLACK, COLOR_WHITE, 64 * KILOBYTE);
     console_printf(&_console, "Console printf test:\nInteger:%d\nHex:%p\nSize:%a\nString:'%s'\n", 1234, 0xDEADC0DE, 128 * MEGABYTE, "Chicken in the corn");
+    
+    // just here for testing
+    // vbe_disable();
 
     // create executable
     /*

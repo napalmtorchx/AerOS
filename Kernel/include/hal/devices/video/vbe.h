@@ -17,6 +17,7 @@ typedef struct
 void vbe_init(void);
 bool vbe_start(vbe_device_t* dev, COLOR bg);
 int  vbe_stop(vbe_device_t* dev);
+void vbe_disable();
 bool vbe_setmode(int w, int h);
 void vbe_swap(COLOR* src);
 void vbe_clear(COLOR bg);
