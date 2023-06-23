@@ -23,10 +23,7 @@ runtime_t runtime_create(uint8_t* program, size_t progsz, size_t stacksz)
 
     //valid
     runtime_wrl(&runtime, (uint32_t)runtime.stack, 0xDEADC0DE);
-
-    // invalid
-    runtime_wrl(&runtime, (uint32_t)runtime.stack + runtime.stacksz, 0xDEADDEAD);
-
+    
     debug_log("%s Created runtime - Exec:%s(%2x) Stack:%p-%p\n",
                 DEBUG_INFO, runtime.exec == NULL ? "NULL" : runtime.exec->name, runtime.exec == NULL ? 0 : runtime.exec->type, runtime.stack, (uintptr_t)runtime.stack + runtime.stacksz);
 

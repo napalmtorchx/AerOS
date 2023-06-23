@@ -65,7 +65,7 @@ void image_drawchar(image_t* img, int x, int y, int c, COLOR fg, COLOR bg, const
 
 void image_drawstr(image_t* img, int x, int y, const char* str, COLOR fg, COLOR bg, const font_t* font)
 {
-     int xx = x, yy = y;
+    int xx = x, yy = y;
     size_t len = strlen(str);
     for (size_t i = 0; i < len; ++i)
     {

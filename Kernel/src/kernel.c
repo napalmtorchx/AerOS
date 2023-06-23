@@ -9,7 +9,7 @@ static multiboot_t* _multiboot;
 static ramfs_t      _bootfs;
 static heap_t       _kernel_heap;
 static font_t*      _sysfont;
-static image_t      _framebuffer;
+static console_t    _console;
 
 void kernel_main(multiboot_t* mboot)
 {
@@ -45,10 +45,13 @@ void kernel_boot()
         _sysfont = font_create_ssfn(filedata, 0, 0);
     }
 
-    // initialize vbe framebuffer
+    // initialize console
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
-    _framebuffer = image_create(vbe->w, vbe->h);
+    _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_BLACK, COLOR_WHITE, 64 * KILOBYTE);
+    console_printf(&_console, "Console printf test:\nInteger:%d\nHex:%p\nSize:%a\nString:'%s'\n", 1234, 0xDEADC0DE, 128 * MEGABYTE, "Chicken in the corn");
 
+    // create executable
+    /*
     static const uint8_t prog[] = 
     {
         0x00,
@@ -57,7 +60,6 @@ void kernel_boot()
         0xFF,
     };
 
-    // create executable
     executable_t exec = (executable_t)
     {
         .name = "Test program",
@@ -71,38 +73,16 @@ void kernel_boot()
 
     // runtime test
     runtime_t runtime = runtime_create((uint8_t*)&exec, sizeof(exec) + sizeof(prog), 0x10000);
+    */
 }
 
 void kernel_loop()
 {
     debug_log("%s Entered kernel main\n", DEBUG_INFO);
 
-    time_t t;
-    int sec, fps, frames;
-    char buff[256];
-    char tmbuff[64];
     while (true)
     {
-        frames++;
-        t = time(NULL);
-        if (sec != t.second)
-        {
-            sec = t.second;
-            fps = frames;
-            frames = 0;
 
-            memset(buff, 0, sizeof(buff));
-            memset(tmbuff, 0, sizeof(tmbuff));
-            sprintf(buff, "FPS:%d\nTime:%s", fps, timestr(&t, tmbuff, TIMEFORMAT_STANDARD, true));
-        }
-
-        int dy = 0, inc = _sysfont->charsz.y;
-
-        image_clear(&_framebuffer, COLOR_DARKCYAN);
-        image_drawstr(&_framebuffer, 0, dy,  "AerOS Framebuffer TestUnicode Test:äüöäüöäüö\n", COLOR_WHITE, COLOR_BLACK, _sysfont); dy += inc;
-        image_drawstr(&_framebuffer, 0, dy, "Unicode Test:äüöäüöäüö\n", COLOR_WHITE, COLOR_BLACK, _sysfont); dy += inc;
-        image_drawstr(&_framebuffer, 0, dy, buff, COLOR_WHITE, COLOR_BLACK, _sysfont); dy += inc;
-        vbe_swap(_framebuffer.buffer);
     }   
 }
 
