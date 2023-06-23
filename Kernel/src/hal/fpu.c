@@ -10,7 +10,7 @@ FRESULT fpu_force_probe() {
   cr0_data.fpu_emulation = false;
   cpu_write_cr0(cr0_data);
 
-  // load probe_word into FPU
+  // store the status word from FPU  
   inline_asm ("fninit");                              // fninit loads fpu defaults
   inline_asm ("fnstsw %0" : "=m" (fpu_probe_word));   // fnstsw stores the status word of the FPU at the given address
 
