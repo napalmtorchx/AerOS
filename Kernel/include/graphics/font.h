@@ -2,7 +2,11 @@
 #include <lib/types.h>
 #include <lib/numerics/point.h>
 
+#define SSFN_CONSOLEBITMAP_TRUECOLOR
+#define SSFN_CONSOLEBITMAP_CONTROL
+
 typedef struct image_t image_t;
+typedef struct ssfn_font_t ssfn_font_t;
 
 typedef struct
 {
@@ -13,14 +17,16 @@ typedef struct
 
 typedef struct
 {
-    psf_hdr_t* psf;
-    image_t*   sprite;
-    point_t    charsz;
-    point_t    spacing;
+    psf_hdr_t*   psf;
+    ssfn_font_t* ssfn;
+    image_t*     sprite;
+    point_t      charsz;
+    point_t      spacing;
 } font_t;
 
 font_t* font_create_psf(const psf_hdr_t* hdr, int sx, int sy);
 font_t* font_create_spr(const image_t* sprite, int cw, int ch, int sx, int sy);
+font_t* font_create_ssfn(const ssfn_font_t* hdr, int sx, int sy);
 void font_free(font_t* font);
 void font_init_default(void);
 font_t* font_get_default(void);

@@ -22,5 +22,3 @@ void vbe_swap(COLOR* src);
 void vbe_clear(COLOR bg);
 void vbe_blit(int x, int y, COLOR color);
 void vbe_fill(int x, int y, int w, int h, COLOR color);
-void vbe_load_font(const char* path);
-void vbe_string(char* str);

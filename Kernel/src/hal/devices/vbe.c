@@ -1,9 +1,7 @@
 #include <hal/devices/vbe.h>
+#include <graphics/ssfn.h>
 #include <kernel.h>
-#define SSFN_CONSOLEBITMAP_TRUECOLOR
-#define SSFN_CONSOLEBITMAP_CONTROL
-#define _STDINT_H
-#include <lib/ssfn.h>
+
 #define VBE_CTRL_PTR 0x80000
 #define LNG_PTR(seg, off) ((seg << 4) | off)
 #define REAL_PTR(arr) LNG_PTR(arr[1], arr[0])
@@ -47,38 +45,12 @@ bool vbe_start(vbe_device_t* dev, COLOR bg)
     vbe_clear(bg);
     return true;
 }
-void vbe_load_font(const char* path)
-{
-    FILE* file = fopen(path, "r");
-    if (file == NULL) { debug_error("Failed to locate file '%s'",path); }
-    else
-    {
-        ssfn_font_t* filedata = (ssfn_font_t*)malloc(file->sz);
-        fread(filedata, file->sz, 1, file);
-        fclose(file);
 
-        debug_hexdump(filedata, 0, 256);
-
-        ssfn_src = filedata;     /* the bitmap font to use */
-        ssfn_dst.ptr = (uint32_t*)_vbe.fbptr;                  /* framebuffer address and bytes per line */
-        ssfn_dst.p = (uint16_t)_vbe.mode_hdr->pitch;
-        ssfn_dst.fg = 0xFFFFFFFF;                   /* colors, white on black */
-        ssfn_dst.bg = 0;
-        ssfn_dst.x = 0;                           /* coordinates to draw to */
-        ssfn_dst.y = 0;
-    }
-}
 int vbe_stop(vbe_device_t* dev)
 {
     return true;
 }
-void vbe_string(char* str)
-{
-    for(int i=0; i < strlen(str); i++)
-    {
-        ssfn_putc(str[i]);
-    }
-}
+
 bool vbe_setmode(int w, int h)
 {
     vbe_getheaders();

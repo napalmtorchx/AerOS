@@ -1,6 +1,8 @@
 #pragma once
 #include <lib/types.h>
 
+#define _STDINT_H
+
 typedef struct 
 {
     int quot;   // Quotient of the division

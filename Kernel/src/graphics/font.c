@@ -1,4 +1,5 @@
 #include <graphics/font.h>
+#include <graphics/ssfn.h>
 #include <kernel.h>
 
 static font_t* _default_fnt;
@@ -12,6 +13,7 @@ font_t* font_create_psf(const psf_hdr_t* hdr, int sx, int sy)
     font->charsz  = (point_t){ 8, hdr->charsz };
     font->spacing = (point_t){ sx, sy };
     font->sprite  = NULL;
+    font->ssfn    = NULL;
     debug_log("%s Created font - Type:PSF Size:%dx%d Spacing:%dx%d\n", DEBUG_OK, font->charsz.x, font->charsz.y, sx, sy);
     return font;
 }
@@ -25,7 +27,27 @@ font_t* font_create_spr(const image_t* sprite, int cw, int ch, int sx, int sy)
     font->charsz  = (point_t){ cw, ch };
     font->spacing = (point_t){ sx, sy };
     font->psf     = NULL;
+    font->ssfn    = NULL;
     debug_log("%s Created font - Type:SPR Size:%dx%d Spacing:%dx%d\n", DEBUG_OK, font->charsz.x, font->charsz.y, sx, sy);
+    return font;
+}
+
+font_t* font_create_ssfn(const ssfn_font_t* hdr, int sx, int sy)
+{
+    if (hdr == NULL) { debug_error("font_create_ssfn(%p, %d, %d) - Null font pointer", hdr, sx, sy); return NULL; }
+
+    uint32_t charactersTableOffset = hdr->characters_offs;
+    uint8_t* charactersTable = (uint8_t*)hdr + charactersTableOffset;
+    uint8_t* characterData = charactersTable;
+    uint8_t width = characterData[2];
+
+    font_t* font  = (font_t*)malloc(sizeof(font_t));
+    font->ssfn    = hdr;
+    font->charsz  = (point_t){ width, hdr->height };
+    font->spacing = (point_t){ sx, sy };
+    font->sprite  = NULL;
+    font->psf     = NULL;
+    debug_log("%s Created font - Type:SSFN Size:%dx%d Spacing:%dx%d\n", DEBUG_OK, font->charsz.x, font->charsz.y, sx, sy);
     return font;
 }
 

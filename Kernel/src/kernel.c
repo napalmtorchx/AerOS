@@ -29,10 +29,25 @@ void kernel_boot()
     devmgr_init();
     virtfs_init();    
 
-    vbe_load_font("A:/unifont.sfn");
-    vbe_clear(0xFF007F7F);
+    font_t* test_font = NULL;
 
-    vbe_string("Hello world\nTesting 123");
+    FILE* file = fopen("A:/unifont.sfn", "r");
+    if (file == NULL) { debug_log("%s Failed to locate file 'A:/unifont.sfn'\n", DEBUG_ERROR); }
+    else
+    {
+        ssfn_font_t* filedata = (ssfn_font_t*)malloc(file->sz);
+        fread(filedata, file->sz, 1, file);
+        fclose(file);
+        test_font = font_create_ssfn(filedata, 0, 0);
+    }
+
+    vbe_device_t* vbe = devmgr_from_name("vbe_controller");
+    image_t framebuffer = image_create(vbe->w, vbe->h);
+    image_fill(&framebuffer, 0, 0, vbe->w, vbe->h, COLOR_DARKCYAN);
+    image_drawchar(&framebuffer, 0, 0, 'X', COLOR_WHITE, COLOR_BLACK, test_font);
+    image_drawstr(&framebuffer, 32, 32, "Hi äüö", COLOR_WHITE, COLOR_DARKRED, test_font);
+
+    memcpy(vbe->fbptr, framebuffer.buffer, vbe->w * vbe->h * 4);
 }
 
 void kernel_loop()
