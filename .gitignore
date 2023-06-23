@@ -11,7 +11,7 @@
 *.iso
 *.scoreboard
 *.editorconfig
-*.vdmk
+*.vmdk
 *.dmp
 .vscode/
 .fleet/
