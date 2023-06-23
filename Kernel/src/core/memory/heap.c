@@ -128,7 +128,7 @@ alloc_entry_t heap_alloc(
 
     alloc_end:
 
-    debug_log(DEBUG_MALLOC "ADDR:%8x-%8x SIZE:%a(%a)\n",
+    debug_log(DEBUG_MALLOC " ADDR:%8x-%8x SIZE:%a(%a)\n",
               entry.offset_start + heap->base,
               entry.offset_end + heap->base, 
               entry.offset_end - entry.offset_start,
@@ -138,12 +138,12 @@ alloc_entry_t heap_alloc(
 }
 void heap_free(heap_t *heap, alloc_entry_t entry) {
     if (heap->alloc_entries_count == 0) {
-       debug_error(DEBUG_FREE "INVALID FREE REQUEST!");
+       debug_error(DEBUG_FREE " INVALID FREE REQUEST!");
        return;
     }
     
     heap_delete_entry(heap, heap_find_entry_index(heap, entry));
-    debug_log(DEBUG_FREE "ADDR:%8x-%8x SIZE:%a\n",
+    debug_log(DEBUG_FREE " ADDR:%8x-%8x SIZE:%a\n",
               entry.offset_start + heap->base,
               entry.offset_end + heap->base,
               entry.offset_end - entry.offset_start);

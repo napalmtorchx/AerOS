@@ -24,6 +24,8 @@
 #include <hal/ports.h>
 #include <hal/device.h>
 #include <hal/devmgr.h>
+#include <hal/cpu.h>
+#include <hal/fpu.h>
 #include <hal/ints/gdt.h>
 #include <hal/ints/idt.h>
 #include <hal/ints/pic.h>

@@ -21,3 +21,4 @@ Tools/VMWare/vmware_mach-*.vmem
 Tools/VMWare/AerOS.vmdk
 Images/*
 !Images/BOOTFS/
+.DS_Store

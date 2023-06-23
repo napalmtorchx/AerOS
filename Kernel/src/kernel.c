@@ -32,6 +32,8 @@ void kernel_boot()
     devmgr_init();
     virtfs_init();    
 
+    fpu_init();
+
     // attempt to load system font
     FILE* file = fopen("A:/unifont.sfn", "r");
     if (file == NULL) { debug_log("%s Failed to locate file 'A:/unifont.sfn'\n", DEBUG_ERROR); }
