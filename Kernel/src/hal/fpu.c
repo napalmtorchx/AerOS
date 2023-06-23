@@ -4,13 +4,21 @@
 fpu_control_word_t fpu_read_ctrl() {
   // read the ctrl register data 
   fpu_control_word_t data;
-  inline_asm ("fstcw %0" : "=m" (data));
+  inline_asm ("fstcw %0; fwait" : "=m" (data));
   
   return data;
 }
 void fpu_write_ctrl(const fpu_control_word_t data) {
   // write to the ctrl register
-  inline_asm ("fldcw %0" : : "m" (data));
+  inline_asm ("fldcw %0; fwait" : : "m" (data));
+}
+
+fpu_state_word_t fpu_read_state() {
+  // read the state register data
+  fpu_state_word_t data;
+  inline_asm ("fstsw" : "=m" (data));
+
+  return data;
 }
 
 FRESULT fpu_force_probe() {
@@ -22,7 +30,7 @@ FRESULT fpu_force_probe() {
   cr0_data.fpu_emulation = false;
   cpu_write_cr0(cr0_data);
 
-  // store the status word from FPU  
+  // store the status word from FPU
   inline_asm ("fninit");                              // fninit loads fpu defaults
   inline_asm ("fnstsw %0" : "=m" (fpu_probe_word));   // fnstsw stores the status word of the FPU at the given address
 
