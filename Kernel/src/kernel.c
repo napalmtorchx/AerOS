@@ -32,8 +32,7 @@ void kernel_boot()
     devmgr_init();
     virtfs_init();    
 
-    debug_log(DEBUG_INFO " FPU Present:%d\n", cpu_fpu_present());
-    debug_log(DEBUG_INFO " FPU Probe:%d\n", fpu_probe(true) == FPU_SUCCESS);
+    fpu_init();
 
     // attempt to load system font
     FILE* file = fopen("A:/unifont.sfn", "r");
