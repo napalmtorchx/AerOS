@@ -105,3 +105,5 @@ ramfs_t* bootfs_get(void) { return &_bootfs; }
 font_t* sysfont_get() { return _sysfont; }
 
 heap_t* kernel_heap_ref() { return &_kernel_heap; }
+
+console_t* kconsole_get() { return &_console; }

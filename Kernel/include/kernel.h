@@ -53,3 +53,4 @@ heap_t* kernel_heap_ref();
 multiboot_t* mboot_get();
 ramfs_t* bootfs_get();
 font_t* sysfont_get();
+console_t* kconsole_get();
