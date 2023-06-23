@@ -29,6 +29,9 @@ struct attr_pack cpu_cr0 {
 };
 
 /// @brief reads the cr0 register into its type @return the read cr0 register
-const cpu_cr0_t cpu_read_cr0();
+cpu_cr0_t cpu_read_cr0();
+/// @brief writes to the cr0 the given data @param data the data to write into the cr0 
+void cpu_write_cr0(const cpu_cr0_t data);
+
 /// @brief checks the presence of the FPU @return true if present
 bool cpu_fpu_present();
