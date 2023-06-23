@@ -28,7 +28,8 @@ typedef struct heap {
   uintptr_t base;
   alloc_entry_t *alloc_stack_base;
   uint32_t alloc_entries_count;
-} heap_t;
+  size_t totalmem;
+}   heap_t;
 
 heap_t heap_create(uintptr_t base, uintptr_t alloc_stack_base);
 
@@ -41,5 +42,6 @@ void heap_free(heap_t *heap, alloc_entry_t entry);
 alloc_entry_t heap_get_alloc_info(heap_t *heap, uintptr_t addr);
 
 size_t heap_get_used_mem(heap_t *heap);
+size_t heap_get_total_mem(heap_t *heap);
 
 heap_t init_kernel_heap();

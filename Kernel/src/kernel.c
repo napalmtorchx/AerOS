@@ -47,11 +47,8 @@ void kernel_boot()
 
     // initialize console
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
-    _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_BLACK, COLOR_WHITE, 64 * KILOBYTE);
-    console_printf(&_console, "Console printf test:\nInteger:%d\nHex:%p\nSize:%a\nString:'%s'\n", 1234, 0xDEADC0DE, 128 * MEGABYTE, "Chicken in the corn");
+    _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_WHITE, COLOR_BLACK, 64 * KILOBYTE);
 
-    // create executable
-    /*
     static const uint8_t prog[] = 
     {
         0x00,
@@ -73,16 +70,31 @@ void kernel_boot()
 
     // runtime test
     runtime_t runtime = runtime_create((uint8_t*)&exec, sizeof(exec) + sizeof(prog), 0x10000);
-    */
 }
 
 void kernel_loop()
 {
     debug_log("%s Entered kernel main\n", DEBUG_INFO);
 
+    time_t t;
+    int sec, fps, frames;
+    console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%uMB\n", heap_get_used_mem(&_kernel_heap) / MEGABYTE, heap_get_total_mem(&_kernel_heap) / MEGABYTE);
+
     while (true)
     {
+        frames++;
+        t = time(NULL);
+        if (sec != t.second)
+        {
+            sec = t.second;
+            fps = frames;
+            frames = 0;
 
+            char buff[64];
+            memset(buff, 0, sizeof(buff));
+            console_printf(kconsole_get(), "FPS:%d Time:%s\n", fps, timestr(&t, buff, TIMEFORMAT_STANDARD, true));
+        }
+        
     }   
 }
 
@@ -106,4 +118,8 @@ font_t* sysfont_get() { return _sysfont; }
 
 heap_t* kernel_heap_ref() { return &_kernel_heap; }
 
-console_t* kconsole_get() { return &_console; }
+console_t* kconsole_get() 
+{ 
+    if (_console.size.x == 0 || _console.size.y == 0 || _console.font == NULL || _console.img.buffer == NULL) { return NULL; }
+    return &_console; 
+}

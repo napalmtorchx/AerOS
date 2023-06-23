@@ -12,6 +12,7 @@ heap_t init_kernel_heap() {
     // require memory block and create heap
     memblk_t *memblock = memmgr_alloc(sz, MEM_HEAP);
     heap_t kheap = heap_create((uintptr_t)memblock->addr, sz);
+    kheap.totalmem = sz;
 
     debug_log(DEBUG_INFO " HEAP BASE:%8x ALLOC_STACK:%8x\n", kheap.base, kheap.alloc_stack_base);
 
@@ -162,6 +163,8 @@ size_t heap_get_used_mem(heap_t *heap) {
     }
     return total;
 }
+
+size_t heap_get_total_mem(heap_t *heap) { return heap->totalmem; }
 
 char *heap_convert_type(alloc_type_t type) {
     switch (type) {

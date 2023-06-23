@@ -33,20 +33,24 @@ void console_free(console_t* console)
 
 void console_drawstr(console_t* console, int x, int y, const char* str, COLOR fg, COLOR bg)
 {
- 
+    if (console == NULL) { return; }    
+
+    point_t fontsz = font_getsz(console->font, true);
+    int xx = console->cursor.x * fontsz.x;
+    int yy = console->cursor.y * fontsz.y;
+    if ((uint32_t)xx >= console->img.w || (uint32_t)yy >= console->img.h) { return; }
+    image_drawstr(&console->img, xx, yy, str, fg, bg, console->font);
 }
 
 void console_write(console_t* console, const char* str)
 {
     if (console == NULL) { return; }
 
-       if (console == NULL) { return; }
     point_t fontsz = font_getsz(console->font, true);
-
     int xx = console->cursor.x * fontsz.x;
     int yy = console->cursor.y * fontsz.y;
-    if ((uint32_t)xx >= console->img.w || (uint32_t)yy >= console->img.h) { return; }
-   
+    COLOR ofg = console->fg, obg = console->bg;
+
     size_t len = strlen(str);
     for (size_t i = 0; i < len; ++i)
     {
@@ -55,6 +59,25 @@ void console_write(console_t* console, const char* str)
             console_newline(console);
             xx = console->cursor.x * fontsz.x;
             yy = console->cursor.y * fontsz.y;
+        }
+        else if (str[i] == '\x1b')
+        {
+            i++;
+            if (str[i] == '[' && (str[i + 2] == 'm' || str[i + 3] == 'm' || str[i + 4] == 'm'))
+            {
+                i++;
+                char code[4] = { 0, 0, 0, 0 };
+                int j = 0;
+                while (str[i] != 'm')
+                {
+                    code[j++] = str[i++];
+                }
+
+                uint32_t c = atol(code);
+                if (c == 0) { console->fg = ofg; console->bg = obg; }
+                else if ((c >= 30 && c <= 37) || (c >= 90  && c <= 97))  { console->fg = ansi_fg_to_color(c, ofg); }
+                else if ((c >= 40 && c <= 47) || (c >= 100 && c <= 107)) { console->bg = ansi_bg_to_color(c, obg); }
+            }
         }
         else
         {
@@ -79,6 +102,9 @@ void console_write(console_t* console, const char* str)
             i  += seq_len;
         }
     }
+
+    console->fg = ofg;
+    console->bg = obg;
 }
 
 void console_writeln(console_t* console, const char* str)
@@ -121,12 +147,31 @@ void console_newline(console_t* console)
 
 void console_delete(console_t* console, int chars_to_del)
 {
-
+    while (chars_to_del > 0)
+    {
+        if (console->cursor.x > 0)
+        {
+            console->cursor.x--;
+            console_drawstr(console, console->cursor.x, console->cursor.y, " ", console->fg, console->bg);
+            console->cursor.x--;
+        }
+        else if (console->cursor.y > 0)
+        {
+            console_setpos(console, (point_t){ console->size.x - 1, console->cursor.y - 1});
+            console_drawstr(console, console->cursor.x, console->cursor.y, " ", console->fg, console->bg);
+            console_setpos(console, (point_t){ console->size.x - 1, console->cursor.y - 1});
+        }
+        chars_to_del--;
+    }
 }
 
 void console_scroll(console_t* console, int lines)
 {
-
+    uint32_t line = console->img.w * font_getsz(console->font, true).y * 4;
+    uint32_t size = console->img.w * console->img.h * 4;
+    memcpy(console->img.buffer, (uint32_t*)((uint32_t)console->img.buffer + line), size - line);
+    memset((uint32_t*)((uint32_t)console->img.buffer + (size - line)), (uint32_t)console->bg, line);
+    console_setpos(console, (point_t){ 0, console->size.y - 1 });
 }
 
 void console_setpos(console_t* console, point_t pos)

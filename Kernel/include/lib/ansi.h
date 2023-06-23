@@ -1,5 +1,6 @@
 #pragma once
 #include <lib/types.h>
+#include <graphics/color.h>
 
 #define ANSI_RESET             "\x1b[0m"
 
@@ -37,3 +38,6 @@
 
 uint8_t ansi_fg_to_vga(uint8_t ansi_code, uint8_t def_result);
 uint8_t ansi_bg_to_vga(uint8_t ansi_code, uint8_t def_result);
+
+COLOR ansi_fg_to_color(uint8_t ansi_code, COLOR def_result);
+COLOR ansi_bg_to_color(uint8_t ansi_code, COLOR def_result);

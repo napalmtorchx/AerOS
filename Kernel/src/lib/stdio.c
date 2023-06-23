@@ -98,6 +98,7 @@ int vprintf(const char* fmt, va_list args)
 {
     memset(_buffer, 0, PRINT_BUFFSZ);
     vsprintf(_buffer, fmt, args);
+    if (kconsole_get() != NULL) { console_write(kconsole_get(), _buffer); }
     vga_write(_buffer);
     uart_write(_buffer);
 }
