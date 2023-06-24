@@ -80,7 +80,12 @@ void kernel_loop()
     int sec, fps, frames;
     console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%uMB\n", heap_get_used_mem(&_kernel_heap) / MEGABYTE, heap_get_total_mem(&_kernel_heap) / MEGABYTE);
     char*       buff  = (char*)malloc(1024);
-    pci_list_devices();
+   
+   
+   //DO NOT ENABLE, CURRENTLY IT IS A MEMORY HOGGER
+   // pci_list_devices();
+
+
    // console_printf(kconsole_get(), vbe_available_resolutions(buff));
     free(buff);
     while (true)
