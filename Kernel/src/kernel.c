@@ -80,15 +80,16 @@ void kernel_boot()
     runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
     runtime_run(&runtime);   
 
-    char buf[100];
-    
-    float test = sqrtf(4);
-    ftoa(test, buf, 4);
-    debug_log(DEBUG_INFO " sqrt(4) = %s\n", buf);
+    uint32_t test_src[4] = {
+        0xDEADBEEF,
+        0xBADC0DE1,
+        0x55AAAA55,
+        0xFFFFFFFF
+    };
+    uint32_t test_dst[4] = { 0 };
 
-    test = sqrtf(5);
-    ftoa(test, buf, 4);
-    debug_log(DEBUG_INFO " sqrt(4) = %s\n", buf);
+    memcpyq(test_dst, test_src, 2);
+    for (int i = 0; i < 4; i++) { debug_log(DEBUG_INFO " %8x\n", test_dst[i]); }
 }
 
 void kernel_loop()

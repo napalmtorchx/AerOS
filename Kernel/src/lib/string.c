@@ -156,6 +156,30 @@ void* memcpy(void* dest, const void* src, size_t n)
     return dest;
 }
 
+void* memcpyt(void* dest, const void* src, size_t n)
+{
+    for (int i = 0; i < n; i++) {
+        // load the value at src[i] into FPU's reg srack
+        inline_asm("fldt %0" : : "m" (((long double*)src)[i]));
+        // pop it back into the destination
+        inline_asm("fstpt %0" : "=m" (((long double*)dest)[i]));
+        // clear fpu exceptions
+        inline_asm("fclex");
+    }
+}
+
+void* memcpyq(void* dest, const void* src, size_t n)
+{
+    for (int i = 0; i < n; i++) {
+        // load the value at src[i] into FPU's reg srack
+        inline_asm("fildq %0" : : "m" (((uint64_t*)src)[i]));
+        // pop it back into the destination
+        inline_asm("fistpq %0" : "=m" (((uint64_t*)dest)[i]));
+        // clear fpu exceptions
+        inline_asm("fclex"); 
+    }
+}
+
 void* memset(void* ptr, int c, size_t n)
 {
     uint32_t  num_dwords = n / 4;
