@@ -90,8 +90,9 @@ void kernel_loop()
     console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
    
    //DO NOT ENABLE, CURRENTLY IT IS A MEMORY HOGGER
+   load_pci_file();
     pci_list_devices();
-
+    debug_log("%s PCI Devices loaded\n", DEBUG_INFO);
     console_printf(kconsole_get(), "RAM after PCI:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
 
    /*char*       buff  = (char*)malloc(1024);

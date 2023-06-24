@@ -90,25 +90,29 @@ char* remove_char(char* input,char c)
     str[j] = '\0';
     return str;
 }
-
+char* data;
+void load_pci_file()
+{
+    FILE* pci_json = fopen("A:/pci.json", "r");
+    data = (char*)malloc(pci_json->sz);
+    fread(data, pci_json->sz, 1, pci_json);
+    fclose(pci_json);
+}
 //this is dirty i know, don't judge me
 //at this point i have no other option since we are lacking a proper json parser
 //so, will, bite it! xD
-char* search_for_device(uint16_t dev_id,uint16_t ven_id)
+char* search_for_device(uint16_t dev_id,uint16_t ven_id,char* dev_id_m,char* ven_id_m,char* out_buff)
 {
     // read file
-    FILE* pci_json = fopen("A:/pci.json", "r");
-    char* data = (char*)malloc(pci_json->sz);
-    fread(data, pci_json->sz, 1, pci_json);
-    fclose(pci_json);
+
 
     // attempt to match vendor id
-    char* ven_id_str = (char*)malloc(ven_id);
+    char* ven_id_str = ven_id_m;
     sprintf(ven_id_str, "%x", ven_id);
     char* ven_id_match = strstr(data, ven_id_str);
     free(ven_id_str);
 
-    char* out_buff = (char*)malloc(1024);
+    
 
     if (ven_id_match == NULL)
     {
@@ -117,7 +121,7 @@ char* search_for_device(uint16_t dev_id,uint16_t ven_id)
     }
     else
     {
-        char* dev_id_str = (char*)malloc(dev_id);
+        char* dev_id_str = dev_id_m;
         sprintf(dev_id_str, "%x", dev_id);
         char* dev_id_match = strstr(ven_id_match, dev_id_str);
         free(dev_id_str);
@@ -207,7 +211,6 @@ char* search_for_device(uint16_t dev_id,uint16_t ven_id)
     }
    
 }
-
 //pci_list_devices
 void pci_list_devices()
 {
@@ -246,16 +249,23 @@ void pci_list_devices()
                     uint8_t interrupt_line = pci_read_byte(bus, slot, func, 60);
                     uint8_t interrupt_pin = pci_read_byte(bus, slot, func, 61);
                     uint8_t min_grant = pci_read_byte(bus, slot, func, 62);
-
-                    char* dev_name = search_for_device(device_id,vendor_id);
-
+                    char* dev_id_mem = malloc(7);
+                    char* ven_id_mem = malloc(7);
+                    char* out_buff = (char*)malloc(1024);
+                    memset(dev_id_mem,0,7);
+                    memset(ven_id_mem,0,7);
+                    char* dev_name = search_for_device(device_id,vendor_id,dev_id_mem,ven_id_mem,out_buff);
                     debug_log("%s Located PCI device at %2x:%2x%2x\n", DEBUG_INFO, bus, slot, func);
                     debug_log("         Name  :%s\n", dev_name);
                     debug_log("         ID    :%4x:%4x\n", vendor_id, device_id);
                     debug_log("         Class :%2x\n", class_code);
                     free(dev_name);
+                    free(dev_id_mem);
+                    free(ven_id_mem);
+                    free(out_buff);
                 }
             }
         }
     }
+    free(data);
 }
