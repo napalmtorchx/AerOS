@@ -27,6 +27,8 @@ char* strcat(char* dest, const char* src);
 
 char* stradd(char* str, char c);
 
+char* strstr(const char* haystack, const char* needle);
+
 void strswap(char* x, char* y);
 
 char* strrev(char* str);

@@ -34,7 +34,7 @@ void kernel_boot()
     virtfs_init();    
 
     fpu_init();
-
+    vbe_setmode(1024, 768);
     // attempt to load system font
     FILE* file = fopen(font, "r");
     if (file == NULL) { debug_log("%s Failed to locate file 'A:/unifont.sfn'\n", DEBUG_ERROR); }
@@ -45,7 +45,6 @@ void kernel_boot()
         fclose(file);
         _sysfont = font_create_ssfn(filedata, 0, 0);
     }
-
     // initialize console
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
     _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_WHITE, COLOR_BLACK, 64 * KILOBYTE);
@@ -76,7 +75,7 @@ void kernel_boot()
         (uint8_t)RTOP_SYSCALL, 0x02, 0x00, 0x00, 0x00,
         (uint8_t)RTOP_EXIT,
     };
-
+    
     // runtime test
     runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
     runtime_run(&runtime);   
@@ -89,7 +88,15 @@ void kernel_loop()
     time_t t;
     int sec, fps, frames;
     console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%uMB\n", heap_get_used_mem(&_kernel_heap) / MEGABYTE, heap_get_total_mem(&_kernel_heap) / MEGABYTE);
+   
+   
+   
+   //DO NOT ENABLE, CURRENTLY IT IS A MEMORY HOGGER
+   // pci_list_devices();
 
+   /*char*       buff  = (char*)malloc(1024);
+    console_printf(kconsole_get(), vbe_available_resolutions(buff));
+    free(buff);*/
     while (true)
     {
         frames++;
@@ -102,7 +109,7 @@ void kernel_loop()
 
             char buff[64];
             memset(buff, 0, sizeof(buff));
-            console_printf(kconsole_get(), "FPS:%d Time:%s\n", fps, timestr(&t, buff, TIMEFORMAT_STANDARD, true));
+       //     console_printf(kconsole_get(), "FPS:%d Time:%s\n", fps, timestr(&t, buff, TIMEFORMAT_STANDARD, true));
         }
         
     }   
