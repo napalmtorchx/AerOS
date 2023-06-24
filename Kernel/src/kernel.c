@@ -80,7 +80,15 @@ void kernel_boot()
     runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
     runtime_run(&runtime);   
 
-    fpu_load_double(2.53);
+    char buf[100];
+    
+    float test = sqrtf(4);
+    ftoa(test, buf, 4);
+    debug_log(DEBUG_INFO " sqrt(4) = %s\n", buf);
+
+    test = sqrtf(5);
+    ftoa(test, buf, 4);
+    debug_log(DEBUG_INFO " sqrt(4) = %s\n", buf);
 }
 
 void kernel_loop()

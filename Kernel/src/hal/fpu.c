@@ -194,7 +194,7 @@ FRESULT fpu_load_integer(int data) {
   if (!_fpu_loaded) return FPU_NOT_PRESENT;
 
   // load value
-  inline_asm("fnclex; fwait; fild %0; fwait" : : "m" (data));
+  inline_asm("fnclex; fwait; fildl %0; fwait" : : "m" (data));
   return FPU_SUCCESS; 
 }
 
@@ -213,7 +213,7 @@ int fpu_get_integer() {
   int result;
 
   // store the value from TOP register
-  inline_asm("fnclex; fwait; fist %0; fwait" : "=m" (result));
+  inline_asm("fnclex; fwait; fistl %0; fwait" : "=m" (result));
   return result;
 }
 
@@ -250,7 +250,7 @@ int fpu_retrive_integer() {
   int result;
 
   // store the value from TOP register
-  inline_asm("fnclex; fwait; fistp %0; fwait" : "=m" (result));
+  inline_asm("fnclex; fwait; fistpl %0; fwait" : "=m" (result));
   return result;
 }
 
@@ -280,5 +280,60 @@ int64_t fpu_retrive_qword() {
   inline_asm("fnclex; fwait; fistpq %0; fwait" : "=m" (result));
 
   return result;
+}
 
+FRESULT fpu_round() {
+  // round number at st(0)
+  inline_asm("frndint");
+
+  // check for exceptions in fpu state
+  fpu_state_word_t state = fpu_read_state();
+  if (state.exceptions.stack_fault ||
+      state.exceptions.invalid_operation ||
+      state.exceptions.denormalized_operand ||
+      state.exceptions.precision) return FPU_EXCEPTION;
+
+  return FPU_SUCCESS;
+}
+FRESULT fpu_sqrt() {
+  // calculate the square root
+  inline_asm("fsqrt");
+
+  // check for exceptions in fpu state
+  fpu_state_word_t state = fpu_read_state();
+  if (state.exceptions.stack_fault ||
+      state.exceptions.invalid_operation ||
+      state.exceptions.denormalized_operand ||
+      state.exceptions.precision) return FPU_EXCEPTION;
+
+  return FPU_SUCCESS;
+}
+
+void fpu_set_round_up() {
+  // set the round up flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_ROUND_UP;
+
+  fpu_write_ctrl(control_w);
+}
+void fpu_set_round_down() {
+  // set the round down flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_ROUND_DOWN;
+
+  fpu_write_ctrl(control_w);
+}
+void fpu_set_round_nearest() {
+  // set the round-to-nearest flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_ROUND_NEAREST;
+
+  fpu_write_ctrl(control_w);
+}
+void fpu_set_truncate() {
+  // set the round up flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_TRUNCATE;
+
+  fpu_write_ctrl(control_w);
 }
