@@ -31,7 +31,7 @@ void debug_log(const char* str, ...)
 
     uart_write(_dbgbuff);
     vga_write(_dbgbuff);
-  //  if (kconsole_get() != NULL) { console_write(kconsole_get(), _dbgbuff); }
+    if (kconsole_get() != NULL) { console_write(kconsole_get(), _dbgbuff); }
 }
 
 void debug_error(const char* str, ...)

@@ -19,8 +19,8 @@ SET_DIR  Kernel
 LINK_PATH        ../Bin/kernel.elf ../Bin         -T  Kernel/linker.ld
 
 MK_RAMDISK Kernel/build_ramdisk.script
-MK_ISO ../Images/AerOS.iso ../Tools/Limine/limine.cfg ../Bin/kernel.elf ../Images/ramdisk.img
-LIMINE ../Images/AerOS.iso --force-mbr
+; MK_ISO ../Images/AerOS.iso ../Tools/Limine/limine.cfg ../Bin/kernel.elf ../Images/ramdisk.img
+; LIMINE ../Images/AerOS.iso --force-mbr
 ; PIPE
 ; RUN  Tools/VMWare/vmware_mach.vmx
-RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio -enable-kvm -rtc base=localtime -cpu host -vga std
+; RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio -enable-kvm -rtc base=localtime -cpu host -vga std

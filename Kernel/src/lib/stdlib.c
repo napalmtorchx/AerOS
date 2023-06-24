@@ -15,6 +15,7 @@ void* calloc(size_t nmemb, size_t size)
                       nmemb * size,
                       HEAP_ALLOC_TYPE_DIRECT,
                       HEAP_ALLOC_DATA_TYPE_OTHER).offset_start + kernel_heap_ref()->base;
+                      
 }
 
 void* realloc(void* ptr, size_t size)

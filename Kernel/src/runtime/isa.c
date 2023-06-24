@@ -147,7 +147,7 @@ void runtime_ldreg(runtime_t* runtime, char type)
     runtime->regs.raw[reg] = value;
 }
 
-void runtime_write(runtime_t* runtime, char type)
+void runtime_wrreg(runtime_t* runtime, char type)
 {
     uint32_t addr = 0;
     uint32_t value = 0;
@@ -191,7 +191,7 @@ void runtime_write(runtime_t* runtime, char type)
 }
 
 
-void runtime_store(runtime_t* runtime, char type)
+void runtime_streg(runtime_t* runtime, char type)
 {
     uint32_t addr = 0;
     uint32_t value = 0;

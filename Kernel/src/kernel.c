@@ -29,7 +29,7 @@ void kernel_boot()
     gdt_init();
     idt_init();
     memmgr_init();
-    _kernel_heap = init_kernel_heap();
+    _kernel_heap = init_kernel_heap(false);
     devmgr_init();
     virtfs_init();    
 
@@ -89,12 +89,10 @@ void kernel_loop()
 
     time_t t;
     int sec, fps, frames;
-    console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%uMB\n", heap_get_used_mem(&_kernel_heap) / MEGABYTE, heap_get_total_mem(&_kernel_heap) / MEGABYTE);
-   
-   
-   
-   //DO NOT ENABLE, CURRENTLY IT IS A MEMORY HOGGER
-   // pci_list_devices();
+    console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
+
+    pci_init();
+    console_printf(kconsole_get(), "RAM after PCI:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
 
    /*char*       buff  = (char*)malloc(1024);
     console_printf(kconsole_get(), vbe_available_resolutions(buff));

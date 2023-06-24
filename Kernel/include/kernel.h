@@ -34,6 +34,7 @@
 #include <hal/devices/video/vbe.h>
 #include <hal/devices/sys/pit.h>
 #include <hal/devices/sys/rtc.h>
+#include <hal/devices/sys/pci.h>
 #include <runtime/executable.h>
 #include <runtime/runtime.h>
 
