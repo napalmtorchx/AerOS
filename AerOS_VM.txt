@@ -69,9 +69,9 @@ Instruction Set:
 - 0x2F WRB	6	(int, byte)		Write immediate 8-bit value to immediate address					(byte*)*ptr = (byte)v
 - 0x30 WRW	7	(int, short)		Write immediate 16-bit value to immediate address					(short*)*ptr = (short)v
 - 0x31 WRL	9	(int, int)		Write immediate 32-bit value to immediate address					*ptr = v
-- 0x32 WRB	3	(reg, byte)		Write immediate 8-bit value to address in register					(byte*)*R0 = (byte)v
-- 0x33 WRW	4	(reg, short)		Write immediate 16-bit value to address in register					(short*)*R0 = (short)v
-- 0x34 WRL	6	(reg, int)		Write immediate 32-bit value to address in register					*R0 = v
+- 0x32 WRRB	3	(reg, byte)		Write immediate 8-bit value to address in register					(byte*)*R0 = (byte)v
+- 0x33 WRRW	4	(reg, short)		Write immediate 16-bit value to address in register					(short*)*R0 = (short)v
+- 0x34 WRRL	6	(reg, int)		Write immediate 32-bit value to address in register					*R0 = v
 
 - 0x35 STB	6	(int, reg)		Write value in register(8-bit cast) to immediate address				(byte*)*ptr = (byte)R0
 - 0x36 STW	6	(int, reg)		Write value in register(16-bit cast) to immediate address				(short*)*ptr = (short)R0

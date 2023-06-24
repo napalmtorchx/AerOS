@@ -50,27 +50,36 @@ void kernel_boot()
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
     _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_WHITE, COLOR_BLACK, 64 * KILOBYTE);
 
-    static const uint8_t prog[] = 
+    static const uint8_t prog[sizeof(executable_t) + 17] = 
     {
-        0x00,
-        0x01, 0x00, 0xDE, 0xC0, 0xAD, 0xDE,
-        0x00,
-        0xFF,
-    };
+        // name - 'Test Program'
+        0x22, 0x54, 0x65, 0x73, 0x74, 0x20, 0x70, 0x72, 0x6F, 0x67, 0x72, 0x61, 0x6D, 0x22, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // type - EXEC_SERVICE
+        0x01, 0x00, 0x00, 0x00,
+        // text offset
+        0x00, 0x00, 0x00, 0x00,
+        // text size
+        17, 0x00, 0x00, 0x00,
+        // data offset
+        0x00, 0x00, 0x00, 0x00,
+        // data size
+        0x00, 0x00, 0x00, 0x00,
 
-    executable_t exec = (executable_t)
-    {
-        .name = "Test program",
-        .type = EXEC_SERVICE,
-        .text_offset = 0,
-        .text_sz     = sizeof(prog),
-        .data_offset = 0,
-        .data_sz = 0,
+        // --------- CODE ---------------
 
+        // ld R4, 0x1000 - load size to malloc
+        (uint8_t)RTOP_LD, (uint8_t)RTREG_R4, 0x00, 0x10, 0x00, 0x00,
+        // malloc(R4);
+        (uint8_t)RTOP_SYSCALL, 0x01, 0x00, 0x00, 0x00,
+        // free(R5);
+        (uint8_t)RTOP_SYSCALL, 0x02, 0x00, 0x00, 0x00,
+        (uint8_t)RTOP_EXIT,
     };
 
     // runtime test
-    runtime_t runtime = runtime_create((uint8_t*)&exec, sizeof(exec) + sizeof(prog), 0x10000);
+    runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
+    runtime_run(&runtime);   
 }
 
 void kernel_loop()

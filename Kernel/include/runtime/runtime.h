@@ -3,6 +3,7 @@
 #include <lib/kresult.h>
 #include <core/memory/memmgr.h>
 #include <runtime/executable.h>
+#include <runtime/isa.h>
 
 typedef enum
 {
@@ -12,8 +13,22 @@ typedef enum
 
 typedef struct
 {
-    uint32_t r0, r1, r2, r3, r4, r5, r6, r7;
-    uint32_t bp, sp, ip, flags;
+    int carry    : 1;
+    int negative : 1;
+    int zero     : 1;
+} runtime_flagvals_t;
+
+typedef union
+{
+    runtime_flagvals_t vals;
+    uint32_t           raw;
+} runtime_flags_t;
+
+typedef struct
+{
+    uint32_t        r0, r1, r2, r3, r4, r5, r6, r7;
+    uint32_t        bp, sp, ip;
+    runtime_flags_t flags;
 } runtime_regvals_t;
 
 typedef union
@@ -22,7 +37,8 @@ typedef union
     uint32_t          raw[RTREG_COUNT];
 } runtime_regs_t;
 
-typedef struct
+typedef struct runtime_t runtime_t;
+struct runtime_t
 {
     runtime_regs_t regs;
     executable_t*  exec;
@@ -32,10 +48,13 @@ typedef struct
     size_t         stacksz;
     memblk_t*      mmap;
     size_t         mmap_count;
-} runtime_t;
+    bool           running;
+};
 
 runtime_t runtime_create(uint8_t* program, size_t progsz, size_t stacksz);
+void runtime_run(runtime_t* runtime);
 void runtime_step(runtime_t* runtime);
+void runtime_exec_syscall(runtime_t* runtime, uint32_t code);
 
 memblk_t* runtime_map(runtime_t* runtime, uint32_t addr, size_t sz, bool readonly);
 void      runtime_munmap(runtime_t* runtime, uint32_t addr);
