@@ -39,6 +39,9 @@ typedef struct
     uint8_t  max_latency;                   // Maximum Latency
 } pci_device_t;
 
+/// @brief Initialize PCI controller
+void pci_init();
+
 /// @brief Read a 16-bit word from the PCI configuration space. @param bus The PCI bus number. @param slot The PCI slot number. @param func The PCI function number. @param offset The offset within the PCI configuration space. @return The 16-bit word read from the PCI configuration space.
 uint16_t pci_read_word(uint8_t bus, uint8_t slot, uint8_t func, uint8_t offset);
 
