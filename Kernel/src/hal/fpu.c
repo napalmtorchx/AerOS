@@ -280,5 +280,4 @@ int64_t fpu_retrive_qword() {
   inline_asm("fnclex; fwait; fistpq %0; fwait" : "=m" (result));
 
   return result;
-
 }
