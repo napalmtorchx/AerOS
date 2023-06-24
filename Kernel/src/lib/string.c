@@ -83,7 +83,30 @@ char* stradd(char* str, char c)
     return str;
 }
 
+char* strstr(const char* haystack, const char* needle) {
+    if (*needle == '\0') {
+        return (char*)haystack;  // Empty needle, return haystack
+    }
 
+    char* h = (char*)haystack;
+    while (*h) {
+        char* start = h;
+        char* n = (char*)needle;
+
+        while (*h && *n && *h == *n) {
+            h++;
+            n++;
+        }
+
+        if (*n == '\0') {
+            return start;  // Needle found, return the start of the match
+        }
+
+        h = start + 1;  // Start looking at the next character
+    }
+
+    return NULL;  // Needle not found
+}
 void strswap(char* x, char* y)
 {
     char t = *x; 

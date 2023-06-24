@@ -56,7 +56,25 @@ void outb(uint16_t address, uint8_t data)
     :: "a"(data), "d"(address)
   );
 }
+//outl
+void outl(uint16_t address, uint32_t data)
+{
+  __asm__ volatile (
+    "outl %%eax, %%dx"
+    :: "a" (data), "d" (address)
+  );
+}
+unsigned int inl(uint16_t address)
+{
+  unsigned int data;
+  __asm__ volatile (
+    "inl %%dx, %%eax"
+    : "=a" (data)
+    : "d"  (address)
+  );
 
+  return data;
+}
 int   port_read(port_t port, bool *flag)
 {
   if (!port.flags.read) return *flag = false;
