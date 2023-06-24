@@ -60,6 +60,33 @@ float floorf(float x)
     return 0;
 }
 
+double sqrt(double x)
+{
+    fpu_set_round_nearest();
+    fpu_load_double(x);
+    
+    fpu_sqrt();
+    return fpu_retrive_double();
+}
+
+float sqrtf(float x)
+{
+    fpu_set_round_nearest();
+    fpu_load_float(x);
+    
+    fpu_sqrt();
+    return fpu_retrive_float();
+}
+
+long double sqrtl(long double x)
+{
+    fpu_set_round_nearest();
+    fpu_load_long_double(x);
+    
+    fpu_sqrt();
+    return fpu_retrive_long_double();
+}
+
 double pow(double x, int y)
 {
     double temp;

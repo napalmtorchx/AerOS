@@ -204,6 +204,14 @@ int64_t fpu_retrive_qword();
 
 /// @brief rounds accordingly to the FPU's round control bit @return FPU_success if successful
 FRESULT fpu_round();
+/// @brief calculates the square root of the value in st(0) @return FPU_success if successful 
+FRESULT fpu_sqrt();
 
-/// @brief sets the round up flag in the control 
+/// @brief sets the round up flag in the FPU control word
 void fpu_set_round_up();
+/// @brief sets the round down flag in the FPU control word
+void fpu_set_round_down();
+/// @brief sets the round-to-nearest flag in the FPU control word 
+void fpu_set_round_nearest();
+/// @brief sets the truncate flag in the FPU control word
+void fpu_set_truncate();

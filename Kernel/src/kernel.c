@@ -80,8 +80,15 @@ void kernel_boot()
     runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
     runtime_run(&runtime);   
 
-    double test = ceil(1.1);
-    if (test == 2) debug_log(DEBUG_INFO " CEIL round works!\n");
+    char buf[100];
+    
+    float test = sqrtf(4);
+    ftoa(test, buf, 4);
+    debug_log(DEBUG_INFO " sqrt(4) = %s\n", buf);
+
+    test = sqrtf(5);
+    ftoa(test, buf, 4);
+    debug_log(DEBUG_INFO " sqrt(4) = %s\n", buf);
 }
 
 void kernel_loop()

@@ -11,6 +11,10 @@ long double ceill(long double x);
 double floor(double x);
 float floorf(float x);
 
+double sqrt(double x);
+float sqrtf(float x);
+long double sqrtl(long double x);
+
 double pow(double x, int y);
 float powf(float x, int y);
 long powl(long x, int y);

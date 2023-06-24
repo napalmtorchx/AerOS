@@ -295,11 +295,45 @@ FRESULT fpu_round() {
 
   return FPU_SUCCESS;
 }
+FRESULT fpu_sqrt() {
+  // calculate the square root
+  inline_asm("fsqrt");
+
+  // check for exceptions in fpu state
+  fpu_state_word_t state = fpu_read_state();
+  if (state.exceptions.stack_fault ||
+      state.exceptions.invalid_operation ||
+      state.exceptions.denormalized_operand ||
+      state.exceptions.precision) return FPU_EXCEPTION;
+
+  return FPU_SUCCESS;
+}
 
 void fpu_set_round_up() {
   // set the round up flag
   fpu_control_word_t control_w = fpu_read_ctrl();
   control_w.round_control = FPU_ROUND_UP;
+
+  fpu_write_ctrl(control_w);
+}
+void fpu_set_round_down() {
+  // set the round down flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_ROUND_DOWN;
+
+  fpu_write_ctrl(control_w);
+}
+void fpu_set_round_nearest() {
+  // set the round-to-nearest flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_ROUND_NEAREST;
+
+  fpu_write_ctrl(control_w);
+}
+void fpu_set_truncate() {
+  // set the round up flag
+  fpu_control_word_t control_w = fpu_read_ctrl();
+  control_w.round_control = FPU_TRUNCATE;
 
   fpu_write_ctrl(control_w);
 }
