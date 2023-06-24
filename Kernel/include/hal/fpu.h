@@ -71,6 +71,8 @@ struct attr_pack fpu_control_word {
   fpu_precision_ctrl_t precision_control : 2;
   fpu_round_ctrl_t round_control : 2;
   fpu_infinity_ctrl_t infinity_control : 1;
+
+  uint8_t reserved : 3;
 };
 /// @brief describes a set of exception states
 struct attr_pack fpu_exception_states {
@@ -199,3 +201,9 @@ int16_t fpu_retrive_word();
 int32_t fpu_retrive_dword();
 /// @brief retrives the current value in the TOP register, rounded to the nearest number. Then cleares the register @return the retrived rounded value or MAX_INT if the stored value exceeds the max value 
 int64_t fpu_retrive_qword();
+
+/// @brief rounds accordingly to the FPU's round control bit @return FPU_success if successful
+FRESULT fpu_round();
+
+/// @brief sets the round up flag in the control 
+void fpu_set_round_up();

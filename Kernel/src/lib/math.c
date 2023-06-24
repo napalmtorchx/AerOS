@@ -17,16 +17,29 @@ float clampf(float i, float min, float max)
 
 double ceil(double x)
 {
-    int inum = (int)x;
-    if (x == (float)inum) { return inum; }
-    return inum + 1;
+    fpu_set_round_up();
+    fpu_load_double(x);
+
+    fpu_round(); 
+    return fpu_retrive_double();
 }
 
-float ceilf(double x)
+float ceilf(float x)
 {
-    float inum = (float)x;
-    if (x == (float)inum) { return inum; }
-    return inum + 1;
+    fpu_set_round_up();
+    fpu_load_float(x);
+
+    fpu_round(); 
+    return fpu_retrive_float();
+}
+
+long double ceill(long double x)
+{
+    fpu_set_round_up();
+    fpu_load_long_double(x);
+
+    fpu_round(); 
+    return fpu_retrive_long_double();
 }
 
 double floor(double x)

@@ -80,7 +80,8 @@ void kernel_boot()
     runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
     runtime_run(&runtime);   
 
-    fpu_load_double(2.53);
+    double test = ceil(1.1);
+    if (test == 2) debug_log(DEBUG_INFO " CEIL round works!\n");
 }
 
 void kernel_loop()
