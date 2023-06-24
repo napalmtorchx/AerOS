@@ -1,5 +1,7 @@
 #include <kernel.h>
 
+#define DEFAULT_FONT_PATH "A:/unifont.sfn"
+
 extern uint32_t _kernel_start;
 extern uint32_t _kernel_end;
 extern uint32_t _stack_top;
@@ -10,8 +12,7 @@ static ramfs_t      _bootfs;
 static heap_t       _kernel_heap;
 static font_t*      _sysfont;
 static console_t    _console;
-//add this is a char array so we can change its value later on with a different font
-char* font = "A:/unifont.sfn";
+
 void kernel_main(multiboot_t* mboot)
 {
     _multiboot = mboot;
@@ -30,13 +31,14 @@ void kernel_boot()
     idt_init();
     memmgr_init();
     _kernel_heap = init_kernel_heap(false);
-    devmgr_init();
-    virtfs_init();    
-
     fpu_init();
+    devmgr_init();
     vbe_setmode(1024, 768);
+    virtfs_init();    
+    taskmgr_init();    
+
     // attempt to load system font
-    FILE* file = fopen(font, "r");
+    FILE* file = fopen(DEFAULT_FONT_PATH, "r");
     if (file == NULL) { debug_log("%s Failed to locate file 'A:/unifont.sfn'\n", DEBUG_ERROR); }
     else
     {
@@ -45,6 +47,7 @@ void kernel_boot()
         fclose(file);
         _sysfont = font_create_ssfn(filedata, 0, 0);
     }
+
     // initialize console
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
     _console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, _sysfont, COLOR_WHITE, COLOR_BLACK, 64 * KILOBYTE);
@@ -95,6 +98,7 @@ void kernel_boot()
 void kernel_loop()
 {
     debug_log("%s Entered kernel main\n", DEBUG_INFO);
+    taskmgr_toggle(true);
 
     time_t t;
     int sec, fps, frames;
@@ -103,11 +107,10 @@ void kernel_loop()
     pci_init();
     console_printf(kconsole_get(), "RAM after PCI:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
 
-   /*char*       buff  = (char*)malloc(1024);
-    console_printf(kconsole_get(), vbe_available_resolutions(buff));
-    free(buff);*/
     while (true)
     {
+        lock();
+
         frames++;
         t = time(NULL);
         if (sec != t.second)
@@ -115,12 +118,9 @@ void kernel_loop()
             sec = t.second;
             fps = frames;
             frames = 0;
-
-            char buff[64];
-            memset(buff, 0, sizeof(buff));
-       //     console_printf(kconsole_get(), "FPS:%d Time:%s\n", fps, timestr(&t, buff, TIMEFORMAT_STANDARD, true));
         }
-        
+        debug_log("K");
+        taskmgr_schedule(true);
     }   
 }
 

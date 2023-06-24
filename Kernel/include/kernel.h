@@ -14,6 +14,8 @@
 #include <core/memory/heap.h>
 #include <core/fs/ramfs.h>
 #include <core/fs/virtfs.h>
+#include <core/threading/thread.h>
+#include <core/threading/taskmgr.h>
 #include <debug/debug.h>
 #include <debug/tests.h>
 #include <graphics/color.h>

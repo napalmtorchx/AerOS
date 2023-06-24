@@ -69,5 +69,5 @@ void pit_callback(irq_context_t* context)
     }
 
     irq_ack(context);
-    //taskmgr_callback(context);
+    taskmgr_callback(context);
 }
