@@ -123,3 +123,79 @@ FRESULT fpu_probe(bool force);
 FRESULT fpu_init();
 /// @brief checks if fpu is emulated @return whether the fpu is emulated or not
 bool fpu_is_emulated();
+
+// load functions
+
+/// @brief load the specified value, respecting the given precision @param val the value to load @param precision the precision to respect @return FPU_SUCCESS if successful
+FRESULT fpu_load_value(void *val, fpu_precision_ctrl_t precision);
+
+/// @brief loads a float value into the TOP register @param value the value to load @return the result status
+FRESULT fpu_load_float(float value);
+/// @brief loads a double-precision float value into the TOP register @param value the value to load @return the result status
+FRESULT fpu_load_double(double value);
+/// @brief loads a long-double-precision float value into the TOP register @param value the value to load @return the result status
+FRESULT fpu_load_long_double(long double value);
+
+/// @brief loads constant value 0.0 into the TOP register
+void fpu_load_zero();
+/// @brief loads constant value 1.0 into the TOP register
+void fpu_load_one();
+/// @brief loads constant value PI into the TOP register
+void fpu_load_pi();
+/// @brief loads constant value log2(e) into the TOP register
+void fpu_load_log2e(); 
+/// @brief loads constant value log2(10) into the TOP register
+void fpu_load_log2t(); 
+/// @brief loads constant value log10(2) into the TOP register
+void fpu_load_log10two();
+/// @brief loads constant value ln(2) into the TOP register
+void fpu_load_logn2();
+
+/// @brief load an integer value @param data the integer to load @return FPU_SUCCESS
+FRESULT fpu_load_integer(int data);
+/// @brief loads a byte into the TOP register @param data the byte to load @return FPU_SUCCESS if successful
+FRESULT fpu_load_byte(int8_t data);
+/// @brief loads a byte into the TOP register @param data the word to load @return FPU_SUCCESS if successful
+FRESULT fpu_load_word(int16_t data);
+/// @brief loads a byte into the TOP register @param data the dword to load @return FPU_SUCCESS if successful
+FRESULT fpu_load_dword(int32_t data);
+/// @brief loads a byte into the TOP register @param data the qword to load @return FPU_SUCCESS if successful
+FRESULT fpu_load_qword(uint64_t data);
+
+// store functions
+
+/// @brief gets the current value stred in the TOP register @return the stored value
+float fpu_get_float();
+/// @brief gets the current value stred in the TOP register @return the stored value
+double fpu_get_double();
+/// @brief gets the current value stred in the TOP register @return the stored value
+long double fpu_get_long_double();
+
+/// @brief retrives the value from the top register and clears it @return the retrived value
+float fpu_retrive_float();
+/// @brief retrives the value from the top register and clears it @return the retrived value
+double fpu_retrive_double();
+/// @brief retrives the value from the top register and clears it @return the retrived value
+long double fpu_retrive_long_double();
+
+/// @brief gets the current value in the TOP register, rounded to the nearest number @return the stored rounded value or MAX_INT if the stored value exceeds the max value 
+int fpu_get_integer();
+/// @brief gets the current value in the TOP register, rounded to the nearest number @return the stored rounded value or MAX_INT if the stored value exceeds the max value 
+int8_t fpu_get_byte();
+/// @brief gets the current value in the TOP register, rounded to the nearest number @return the stored rounded value or MAX_INT if the stored value exceeds the max value 
+int16_t fpu_get_word();
+/// @brief gets the current value in the TOP register, rounded to the nearest number @return the stored rounded value or MAX_INT if the stored value exceeds the max value 
+int32_t fpu_get_dword();
+/// @brief gets the current value in the TOP register, rounded to the nearest number @return the stored rounded value or MAX_INT if the stored value exceeds the max value 
+int64_t fpu_get_qword();
+
+/// @brief retrives the current value in the TOP register, rounded to the nearest number. Then cleares the register @return the retrived rounded value or MAX_INT if the stored value exceeds the max value 
+int fpu_retrive_integer();
+/// @brief retrives the current value in the TOP register, rounded to the nearest number. Then cleares the register @return the retrived rounded value or MAX_INT if the stored value exceeds the max value 
+int8_t fpu_retrive_byte();
+/// @brief retrives the current value in the TOP register, rounded to the nearest number. Then cleares the register @return the retrived rounded value or MAX_INT if the stored value exceeds the max value 
+int16_t fpu_retrive_word();
+/// @brief retrives the current value in the TOP register, rounded to the nearest number. Then cleares the register @return the retrived rounded value or MAX_INT if the stored value exceeds the max value 
+int32_t fpu_retrive_dword();
+/// @brief retrives the current value in the TOP register, rounded to the nearest number. Then cleares the register @return the retrived rounded value or MAX_INT if the stored value exceeds the max value 
+int64_t fpu_retrive_qword();

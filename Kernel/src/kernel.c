@@ -79,6 +79,8 @@ void kernel_boot()
     // runtime test
     runtime_t runtime = runtime_create((uint8_t*)prog, sizeof(prog), 0x10000);
     runtime_run(&runtime);   
+
+    fpu_load_double(2.53);
 }
 
 void kernel_loop()

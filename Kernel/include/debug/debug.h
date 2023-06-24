@@ -13,6 +13,7 @@
 #define DEBUG_MREL   "[ \x1b[33mMREL\x1b[0m ]"
 #define DEBUG_MALLOC "[\x1b[36mMALLOC\x1b[0m]"
 #define DEBUG_FREE   "[ \x1b[33mFREE\x1b[0m ]"
+#define DEBUG_MATH   "[ \x1b[36mMATH\x1b[0m ]"
 
 void debug_init();
 void debug_print(const char* str);
