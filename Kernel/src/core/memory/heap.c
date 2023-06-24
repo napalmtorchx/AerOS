@@ -5,7 +5,7 @@ heap_t heap_create(uintptr_t base, uintptr_t alloc_stack_base) {
 	// initialize the heap
     return (heap_t) { base, (alloc_entry_t *)alloc_stack_base, 0 };
 }
-heap_t init_kernel_heap() {
+heap_t init_kernel_heap(bool dbg_msgs) {
     uint32_t total = memmgr_amount_installed(0);
     uint32_t sz = total-(total/8);
     
@@ -13,6 +13,7 @@ heap_t init_kernel_heap() {
     memblk_t *memblock = memmgr_alloc(sz, MEM_HEAP);
     heap_t kheap = heap_create((uintptr_t)memblock->addr, sz);
     kheap.totalmem = sz;
+    kheap.debug_msgs = dbg_msgs;
 
     debug_log(DEBUG_INFO " HEAP BASE:%8x ALLOC_STACK:%8x\n", kheap.base, kheap.alloc_stack_base);
 
@@ -129,11 +130,14 @@ alloc_entry_t heap_alloc(
 
     alloc_end:
 
-    debug_log(DEBUG_MALLOC " ADDR:%8x-%8x SIZE:%a(%a)\n",
+    if (heap->debug_msgs)
+    {
+        debug_log(DEBUG_MALLOC " ADDR:%8x-%8x SIZE:%a(%a)\n",
               entry.offset_start + heap->base,
               entry.offset_end + heap->base, 
               entry.offset_end - entry.offset_start,
               sz);
+    }
 
     return entry;
 }
@@ -144,10 +148,14 @@ void heap_free(heap_t *heap, alloc_entry_t entry) {
     }
     
     heap_delete_entry(heap, heap_find_entry_index(heap, entry));
-    debug_log(DEBUG_FREE " ADDR:%8x-%8x SIZE:%a\n",
+
+    if (heap->debug_msgs)
+    {
+        debug_log(DEBUG_FREE " ADDR:%8x-%8x SIZE:%a\n",
               entry.offset_start + heap->base,
               entry.offset_end + heap->base,
               entry.offset_end - entry.offset_start);
+    }
 }
 alloc_entry_t heap_get_alloc_info(heap_t *heap, uintptr_t addr) {
     // locate entry

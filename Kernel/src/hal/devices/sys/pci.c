@@ -1,6 +1,5 @@
-#include <lib/stdio.h>
-#include <kernel.h>
 #include <hal/devices/sys/pci.h>
+#include <kernel.h>
 
 uint16_t pci_read_word(uint8_t bus, uint8_t slot, uint8_t func, uint8_t offset)
 {
@@ -97,25 +96,36 @@ char* remove_char(char* input,char c)
 //so, will, bite it! xD
 char* search_for_device(uint16_t dev_id,uint16_t ven_id)
 {
+    // read file
     FILE* pci_json = fopen("A:/pci.json", "r");
     char* data = (char*)malloc(pci_json->sz);
     fread(data, pci_json->sz, 1, pci_json);
     fclose(pci_json);
+
+    // attempt to match vendor id
     char* ven_id_str = (char*)malloc(ven_id);
     sprintf(ven_id_str, "%x", ven_id);
     char* ven_id_match = strstr(data, ven_id_str);
+    free(ven_id_str);
+
+    char* out_buff = (char*)malloc(1024);
+
     if (ven_id_match == NULL)
     {
-        return "Unknown";
+        strcat(out_buff, "Unknown");
+        return out_buff;
     }
     else
     {
         char* dev_id_str = (char*)malloc(dev_id);
         sprintf(dev_id_str, "%x", dev_id);
         char* dev_id_match = strstr(ven_id_match, dev_id_str);
+        free(dev_id_str);
+
         if (dev_id_match == NULL)
         {
-            return "Unknown";
+            strcat(out_buff, "Unknown");
+            return out_buff;
         }
         else
         {
@@ -124,69 +134,75 @@ char* search_for_device(uint16_t dev_id,uint16_t ven_id)
             char* name_str = (char*)malloc(name_end - name);
             memcpy(name_str, name + 7, name_end - name - 7);
             name_str[name_end - name - 7] = '\0';
-            name_str = remove_char(name_str, '"');
+
+            // remove char
+            char* new_name_str = remove_char(name_str, '"');
+            strcpy(out_buff, new_name_str);
+            free(new_name_str);
+            free(name_str);
+
+            // check vendor id
             switch(ven_id)
             {
                 case 0x8086:
-                    name_str = strcat(name_str," (Intel)");
+                    strcat(out_buff," (Intel)");
                     break;
                 case 0x1022:
-                    name_str = strcat(name_str," (AMD)");
+                    strcat(out_buff," (AMD)");
                     break;
                 case 0x10DE:
-                    name_str = strcat(name_str," (Nvidia)");
+                    strcat(out_buff," (Nvidia)");
                     break;
                 case 0x1234:
-                    name_str = strcat(name_str," (QEMU)");
+                    strcat(out_buff," (QEMU)");
                     break;
                 case 0x1AF4:
-
-                    name_str = strcat(name_str," (VirtIO)");
+                    strcat(out_buff," (VirtIO)");
                     break;
                 case 0x1B36:
-                    name_str = strcat(name_str," (Red Hat)");
+                    strcat(out_buff," (Red Hat)");
                     break;
                 case 0x1B21:
-                    name_str = strcat(name_str," (ASMedia)");
+                    strcat(out_buff," (ASMedia)");
                     break;
                 case 0x1D6B:
-                    name_str = strcat(name_str," (Linux Foundation)");
+                    strcat(out_buff," (Linux Foundation)");
                     break;
                 case 0x1AB8:
-                    name_str = strcat(name_str," (Google)");
+                    strcat(out_buff," (Google)");
                     break;
                 case 0x1AE0:
-                    name_str = strcat(name_str," (Google)");
+                    strcat(out_buff," (Google)");
                     break;
                 case 0x1B73:
-                    name_str = strcat(name_str," (Fresco Logic)");
+                    strcat(out_buff," (Fresco Logic)");
                     break;
                 case 0x1B6F:
-                    name_str = strcat(name_str," (VMware)");
+                    strcat(out_buff," (VMware)");
                     break;
                 case 0x1B96:
-                    name_str = strcat(name_str," (Red Hat)");
+                    strcat(out_buff," (Red Hat)");
                     break;
                 case 0x1B97:
-                    name_str = strcat(name_str," (Red Hat)");
+                    strcat(out_buff," (Red Hat)");
                     break;
                 case 0x1B98:
-                    name_str = strcat(name_str," (Red Hat)");
+                    strcat(out_buff," (Red Hat)");
                     break;
                 case 0x1B99:    
-                    name_str = strcat(name_str," (Red Hat)");
+                    strcat(out_buff," (Red Hat)");
                     break;
                 case 0x1B9A:
-                    name_str = strcat(name_str," (Red Hat)");
+                    strcat(out_buff," (Red Hat)");
                     break;
-                //check vmware
                 case 0x15AD:
-                    name_str = strcat(name_str," (VMware)");
+                    strcat(out_buff," (VMware)");
                     break;
-                    default:
-                        break;
+                default:
+                    break;
             }
-            return name_str;
+
+            return out_buff;
         }
     }
    
@@ -230,12 +246,14 @@ void pci_list_devices()
                     uint8_t interrupt_line = pci_read_byte(bus, slot, func, 60);
                     uint8_t interrupt_pin = pci_read_byte(bus, slot, func, 61);
                     uint8_t min_grant = pci_read_byte(bus, slot, func, 62);
-                    
-                    //printf("PCI device found at bus %d, slot %d, function %d\n", bus, slot, func);
-                    //debug log vendor id and device id
-                    //printf("%s Vendor ID: %x-%s\n",DEBUG_INFO, vendor_id,get_pci_vendor(vendor_id));
-                    printf("%s Vendor: %x - Device: %x\n",DEBUG_INFO, vendor_id,device_id);
-                    printf("%s\n",search_for_device(device_id,vendor_id));
+
+                    char* dev_name = search_for_device(device_id,vendor_id);
+
+                    debug_log("%s Located PCI device at %2x:%2x%2x\n", DEBUG_INFO, bus, slot, func);
+                    debug_log("         Name  :%s\n", dev_name);
+                    debug_log("         ID    :%4x:%4x\n", vendor_id, device_id);
+                    debug_log("         Class :%2x\n", class_code);
+                    free(dev_name);
                 }
             }
         }
