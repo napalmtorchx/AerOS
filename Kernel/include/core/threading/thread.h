@@ -1,5 +1,6 @@
 #pragma once
 #include <lib/types.h>
+#include <lib/kresult.h>
 
 #define KERNEL_UID 0x10000000
 
@@ -20,7 +21,7 @@ typedef enum
     THREAD_PRIORITY_HIGH,
 } THREAD_PRIORITY;
 
-typedef int (*thread_protocol_t)(int argc, char** argv);
+typedef KRESULT (*thread_protocol_t)(int argc, char** argv);
 
 typedef struct
 {

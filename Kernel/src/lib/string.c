@@ -129,6 +129,49 @@ char* strdup(const char* str)
     return dup;
 }
 
+char* strupper(char* str)
+{
+    for (int i = 0; i < strlen(str); i++) { str[i] = toupper(str[i]); }
+    return str;
+}
+
+char* strlower(char* str)
+{
+    for (int i = 0; i < strlen(str); i++) { str[i] = tolower(str[i]); }
+    return str;
+}
+
+char** strsplit(char* str, char delim, int* count)
+{
+    if (str == NULL) { return NULL; }
+    if (strlen(str) == 0) { return NULL; }
+
+    int len = strlen(str);
+    uint32_t num_delimeters = 0;
+
+    for(int i = 0; i < len - 1; i++) { if(str[i] == delim) { num_delimeters++; } }
+
+    uint32_t arr_size = sizeof(char*) * (num_delimeters + 1);
+    char** str_array = (char**)malloc(arr_size);
+    int str_offset = 0;
+
+    int start = 0;
+    int end = 0;
+    while(end < len)
+    {
+        while(str[end] != delim && end < len) { end++; }
+
+        char* substr = (char*)malloc(end - start + 1);
+        memcpy(substr, str + start, end - start);
+        start = end + 1;
+        end++;
+        str_array[str_offset] = substr;
+        str_offset++;
+    }
+    *count = str_offset;
+    return str_array;
+}
+
 char* strrev(char* str)
 {
     if (str == NULL) { return NULL; }

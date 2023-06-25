@@ -10,6 +10,7 @@
 #include <lib/numerics/point.h>
 #include <lib/numerics/rect.h>
 #include <core/multiboot.h>
+#include <core/cmdhost.h>
 #include <core/memory/memmgr.h>
 #include <core/memory/heap.h>
 #include <core/fs/ramfs.h>
