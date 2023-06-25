@@ -43,7 +43,7 @@ void cpuid(uint32_t* eax, uint32_t* ebx, uint32_t* ecx, uint32_t* edx)
 void enable_optimized_sse()
 {
     unsigned int eax, ebx, ecx, edx;
-    cpuid(&eax, &ebx, &ecx, &edx);
+    inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(1));
     if (ecx & (1 << 26))
     {
         inline_asm("mov %%cr4, %0" : "=r"(eax));
@@ -69,7 +69,7 @@ void get_cpu_name()
 {
 //get the full cpu name and vendor
     unsigned int eax, ebx, ecx, edx;
-    cpuid(&eax, &ebx, &ecx, &edx);
+    inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(0));
     char vendor[13];
     memcpy(vendor, &ebx, 4);
     memcpy(vendor + 4, &edx, 4);
