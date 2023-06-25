@@ -1,5 +1,4 @@
 #include <kernel.h>
-
 #define DEFAULT_FONT_PATH "A:/unifont.sfn"
 
 extern uint32_t _kernel_start;
@@ -26,11 +25,13 @@ void kernel_boot()
     debug_init();
     debug_print("Starting AerOS v2.0...\nBootloader:");
     debug_println(_multiboot->bootloader_name);
-
+sse_enable();
     gdt_init();
     idt_init();
     memmgr_init();
     _kernel_heap = init_kernel_heap(false);
+    
+    
     fpu_init();
     devmgr_init();
     vbe_setmode(1024, 768);
@@ -104,8 +105,13 @@ void kernel_loop()
     time_t t;
     int sec, fps, frames;
     console_printf(kconsole_get(), "AerOS version 2.0\nRAM:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
-
+    get_cpu_name();
+    sse_enable(); //this sets the cpu to use sse instructions
+    enable_optimized_sse(); //this enables the optimized sse instructions
+     
     pci_init();
+
+    
     console_printf(kconsole_get(), "RAM after PCI:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
 
     while (true)
@@ -120,6 +126,7 @@ void kernel_loop()
             fps = frames;
             frames = 0;
         }
+        debug_log("K");
         taskmgr_schedule(true);
     }   
 }

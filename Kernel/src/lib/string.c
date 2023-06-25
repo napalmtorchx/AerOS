@@ -185,7 +185,47 @@ char* strrev(char* str)
         str[j] = temp;
     }
 }
-
+//sse optimized memcpy
+void* memcpy_sse(void* dest, const void* src, size_t count)
+{
+    if (count < 8) return memcpy(dest, src, count);
+    if (count < 16)
+    {
+        inline_asm("movups (%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
+        return dest;
+    }
+    if (count < 32)
+    {
+        inline_asm("movups (%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
+        inline_asm("movups 16(%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, 16(%0)" : : "r"(dest));
+        return dest;
+    }
+    if (count < 64)
+    {
+        inline_asm("movups (%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
+        inline_asm("movups 16(%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, 16(%0)" : : "r"(dest));
+        inline_asm("movups 32(%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, 32(%0)" : : "r"(dest));
+        return dest;
+    }
+    if (count < 128)
+    {
+        inline_asm("movups (%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
+        inline_asm("movups 16(%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, 16(%0)" : : "r"(dest));
+        inline_asm("movups 32(%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, 32(%0)" : : "r"(dest));
+        inline_asm("movups 48(%0), %%xmm0" : : "r"(src));
+        inline_asm("movups %%xmm0, 48(%0)" : : "r"(dest));
+        return dest;
+    }
+}
 void* memcpy(void* dest, const void* src, size_t n)
 {
     uint32_t  num_dwords = n / 4;
