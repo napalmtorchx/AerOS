@@ -5,11 +5,13 @@
 console_t kconsole_init()
 {
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
-    console_t console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, sysfont_get(), COLOR_WHITE, COLOR_BLACK, 64 * KILOBYTE);
+
+    image_t console_img = image_create_from(vbe->w, vbe->h, vbe->fbptr, COLORDEPTH_32, COLORORDER_ARGB);
+    console_t console = console_create(console_img, sysfont_get(), color_to_argb(COLOR_WHITE), color_to_argb(COLOR_BLACK), 64 * KILOBYTE);
     return console;
 }
 
-console_t console_create(image_t img, font_t* font, COLOR fg, COLOR bg, size_t printbuff_sz)
+console_t console_create(image_t img, font_t* font, argb_t fg, argb_t bg, size_t printbuff_sz)
 {
     if (img.buffer == NULL) { debug_error("console_create(%p, %p, %p, %p) - Null buffer pointer", img, font, fg, bg); return (console_t){ 0 }; }
 
@@ -19,7 +21,7 @@ console_t console_create(image_t img, font_t* font, COLOR fg, COLOR bg, size_t p
     {
         .img    = img,
         .font   = font,
-        .size   = (point_t){ img.w / fontsz.x, img.h / fontsz.y },
+        .size   = (point_t){ img.sz.x / fontsz.x, img.sz.y / fontsz.y },
         .cursor = (point_t){ 0, 0 },
         .fg     = fg,
         .bg     = bg,
@@ -38,14 +40,14 @@ void console_free(console_t* console)
     if (console->printbuff != NULL) { free(console->printbuff); }
 }
 
-void console_drawstr(console_t* console, int x, int y, const char* str, COLOR fg, COLOR bg)
+void console_drawstr(console_t* console, int x, int y, const char* str, argb_t fg, argb_t bg)
 {
     if (console == NULL) { return; }    
 
     point_t fontsz = font_getsz(console->font, true);
     int xx = console->cursor.x * fontsz.x;
     int yy = console->cursor.y * fontsz.y;
-    if ((uint32_t)xx >= console->img.w || (uint32_t)yy >= console->img.h) { return; }
+    if ((uint32_t)xx >= console->img.sz.x || (uint32_t)yy >= console->img.sz.y) { return; }
     image_drawstr(&console->img, xx, yy, str, fg, bg, console->font);
 }
 
@@ -56,7 +58,7 @@ void console_clear(console_t* console)
     console_setpos(console, (point_t){ 0, 0 });
 }
 
-void console_clearc(console_t* console, COLOR color)
+void console_clearc(console_t* console, argb_t color)
 {
     if (console == NULL) { return; }    
     console->bg = color;
@@ -71,7 +73,7 @@ void console_write(console_t* console, const char* str)
     point_t fontsz = font_getsz(console->font, true);
     int xx = console->cursor.x * fontsz.x;
     int yy = console->cursor.y * fontsz.y;
-    COLOR ofg = console->fg, obg = console->bg;
+    argb_t ofg = console->fg, obg = console->bg;
 
     size_t len = strlen(str);
     for (size_t i = 0; i < len; ++i)
@@ -97,17 +99,17 @@ void console_write(console_t* console, const char* str)
 
                 uint32_t c = atol(code);
                 if (c == 0) { console->fg = ofg; console->bg = obg; }
-                else if ((c >= 30 && c <= 37) || (c >= 90  && c <= 97))  { console->fg = ansi_fg_to_color(c, ofg); }
-                else if ((c >= 40 && c <= 47) || (c >= 100 && c <= 107)) { console->bg = ansi_bg_to_color(c, obg); }
+                else if ((c >= 30 && c <= 37) || (c >= 90  && c <= 97))  { console->fg = color_to_argb(ansi_fg_to_color(c, color_from_argb(ofg))); }
+                else if ((c >= 40 && c <= 47) || (c >= 100 && c <= 107)) { console->bg = color_to_argb(ansi_fg_to_color(c, color_from_argb(obg))); }
             }
         }
         else
         {
             ssfn_src     = console->font->ssfn;
             ssfn_dst.ptr = (uint32_t*)console->img.buffer;
-            ssfn_dst.p   = (uint16_t)console->img.w * 4;
-            ssfn_dst.fg  = console->fg;
-            ssfn_dst.bg  = console->bg;
+            ssfn_dst.p   = (uint16_t)console->img.sz.x * 4;
+            ssfn_dst.fg  = color_from_argb(console->fg);
+            ssfn_dst.bg  = color_from_argb(console->bg);
             ssfn_dst.x   = xx;
             ssfn_dst.y   = yy;
 
@@ -189,10 +191,12 @@ void console_delete(console_t* console, int chars_to_del)
 
 void console_scroll(console_t* console, int lines)
 {
-    uint32_t line = console->img.w * font_getsz(console->font, true).y * 4;
-    uint32_t size = console->img.w * console->img.h * 4;
+    int fh = font_getsz(console->font, true).y;
+    uint32_t line = console->img.sz.x * fh * color_bpp_multiplier(console->img.bpp);
+    uint32_t size = console->img.sz.x * console->img.sz.y * 4;
     memcpy(console->img.buffer, (uint32_t*)((uint32_t)console->img.buffer + line), size - line);
-    memset((uint32_t*)((uint32_t)console->img.buffer + (size - line)), (uint32_t)console->bg, line);
+    image_fill_rect(&console->img, 0, console->img.sz.y - fh, console->img.sz.x, fh, console->bg);
+    //memset((uint32_t*)((uint32_t)console->img.buffer + (size - line)), console->bg.value, line);
     console_setpos(console, (point_t){ 0, console->size.y - 1 });
 }
 
@@ -202,13 +206,13 @@ void console_setpos(console_t* console, point_t pos)
     console->cursor = pos;
 }
 
-void console_setfg(console_t* console, COLOR fg)
+void console_setfg(console_t* console, argb_t fg)
 {
     if (console == NULL) { return; }
     console->fg = fg;
 }
 
-void console_setbg(console_t* console, COLOR bg)
+void console_setbg(console_t* console, argb_t bg)
 {
     if (console == NULL) { return; }
     console->bg = bg;
@@ -233,15 +237,15 @@ point_t console_getpos(console_t* console)
     return console->cursor;
 }
 
-COLOR console_getfg(console_t* console)
+argb_t console_getfg(console_t* console)
 {
-    if (console == NULL) { return 0; }
+    if (console == NULL) { return (argb_t){ 0 }; }
     return console->fg;
 }
 
-COLOR console_getbg(console_t* console)
+argb_t console_getbg(console_t* console)
 {
-    if (console == NULL) { return 0; }
+    if (console == NULL) { return (argb_t){ 0 }; }
     return console->bg;
 }
 
