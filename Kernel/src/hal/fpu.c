@@ -104,7 +104,6 @@ FRESULT fpu_load_value(void *val, fpu_precision_ctrl_t precision) {
   // check the state word for exceptions
   fpu_state_word_t state = fpu_read_state();
   if (state.exceptions.stack_fault || state.exceptions.invalid_operation || state.exceptions.denormalized_operand) {
-    debug_log(DEBUG_MATH " value could not be loaded into st(0)");
     return FPU_EXCEPTION;
   }
 
@@ -113,26 +112,14 @@ FRESULT fpu_load_value(void *val, fpu_precision_ctrl_t precision) {
 
 FRESULT fpu_load_float(float value) {
   FRESULT result = fpu_load_value(&value, FPU_PRECISION_REAL4);
-
-  // log if successful
-//  if (result == FPU_SUCCESS) debug_log(DEBUG_MATH " successfully loaded float value into FPU register st(0)\n");
-
   return result;
 }
 FRESULT fpu_load_double(double value) {
   FRESULT result = fpu_load_value(&value, FPU_PRECISION_REAL8);
-
-  // log if successful
-  if (result == FPU_SUCCESS) debug_log(DEBUG_MATH " successfully loaded double value into FPU register st(0)\n");
-
   return result;
 }
 FRESULT fpu_load_long_double(long double value) {
   FRESULT result = fpu_load_value(&value, FPU_PRECISION_REAL10);
-
-  // log if successful
-  if (result == FPU_SUCCESS) debug_log(DEBUG_MATH " successfully loaded long double value into FPU register st(0)\n");
-
   return result;
 }
 
