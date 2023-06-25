@@ -125,6 +125,7 @@ char* strdup(const char* str)
 {
     if (str == NULL) { return NULL; }
     char* dup = (char*)malloc(strlen(str) + 1);
+    memset(dup, 0, strlen(str) + 1);
     strcpy(dup, str);
     return dup;
 }
@@ -153,6 +154,7 @@ char** strsplit(char* str, char delim, int* count)
 
     uint32_t arr_size = sizeof(char*) * (num_delimeters + 1);
     char** str_array = (char**)malloc(arr_size);
+    memset(str_array, 0, arr_size);
     int str_offset = 0;
 
     int start = 0;
@@ -162,6 +164,7 @@ char** strsplit(char* str, char delim, int* count)
         while(str[end] != delim && end < len) { end++; }
 
         char* substr = (char*)malloc(end - start + 1);
+        memset(substr, 0, end - start + 1);
         memcpy(substr, str + start, end - start);
         start = end + 1;
         end++;
