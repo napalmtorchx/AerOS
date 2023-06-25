@@ -25,13 +25,12 @@ void kernel_boot()
     debug_init();
     debug_print("Starting AerOS v2.0...\nBootloader:");
     debug_println(_multiboot->bootloader_name);
-sse_enable();
+    sse_enable();
     gdt_init();
     idt_init();
     memmgr_init();
     _kernel_heap = init_kernel_heap(false);
-    
-    
+     
     fpu_init();
     devmgr_init();
     vbe_setmode(1024, 768);
@@ -126,7 +125,6 @@ void kernel_loop()
             fps = frames;
             frames = 0;
         }
-        debug_log("K");
         taskmgr_schedule(true);
     }   
 }
