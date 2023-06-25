@@ -78,6 +78,25 @@ bool vbe_start(vbe_device_t* dev, COLOR bg)
     return true;
 }
 
+uint32_t alpha_blend(uint32_t color1, uint32_t color2, float alpha)
+{
+    float a = sqrtf(alpha / 255.0f);
+    float r = (1.0f - a) * ((color1 >> 16) & 0xFF) + a * ((color2 >> 16) & 0xFF);
+    float g = (1.0f - a) * ((color1 >> 8) & 0xFF) + a * ((color2 >> 8) & 0xFF);
+    float b = (1.0f - a) * (color1 & 0xFF) + a * (color2 & 0xFF);
+    return (uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b;
+}
+uint32_t vbe_getpixel(int x, int y)
+{
+    return _vbe.fbptr[y * _vbe.w + x];
+}
+void transparent_rect(int x, int y, int w, int h, COLOR src)
+{
+    for (int i = 0; i < w; i++)
+    {
+        for (int j = 0; j < h; j++) vbe_blit(x + i, y + j, alpha_blend(src, vbe_getpixel(x + i, y + j), 50));
+    }
+}
 int vbe_stop(vbe_device_t* dev)
 {
     return true;

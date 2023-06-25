@@ -115,7 +115,7 @@ FRESULT fpu_load_float(float value) {
   FRESULT result = fpu_load_value(&value, FPU_PRECISION_REAL4);
 
   // log if successful
-  if (result == FPU_SUCCESS) debug_log(DEBUG_MATH " successfully loaded float value into FPU register st(0)\n");
+//  if (result == FPU_SUCCESS) debug_log(DEBUG_MATH " successfully loaded float value into FPU register st(0)\n");
 
   return result;
 }
