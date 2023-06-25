@@ -16,50 +16,33 @@ void sse_enable()
     inline_asm("mov %0, %%cr0" : : "r"(eax));
 
 }
-void avx_enable()
+bool is_qemu()
 {
-    //we need to check if sse is enabled
-    unsigned int eax, ebx, ecx, edx;
-    inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(1));
-    if (ecx & (1 << 26))
-    {
-        inline_asm("mov %%cr4, %0" : "=r"(eax));
-        inline_asm("orl $0x200, %0" : "=a"(eax));
-        inline_asm("mov %0, %%cr4" : : "r"(eax));
-        //check if sse is enabled
-        inline_asm("mov %%cr4, %0" : "=r"(eax));
-        if (eax & (1 << 9))
-        {
-            //now we need to check if avx is supported
-            inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(1));
-            if (ecx & (1 << 28))
-            {
-                //now we need to check if avx is enabled
-                inline_asm("mov %%cr4, %0" : "=r"(eax));
-                if (eax & (1 << 10))
-                {
-                    printf("%s AVX enabled\n", DEBUG_INFO);
-                }
-                else
-                {
-                    printf("%s AVX not enabled\n", DEBUG_ERROR);
-                }
-            }
-            else
-            {
-                printf("%s AVX not supported\n", DEBUG_ERROR);
-            }
-        }
-        else
-        {
-            printf("%s SSE not enabled\n", DEBUG_ERROR);
-        }
-    }
+    uint32_t eax, ebx, ecx, edx;
+    eax = 0x40000000;
+    cpuid(&eax, &ebx, &ecx, &edx);
+    if(strstr("KVMKVMKVM",(char*)&ebx) != NULL) return true;
+    if(strstr("TCGTCGTC",(char*)&ebx) != NULL) return true;
+    if(strstr("KVMKVMKVM",(char*)&ecx) != NULL) return true;
+    if(strstr("TCGTCGTC",(char*)&ecx) != NULL) return true;
+    if(strstr("KVMKVMKVM",(char*)&edx) != NULL) return true;
+    if(strstr("TCGTCGTC",(char*)&edx) != NULL) return true;
+    return false;
+}
+void cpuid(uint32_t* eax, uint32_t* ebx, uint32_t* ecx, uint32_t* edx)
+{
+    asm volatile("cpuid"
+        : "=a" (*eax),
+        "=b" (*ebx),
+        "=c" (*ecx),
+        "=d" (*edx)
+        : "a" (*eax)
+    );
 }
 void enable_optimized_sse()
 {
     unsigned int eax, ebx, ecx, edx;
-    inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(1));
+    cpuid(&eax, &ebx, &ecx, &edx);
     if (ecx & (1 << 26))
     {
         inline_asm("mov %%cr4, %0" : "=r"(eax));
@@ -85,7 +68,7 @@ void get_cpu_name()
 {
 //get the full cpu name and vendor
     unsigned int eax, ebx, ecx, edx;
-    inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(0));
+    cpuid(&eax, &ebx, &ecx, &edx);
     char vendor[13];
     memcpy(vendor, &ebx, 4);
     memcpy(vendor + 4, &edx, 4);

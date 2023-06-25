@@ -109,7 +109,8 @@ void kernel_loop()
      
     pci_init();
 
-    
+    if(is_qemu()) debug_log("Running in qemu\n");
+    else debug_log("Running on real hardware or other VM\n");
     console_printf(kconsole_get(), "RAM after PCI:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
 
     while (true)
