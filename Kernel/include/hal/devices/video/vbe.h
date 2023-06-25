@@ -10,6 +10,7 @@ typedef struct
     device_t    base;
     uint16_t    w, h;
     uint32_t*   fbptr;
+    uint32_t    pitch;
     vbe_mode_t* mode_hdr;
     vbe_ctrl_t* ctrl_hdr;
 } vbe_device_t;
@@ -24,3 +25,4 @@ void vbe_swap(COLOR* src);
 void vbe_clear(COLOR bg);
 void vbe_blit(int x, int y, COLOR color);
 void vbe_fill(int x, int y, int w, int h, COLOR color);
+void vbe_gradient_box(int x, int y, int w, int h, COLOR c1, COLOR c2);

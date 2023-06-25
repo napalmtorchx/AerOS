@@ -142,7 +142,11 @@ KRESULT command_cls(int argc, char** argv)
     console_clear(kconsole_get());
     return KRESULT_SUCCESS;
 }
-
+KRESULT command_pci(int argc, char** argv)
+{
+    pci_list_devices();
+    return KRESULT_SUCCESS;
+}
 KRESULT command_help(int argc, char** argv)
 {
     console_t* term = kconsole_get();

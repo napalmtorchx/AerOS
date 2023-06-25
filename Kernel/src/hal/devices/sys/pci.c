@@ -7,7 +7,7 @@ void pci_init()
 {
     _jsondata = NULL;
     load_pci_file();
-    pci_list_devices();
+  
     free(_jsondata);
 
     debug_log("%s Finished initializing PCI devices\n", DEBUG_OK);
