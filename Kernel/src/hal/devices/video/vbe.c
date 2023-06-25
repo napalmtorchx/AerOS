@@ -97,6 +97,31 @@ void transparent_rect(int x, int y, int w, int h, COLOR src)
         for (int j = 0; j < h; j++) vbe_blit(x + i, y + j, alpha_blend(src, vbe_getpixel(x + i, y + j), 50));
     }
 }
+void vbe_gradient_box(int x, int y, int w, int h, COLOR c1, COLOR c2)
+{
+    //we want to draw a gradient box from c1 to c2 without the use of math.h or alpha blending
+
+    //first we need to get the difference between the two colors
+    int r = (c2 >> 16) & 0xFF - (c1 >> 16) & 0xFF;
+    int g = (c2 >> 8) & 0xFF - (c1 >> 8) & 0xFF;
+    int b = c2 & 0xFF - c1 & 0xFF;
+    //then we need to get the step size for each color
+    float rstep = (float)r / (float)w;
+    float gstep = (float)g / (float)w;
+    float bstep = (float)b / (float)w;
+    //now we can draw the gradient
+    for (int i = 0; i < w; i++)
+    {
+        //we need to convert the float to an int
+        int r = (int)(rstep * i);
+        int g = (int)(gstep * i);
+        int b = (int)(bstep * i);
+        //then we need to add the step to the starting color
+        COLOR c = (c1 & 0xFF000000) | ((r + ((c1 >> 16) & 0xFF)) << 16) | ((g + ((c1 >> 8) & 0xFF)) << 8) | (b + (c1 & 0xFF));
+        //now we can the pixels
+        for (int j = 0; j < h; j++) vbe_blit(x + i, y + j, c);
+    }
+}
 int vbe_stop(vbe_device_t* dev)
 {
     return true;

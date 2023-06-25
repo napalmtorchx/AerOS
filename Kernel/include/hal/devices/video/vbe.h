@@ -24,3 +24,4 @@ void vbe_swap(COLOR* src);
 void vbe_clear(COLOR bg);
 void vbe_blit(int x, int y, COLOR color);
 void vbe_fill(int x, int y, int w, int h, COLOR color);
+void vbe_gradient_box(int x, int y, int w, int h, COLOR c1, COLOR c2);
