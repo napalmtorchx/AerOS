@@ -18,7 +18,7 @@ KRESULT cmdhost_main(int argc, char** argv)
     while (true)
     {
         lock();
-        unlock();
+        taskmgr_schedule(true);
     }
 
     return KRESULT_SUCCESS;
