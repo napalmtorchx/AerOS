@@ -37,6 +37,12 @@ char* strback(char* str);
 
 char* strdup(const char* str);
 
+char* strupper(char* str);
+
+char* strlower(char* str);
+
+char** strsplit(char* str, char delim, int* count);
+
 /// @brief Copies a block of memory. @param dest Pointer to the destination memory block. @param src Pointer to the source memory block. @param n Number of bytes to copy. @return Pointer to the destination memory block.
 void* memcpy(void* dest, const void* src, size_t n);
 

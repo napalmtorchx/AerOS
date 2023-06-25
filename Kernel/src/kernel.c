@@ -35,7 +35,8 @@ void kernel_boot()
     devmgr_init();
     vbe_setmode(1024, 768);
     virtfs_init();    
-    taskmgr_init();    
+    taskmgr_init();
+    cmdhost_init();
 
     // attempt to load system font
     FILE* file = fopen(DEFAULT_FONT_PATH, "r");
@@ -119,7 +120,6 @@ void kernel_loop()
             fps = frames;
             frames = 0;
         }
-        debug_log("K");
         taskmgr_schedule(true);
     }   
 }

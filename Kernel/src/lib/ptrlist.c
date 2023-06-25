@@ -11,6 +11,7 @@ ptrlist_t ptrlist_dup(ptrlist_t* list)
 {
     if (list == NULL || list->entries == NULL || list->count == 0) { return ptrlist_create(); }
     ptrlist_t outlist = (ptrlist_t){ malloc(sizeof(void*) * list->count), list->count };
+    memset(outlist.entries, 0, sizeof(void*) * list->count);
     memcpy(outlist.entries, list->entries, sizeof(void*) * list->count);
     return outlist;
 }
@@ -31,6 +32,7 @@ void* ptrlist_add(ptrlist_t* list, void* value)
     if (list == NULL) { debug_error("ptrlist_add(%p, %p) - Attempt to add entry to null pointer list", list, value); return NULL; }
 
     void** entries = malloc(sizeof(void*) * (list->count + 1));
+    memset(entries, 0, sizeof(void*) * (list->count + 1));
     if (list->entries != NULL) { memcpy(entries, list->entries, sizeof(void*) * list->count); free(list->entries); }
 
     list->entries = entries;
@@ -46,6 +48,7 @@ bool ptrlist_remove(ptrlist_t* list, int index, bool free_ptr)
 
     int i, j = 0;
     void** entries = malloc(sizeof(void*) * (list->count - 1));
+    memset(entries, 0, sizeof(void*) * (list->count - 1));
     for (i = 0; i < list->count; i++) { if ((size_t)i != (size_t)index) { entries[j++] = list->entries[i]; } }
 
     free(list->entries);
