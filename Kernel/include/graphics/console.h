@@ -21,6 +21,8 @@ void console_free(console_t* console);
 
 void console_drawstr(console_t* console, int x, int y, const char* str, COLOR fg, COLOR bg);
 
+void console_clear(console_t* console);
+void console_clearc(console_t* console, COLOR color);
 void console_write(console_t* console, const char* str);
 void console_writeln(console_t* console, const char* str);
 void console_vprintf(console_t* console, const char* fmt, va_list args);

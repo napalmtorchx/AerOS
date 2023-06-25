@@ -42,6 +42,21 @@ void console_drawstr(console_t* console, int x, int y, const char* str, COLOR fg
     image_drawstr(&console->img, xx, yy, str, fg, bg, console->font);
 }
 
+void console_clear(console_t* console)
+{
+    if (console == NULL) { return; }    
+    image_clear(&console->img, console->bg);
+    console_setpos(console, (point_t){ 0, 0 });
+}
+
+void console_clearc(console_t* console, COLOR color)
+{
+    if (console == NULL) { return; }    
+    console->bg = color;
+    image_clear(&console->img, color);
+    console_setpos(console, (point_t){ 0, 0 });
+}
+
 void console_write(console_t* console, const char* str)
 {
     if (console == NULL) { return; }
