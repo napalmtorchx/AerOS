@@ -109,10 +109,8 @@ void kernel_loop()
     enable_optimized_sse(); //this enables the optimized sse instructions
      
     pci_init();
-    transparent_rect(100, 100, 100, 100, COLOR_DARKCYAN);
-    vbe_gradient_box(0, 0, 100, 100, COLOR_DARKCYAN, COLOR_DARKYELLOW);
-    if(is_qemu()) debug_log("Running in qemu\n");
-    else debug_log("Running on real hardware or other VM\n");
+    transparent_rect(0, 0, 100, 100, COLOR_DARKCYAN);
+    if(is_qemu()) { debug_log("%s System is running in QEMU\n", DEBUG_INFO); } else { debug_log("System is running on real hardware\n"); }
     console_printf(kconsole_get(), "RAM after PCI:%u/%u KB\n", heap_get_used_mem(&_kernel_heap) / KILOBYTE, heap_get_total_mem(&_kernel_heap) / KILOBYTE);
 
     while (true)

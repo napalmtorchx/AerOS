@@ -35,6 +35,8 @@
 #include <hal/ints/realmode.h>
 #include <hal/devices/video/vga.h>
 #include <hal/devices/video/vbe.h>
+#include <hal/devices/input/ps2.h>
+#include <hal/devices/input/kbd.h>
 #include <hal/devices/sys/pit.h>
 #include <hal/devices/sys/rtc.h>
 #include <hal/devices/sys/pci.h>

@@ -1,6 +1,6 @@
-#include <lib/types.h>
-#include <kernel.h>
 #include <hal/devices/sys/cpu_opt.h>
+#include <kernel.h>
+
 void sse_enable()
 {
     unsigned int eax, cr0, cr4;
@@ -16,6 +16,7 @@ void sse_enable()
     inline_asm("mov %0, %%cr0" : : "r"(eax));
 
 }
+
 bool is_qemu()
 {
     uint32_t eax, ebx, ecx, edx;

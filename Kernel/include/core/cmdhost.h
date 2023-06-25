@@ -17,14 +17,15 @@ typedef struct
 
 KRESULT command_cls(int argc, char** argv);
 KRESULT command_help(int argc, char** argv);
-
+KRESULT command_pci(int argc, char** argv);
 static const command_t CMD_CLS  = (command_t){ "CLS",  "cls [fg:forecolor,bg:backcolor]", "Clear the screen", command_cls };
 static const command_t CMD_HELP = (command_t){ "HELP", "help [u:usage,s:short,n:cmdname]", "Show list of commands", command_help };
-
+static const command_t CMD_PCI  = (command_t){ "PCI",  "pci", "Show list of PCI devices", command_pci };
 static const command_t* COMMANDS[] = 
 {
     &CMD_CLS,
     &CMD_HELP,
+    &CMD_PCI,
 };
 
 void cmdhost_init();

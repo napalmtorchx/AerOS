@@ -18,6 +18,7 @@ void vbe_init(void)
         .w     = 0,
         .h     = 0,
         .fbptr = NULL,
+        .pitch = 0,
     };
     devmgr_register(&_vbe);
     devmgr_start(_vbe.base.uid, 0xFF000000);
@@ -155,6 +156,7 @@ bool vbe_setmode(int w, int h)
             _vbe.fbptr    = minfo->physical_base;
             _vbe.w        = minfo->res_x;
             _vbe.h        = minfo->res_y;
+            _vbe.pitch    = minfo->pitch;
             debug_log("%s Set VBE mode to %dx%dx32bpp\n", DEBUG_INFO, _vbe.mode_hdr->res_x, _vbe.mode_hdr->res_y);
             return true;
         }
@@ -176,7 +178,7 @@ void vbe_clear(COLOR bg)
 void vbe_blit(int x, int y, COLOR color)
 {
     if ((uint32_t)x >= _vbe.w || (uint32_t)y >= _vbe.h) { return; }
-    _vbe.fbptr[y * _vbe.w + x] = color;
+    _vbe.fbptr[y * _vbe.pitch / 4 + x] = color;
 }
 
 void vbe_fill(int x, int y, int w, int h, COLOR color)
