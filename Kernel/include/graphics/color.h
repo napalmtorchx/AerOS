@@ -1,6 +1,23 @@
 #pragma once
 #include <lib/types.h>
 
+typedef enum
+{
+    COLORDEPTH_4  = 4,
+    COLORDEPTH_8  = 8,
+    COLORDEPTH_16 = 16,
+    COLORDEPTH_24 = 24,
+    COLORDEPTH_32 = 32,
+} COLORDEPTH;
+
+typedef enum
+{
+    COLORORDER_ARGB = 1,
+    COLORORDER_ABGR = 2,
+    COLORORDER_RGBA = 3,
+    COLORORDER_BGRA = 4,
+} COLORORDER;
+
 typedef uint32_t COLOR;
 
 #define COLOR_BLACK         0xFF000000
@@ -39,8 +56,15 @@ typedef union
 
 COLOR  color_create(uint8_t a, uint8_t r, uint8_t g, uint8_t b);
 COLOR  color_from_argb(argb_t color);
+COLOR  color_from_abgr(argb_t color);
+COLOR  color_from_rgba(argb_t color);
+COLOR  color_from_bgra(argb_t color);
 argb_t color_to_argb(COLOR color);
-
+argb_t color_to_abgr(COLOR color);
+argb_t color_to_rgba(COLOR color);
+argb_t color_to_bgra(COLOR color);
 uint32_t color_dist_squared(argb_t argb, color4_t col4);
 color4_t color4_from_argb(argb_t color);
 uint8_t  color4_bg_index(color4_t color);
+
+uint32_t color_bpp_multiplier(COLORDEPTH bpp);

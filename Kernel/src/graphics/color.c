@@ -23,9 +23,21 @@ static const color4_t COLOR4_PALETTE[] =
 
 COLOR color_create(uint8_t a, uint8_t r, uint8_t g, uint8_t b) { return (a << 24) | (r << 16) | (g << 8) | b; }
 
-COLOR color_from_argb(argb_t color) { return color.value; }
+COLOR color_from_argb(argb_t color) { return (color.desc.a << 24) | (color.desc.r << 16) | (color.desc.g << 8) | color.desc.b; }
+
+COLOR color_from_abgr(argb_t color) { return (color.desc.a << 24) | (color.desc.b << 16) | (color.desc.g << 8) | color.desc.r; }
+
+COLOR color_from_rgba(argb_t color) { return (color.desc.r << 24) | (color.desc.g << 16) | (color.desc.b << 8) | color.desc.a; }
+
+COLOR color_from_bgra(argb_t color) { return (color.desc.b << 24) | (color.desc.g << 16) | (color.desc.r << 8) | color.desc.a; }
 
 argb_t color_to_argb(COLOR color) { return (argb_t){ (color & 0xFF000000) >> 24, (color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF }; }
+
+argb_t color_to_abgr(COLOR color) { return (argb_t){ (color & 0xFF000000) >> 24, color & 0xFF, (color & 0xFF0000) >> 16, (color & 0xFF00) >> 8 }; }
+
+argb_t color_to_rgba(COLOR color) { return (argb_t){ (color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF, (color & 0xFF000000) >> 24 }; }
+
+argb_t color_to_bgra(COLOR color) { return (argb_t){ color & 0xFF, (color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, (color & 0xFF000000) >> 24 }; }
 
 uint32_t color_dist_squared(argb_t argb, color4_t col4)
 {
@@ -53,4 +65,17 @@ uint8_t color4_bg_index(color4_t color)
 {
     if (color.index == VGA_DARKGRAY) { color.index = 0; }
     return 0;
+}
+
+uint32_t color_bpp_multiplier(COLORDEPTH bpp)
+{
+    size_t bpp_mult = 1;
+    switch (bpp)
+    {
+        default: { return 0; }
+        case COLORDEPTH_16: { bpp_mult = 2; break; }
+        case COLORDEPTH_24: { bpp_mult = 3; break; }
+        case COLORDEPTH_32: { bpp_mult = 4; break; }
+    }
+    return bpp_mult;
 }
