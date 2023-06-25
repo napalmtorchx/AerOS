@@ -27,7 +27,7 @@ void* realloc(void* ptr, size_t size)
     // allocate a new entry
     void *data = malloc(size);
     memset(data, 0, size);
-    memcpy(data, ptr, sz);
+    memcpy(data, ptr, sz > size ? size : sz);
 
     free(ptr);
     return data;
