@@ -1,18 +1,39 @@
 #include <core/cmdhost.h>
 #include <kernel.h>
 
-static thread_t* _thread;
-static char**    _inqueue;
-static size_t    _qsz;
-static int       _count;
+static thread_t*   _thread;
+static char**      _inqueue;
+static size_t      _qsz;
+static int         _count;
+static kbd_state_t _kb;
+static char        _kbuff[0x10000];
+static bool        _sending;
+static bool        _processing;
+
+void cmdhost_on_char(void* handle, char c)
+{
+    console_printf(kconsole_get(), "%c", c);
+}
+
+void cmdhost_on_del(void* handle, void* unused)
+{
+    console_delete(kconsole_get(), 1);
+}
+
+void cmdhost_on_ret(void* handle, void* unused) { }
 
 void cmdhost_init()
 {
-    _thread  = thread_create("cmdhost", 256 * KILOBYTE, cmdhost_main, THREAD_PRIORITY_NORMAL, 0, NULL);
-    _qsz     = 4096;
-    _count   = 0;
+    _thread     = thread_create("cmdhost", 256 * KILOBYTE, cmdhost_main, THREAD_PRIORITY_NORMAL, 0, NULL);
+    _qsz        = 4096;
+    _count      = 0;
+    _sending    = false;
+    _processing = false;
     _inqueue = (char**)malloc(sizeof(char*) * _qsz);
     memset(_inqueue, 0, sizeof(char*) * _qsz);
+    memset(_kbuff, 0, sizeof(_kbuff));
+
+    _kb = kbd_state_create(_kbuff, sizeof(_kbuff), NULL, false, cmdhost_on_char, cmdhost_on_del, cmdhost_on_ret);
 
     taskmgr_load(_thread);
     taskmgr_start(_thread);
@@ -20,11 +41,31 @@ void cmdhost_init()
     debug_log("%s Initialized command host\n", DEBUG_OK);
 }
 
+void cmdhost_prompt()
+{
+    console_printf(kconsole_get(), "%sA:/%s> ", ANSI_FG_CYAN, ANSI_RESET);
+}
+
 KRESULT cmdhost_main(int argc, char** argv)
 {
     while (true)
     {
         lock();
+
+        kbd_setstate(&_kb);
+
+        if (!_processing)
+        {
+            if (kbd_keydown(KEY_ENTER) && !_sending)
+            {
+                _processing = true;
+                _sending = true;
+                console_newline(kconsole_get());
+                cmdhost_push(_kbuff);
+                memset(_kbuff, 0, sizeof(_kbuff));
+            }   
+            if (kbd_keyup(KEY_ENTER)) { _sending = false; }
+        }
         
         int pos = 0;
         while (pos < _count)
@@ -62,6 +103,12 @@ KRESULT cmdhost_main(int argc, char** argv)
 
         for (size_t i = 0; i < _count; i++) { free(_inqueue[i]); }
         _count = 0;
+
+        if (_processing)
+        {
+            cmdhost_prompt();
+            _processing = false;
+        }
 
         taskmgr_schedule(true);
     }

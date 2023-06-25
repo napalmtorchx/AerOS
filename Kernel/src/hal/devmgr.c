@@ -13,6 +13,7 @@ void devmgr_init()
     vbe_init();
     pit_init();
     rtc_init();
+    ps2_init();
 
     debug_log("%s Initialized device manager\n", DEBUG_OK);
 }
