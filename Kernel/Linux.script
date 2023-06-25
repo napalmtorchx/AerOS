@@ -13,7 +13,7 @@ RMMK_DIR ../Bin
 
 ASSEMBLE_PATH    ../Bin            src      -felf32
 
-COMPILE_PATH     ../Bin            src      -IKernel/include -nostdlib -ffreestanding -Wall -Wno-unused-variable -Wno-unused-parameter -g
+COMPILE_PATH     ../Bin            src      -IKernel/include -nostdlib -ffreestanding -Wall -Wno-unused-variable -Wno-unused-parameter -g -msse -mfpmath=sse
 
 SET_DIR  Kernel
 LINK_PATH        ../Bin/kernel.elf ../Bin         -T  Kernel/linker.ld
@@ -23,4 +23,4 @@ MK_RAMDISK Kernel/build_ramdisk.script
 ; LIMINE ../Images/AerOS.iso --force-mbr
 ; PIPE
 ; RUN  Tools/VMWare/vmware_mach.vmx
-; RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio -enable-kvm -rtc base=localtime -cpu host -vga std
+; RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio -enable-kvm -rtc base=localtime -cpu host -vga std -smp 6

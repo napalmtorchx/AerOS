@@ -46,6 +46,8 @@ void* memcpyt(void* dest, const void* src, size_t n);
 /// @brief Copies a block of 64bit memory. @param dest Pointer to the destination memory block. @param src Pointer to the source memory block. @param n Number of 64bit values to copy. @return Pointer to the destination memory block.
 void* memcpyq(void* dest, const void* src, size_t n);
 
+///@brief SSE optimized memcpy @param dest Pointer to the destination memory block. @param src Pointer to the source memory block. @param count Number of bytes to copy. @return Pointer to the destination memory block.
+void* memcpy_sse(void* dest, const void* src, size_t count);
 /// @brief Fills a block of memory with a constant byte. @param str Pointer to the memory block to fill. @param c Value to be set (as an int). @param n Number of bytes to fill. @return Pointer to the filled memory block.
 void* memset(void* ptr, int c, size_t n);
 

@@ -37,6 +37,7 @@
 #include <hal/devices/sys/pit.h>
 #include <hal/devices/sys/rtc.h>
 #include <hal/devices/sys/pci.h>
+#include <hal/devices/sys/cpu_opt.h>
 #include <runtime/executable.h>
 #include <runtime/runtime.h>
 
