@@ -16,6 +16,7 @@ typedef struct
     size_t  printbuff_sz;
 } console_t;
 
+console_t kconsole_init();
 console_t console_create(image_t img, font_t* font, COLOR fg, COLOR bg, size_t printbuff_sz);
 void console_free(console_t* console);
 

@@ -45,6 +45,7 @@
 #include <runtime/runtime.h>
 
 void kernel_boot();
+void kernel_init_graphics();
 void kernel_loop();
 
 uintptr_t kernel_addr_start();

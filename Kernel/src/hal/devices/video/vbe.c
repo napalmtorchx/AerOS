@@ -74,7 +74,7 @@ char* vbe_available_resolutions(char* buff)
 }
 bool vbe_start(vbe_device_t* dev, COLOR bg)
 {
-    vbe_setmode(640, 480);
+    vbe_setmode(1024, 768);
     vbe_clear(bg);
     return true;
 }

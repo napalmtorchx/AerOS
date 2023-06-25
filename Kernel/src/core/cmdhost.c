@@ -39,6 +39,8 @@ void cmdhost_init()
     taskmgr_start(_thread);
 
     debug_log("%s Initialized command host\n", DEBUG_OK);
+    console_clear(kconsole_get());
+    console_printf(kconsole_get(), "AerOS version 2.0\nRAM Usage:%u/%u KB\n", heap_get_used_mem(kernel_heap_ref()) / KILOBYTE, heap_get_total_mem(kernel_heap_ref()) / KILOBYTE);
 }
 
 void cmdhost_prompt()
@@ -48,6 +50,10 @@ void cmdhost_prompt()
 
 KRESULT cmdhost_main(int argc, char** argv)
 {
+    lock();
+    cmdhost_prompt();
+    unlock();
+
     while (true)
     {
         lock();

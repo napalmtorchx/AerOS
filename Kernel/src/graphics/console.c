@@ -2,6 +2,13 @@
 #include <graphics/ssfn.h>
 #include <kernel.h>
 
+console_t kconsole_init()
+{
+    vbe_device_t* vbe = devmgr_from_name("vbe_controller");
+    console_t console = console_create((image_t){ vbe->w, vbe->h, vbe->fbptr }, sysfont_get(), COLOR_WHITE, COLOR_BLACK, 64 * KILOBYTE);
+    return console;
+}
+
 console_t console_create(image_t img, font_t* font, COLOR fg, COLOR bg, size_t printbuff_sz)
 {
     if (img.buffer == NULL) { debug_error("console_create(%p, %p, %p, %p) - Null buffer pointer", img, font, fg, bg); return (console_t){ 0 }; }
