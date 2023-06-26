@@ -47,7 +47,21 @@ void enable_sse()
         : "r"(cr4)
         :
     );
-
+    int cr0_check = 0;
+    int cr4_check = 0;
+    asm volatile(
+        "mov %%cr0, %0\n"
+        : "=r"(cr0_check)
+        :
+        :
+    );
+    asm volatile(
+        "mov %%cr4, %0\n"
+        : "=r"(cr4_check)
+        :
+        :
+    );
+    if ((cr0_check & (1 << 2)) && (cr4_check & (1 << 9))) { _sse = true; }
 }
 int check_sse_support() {
     int sse_supported = 0;
