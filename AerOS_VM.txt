@@ -105,12 +105,12 @@ FPU-Extended Instruction Set:
 - 0x6D FADDW	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (short)*v;
 - 0x6E FADDL	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (int)*v;
 
-- 0x6F FSUBS	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (float)*v;
-- 0x70 FSUBD	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (double)*v;
-- 0x71 FSUBR	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (real)*v;
-- 0x72 FSUBB	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (byte)*v;
-- 0x73 FSUBW	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (short)*v;
-- 0x74 FSUBL	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (int)*v;
+- 0x6F FSUBS	5	(int)			Subtracts the number at the given address to the top value from the FPU stack		st(0) - (float)*v;
+- 0x70 FSUBD	5	(int)			Subtracts the number at the given address to the top value from the FPU stack		st(0) - (double)*v;
+- 0x71 FSUBR	5	(int)			Subtracts the number at the given address to the top value from the FPU stack		st(0) - (real)*v;
+- 0x72 FSUBB	5	(int)			Subtracts the number at the given address to the top value from the FPU stack		st(0) - (byte)*v;
+- 0x73 FSUBW	5	(int)			Subtracts the number at the given address to the top value from the FPU stack		st(0) - (short)*v;
+- 0x74 FSUBL	5	(int)			Subtracts the number at the given address to the top value from the FPU stack		st(0) - (int)*v;
 
 - 0x75 FMULS	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (float)*v;
 - 0x76 FMULD	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (double)*v;
@@ -125,3 +125,27 @@ FPU-Extended Instruction Set:
 - 0x7E FDIVB	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (byte)*v;
 - 0x7F FDIVW	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (short)*v;
 - 0x80 FDIVL	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (int)*v;
+
+- 0x81 FADDRB	2	(reg)			Adds the number at the given register with the top value from the FPU stack		st(0) + (byte)*v;
+- 0x82 FADDRW	2	(reg)			Adds the number at the given register with the top value from the FPU stack		st(0) + (short)*v;
+- 0x83 FADDRL	2	(reg)			Adds the number at the given register with the top value from the FPU stack		st(0) + (int)*v;
+
+- 0x84 FSUBRB	2	(reg)			Subtracts the number at the given register to the top value from the FPU stack		st(0) - (byte)*v;
+- 0x85 FSUBRW	2	(reg)			Subtracts the number at the given register to the top value from the FPU stack		st(0) - (short)*v;
+- 0x86 FSUBRL	2	(reg)			Subtracts the number at the given register to the top value from the FPU stack		st(0) - (int)*v;
+
+- 0x87 FMULRB	2	(reg)			Multiplies the number at the given register with the top value from the FPU stack	st(0) * (byte)*v;
+- 0x88 FMULRW	2	(reg)			Multiplies the number at the given register with the top value from the FPU stack	st(0) * (short)*v;
+- 0x89 FMULRL	2	(reg)			Multiplies the number at the given register with the top value from the FPU stack	st(0) * (int)*v;
+
+- 0x8A FDIVRB	2	(reg)			Divides the number at the given register with the top value from the FPU stack		st(0) / (byte)*v;
+- 0x8B FDIVRW	2	(reg)			Divides the number at the given register with the top value from the FPU stack		st(0) / (short)*v;
+- 0x8C FDIVRL	2	(reg)			Divides the number at the given register with the top value from the FPU stack		st(0) / (int)*v;
+
+- 0x8D FWAIT	1	(null)			Waits for any current FPU action							float result = fwait(.1f/.2f);
+
+- 0x8E FROUND	1	(null)			Rounds the number at the top of FPU's stack to the nearest integral number		round(st(0));
+- 0x8F FSQRT	1	(null)			Calculates the square root of the number at the top of FPU's stack			sqrt(st(0));
+
+
+

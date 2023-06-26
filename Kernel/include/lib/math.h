@@ -11,6 +11,10 @@ long double ceill(long double x);
 double floor(double x);
 float floorf(float x);
 
+double fmin(double x, double y);
+float fminf(float x, float y);
+long double fminl(long double x, long double y);
+
 double sqrt(double x);
 float sqrtf(float x);
 long double sqrtl(long double x);

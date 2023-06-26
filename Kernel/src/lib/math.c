@@ -60,6 +60,28 @@ float floorf(float x)
     return 0;
 }
 
+double fmin(double x, double y) {
+    fpu_load_double(x);
+    double result = fpu_smaller_double(y) ? y : x;
+
+    x = fpu_retrive_double();
+    return result;
+}
+float fminf(float x, float y) {
+    fpu_load_float(x);
+    float result = fpu_smaller_float(y) ? y : x;
+
+    x = fpu_retrive_float();
+    return result;
+}
+long double fminl(long double x, long double y) {
+    fpu_load_long_double(x);
+    float result = fpu_smaller_long_double(y) ? y : x;
+
+    x = fpu_retrive_long_double();
+    return result;
+}
+
 double sqrt(double x)
 {
     fpu_set_round_nearest();

@@ -296,6 +296,172 @@ FRESULT fpu_sqrt() {
   return FPU_SUCCESS;
 }
 
+void fpu_compare_float(float value) { inline_asm("fcoms %0; fwait" : : "m" (value)); }
+void fpu_compare_double(double value) { inline_asm("fcoml %0; fwait" : : "m" (value)); }
+void fpu_compare_long_double(long double value) {
+  fpu_load_long_double(value); // st(0)
+
+  // this is the only way to call the fcomi instruction
+  // 0xdb is the instruction, 0xf1 is the byte for st(1)
+  inline_asm(".byte 0xdb, 0xf1; fwait");
+
+  // retrive the value back
+  value = fpu_retrive_long_double();
+} 
+
+bool fpu_greater_float(float value) {
+  // compare the value and read the state word
+  fpu_compare_float(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 1 && state.cf2 == 0 && state.cf3 == 0;
+}
+bool fpu_greater_double(double value) {
+  // compare the value and read the state word
+  fpu_compare_double(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 1 && state.cf2 == 0 && state.cf3 == 0;
+}
+bool fpu_greater_long_double(long double value) {
+  // check the value and perform conditional operation
+  fpu_compare_long_double(value);
+
+  // if no flag is set, go to greater
+  inline_asm goto("jb %l[greater]" : : : : greater);
+  // in any other case, return false
+  return false;
+
+  greater:
+  return true;
+}
+
+bool fpu_smaller_float(float value) {
+  // compare the value and read the state word
+  fpu_compare_float(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 0;
+}
+bool fpu_smaller_double(double value) {
+  // compare the value and read the state word
+  fpu_compare_double(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 0;
+}
+bool fpu_smaller_long_double(long double value) {
+  // check the value and perform conditional operation
+  fpu_compare_long_double(value);
+
+  // if only the cf flag is set go to smaller 
+  inline_asm goto("ja %l[smaller]" : : : : smaller);
+  // in any other case, return false
+  return false;
+
+  smaller:
+  return true;
+}
+
+bool fpu_equal_float(float value) {
+  // compare the value and read the state word
+  fpu_compare_float(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 1;
+}
+bool fpu_equal_double(double value) {
+  // compare the value and read the state word
+  fpu_compare_double(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 1;
+}
+bool fpu_equal_long_double(long double value) {
+  // check the value and perform conditional operation
+  fpu_compare_long_double(value);
+
+  // if only the zf flag is set go to equal 
+  inline_asm goto("jz %l[equal]" : : : : equal);
+  // in any other case, return false
+  return false;
+
+  equal:
+  return true;
+}
+
+bool fpu_greater_or_equal_float(float value) {
+  // compare the value and read the state word
+  fpu_compare_float(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 1 && state.cf2 == 0 && state.cf3 == 0 ||
+         state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 1;
+}
+bool fpu_greater_or_equal_double(double value) {
+  // compare the value and read the state word
+  fpu_compare_double(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 1 && state.cf2 == 0 && state.cf3 == 0 ||
+         state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 1;
+}
+bool fpu_greater_or_equal_long_double(long double value) {
+  // check the value and perform conditional operation
+  fpu_compare_long_double(value);
+
+  // if no flag is set, go to greater_or_equal
+  inline_asm goto("jb %l[greater_or_equal]" : : : : greater_or_equal);
+  // if only the zf flag is set go to greater_or_equal 
+  inline_asm goto("jz %l[greater_or_equal]" : : : : greater_or_equal);
+  // in any other case, return false
+  return false;
+
+  greater_or_equal:
+  return true;
+}
+
+bool fpu_smaller_or_equal_float(float value) {
+  // compare the value and read the state word
+  fpu_compare_float(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 0 ||
+         state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 1;
+}
+bool fpu_smaller_or_equal_double(double value) {
+  // compare the value and read the state word
+  fpu_compare_double(value);
+  fpu_state_word_t state = fpu_read_state();
+
+  // check the compare flags
+  return state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 0 ||
+         state.cf0 == 0 && state.cf2 == 0 && state.cf3 == 1;
+}
+bool fpu_smaller_or_equal_long_double(long double value) {
+  // check the value and perform conditional operation
+  fpu_compare_long_double(value);
+
+  // if no flag is set, go to greater_or_equal
+  inline_asm goto("ja %l[smaller_or_equal]" : : : : smaller_or_equal);
+  // if only the cf flag is set go to smaller 
+  inline_asm goto("jz %l[smaller_or_equal]" : : : : smaller_or_equal);
+  // in any other case, return false
+  return false;
+
+  smaller_or_equal:
+  return true;
+}
+
 void fpu_set_round_up() {
   // set the round up flag
   fpu_control_word_t control_w = fpu_read_ctrl();

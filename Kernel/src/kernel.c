@@ -29,6 +29,7 @@ void kernel_boot()
     debug_println(_multiboot->bootloader_name);
     gdt_init();
     idt_init();
+    fpu_init();
 
     memmgr_init();
     _kernel_heap = init_kernel_heap(false);
@@ -61,6 +62,10 @@ void kernel_init_graphics()
 void kernel_loop()
 {
     debug_log("%s Entered kernel main\n", DEBUG_INFO);
+
+    char buf[20];
+    ftoa(fminl(.1, .01), buf, 3);
+    debug_log(DEBUG_INFO " fminl test: %s\n", buf);
 
     //test_all();
     _booted = true;
