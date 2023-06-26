@@ -39,7 +39,7 @@ Instruction Set:
 - 0x15 JMPR	2	(reg)			Jump to address value stored in register						goto R0
 - 0x16 CALL	5	(int)			Call subroutine at immediate address value						v();
 - 0x17 CALLR	2	(reg)			Call subroutine stored in register							R0();
-- 0x18 RET	5	(null)			Return from subroutine(pop address from stack and goto it)				return;	
+- 0x18 RET	1	(null)			Return from subroutine(pop address from stack and goto it)				return;	
 
 - 0x19 PUSH	5	(int)			Push immediate 32-bit value to the stack						int var = v
 - 0x1A PUSHR	2	(reg)			Push value in register to the stack							int var = R0
@@ -69,9 +69,9 @@ Instruction Set:
 - 0x2F WRB	6	(int, byte)		Write immediate 8-bit value to immediate address					(byte*)*ptr = (byte)v
 - 0x30 WRW	7	(int, short)		Write immediate 16-bit value to immediate address					(short*)*ptr = (short)v
 - 0x31 WRL	9	(int, int)		Write immediate 32-bit value to immediate address					*ptr = v
-- 0x32 WRRB	3	(reg, byte)		Write immediate 8-bit value to address in register					(byte*)*R0 = (byte)v
-- 0x33 WRRW	4	(reg, short)		Write immediate 16-bit value to address in register					(short*)*R0 = (short)v
-- 0x34 WRRL	6	(reg, int)		Write immediate 32-bit value to address in register					*R0 = v
+- 0x32 WRB	3	(reg, byte)		Write immediate 8-bit value to address in register					(byte*)*R0 = (byte)v
+- 0x33 WRW	4	(reg, short)		Write immediate 16-bit value to address in register					(short*)*R0 = (short)v
+- 0x34 WRL	6	(reg, int)		Write immediate 32-bit value to address in register					*R0 = v
 
 - 0x35 STB	6	(int, reg)		Write value in register(8-bit cast) to immediate address				(byte*)*ptr = (byte)R0
 - 0x36 STW	6	(int, reg)		Write value in register(16-bit cast) to immediate address				(short*)*ptr = (short)R0
@@ -82,3 +82,46 @@ Instruction Set:
 
 - 0x3B SYSCALL  5	(int)			Perform system call specified by immediate value					syscall(v);
 - 0x3C SYSCALLR 2	(reg)			Perform system call specified in register						syscall(R0);
+
+
+FPU-Extended Instruction Set:
+- op   name     bytes   arguments		description										usage
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- 0x60 FPUSHS	5	(float)			Pushes a single precision value onto the FPU's stack					float var = .1f;
+- 0x61 FPUSHD	9	(double)		Pushes a double precision value onto the FPU's stack					double var = .1f;
+- 0x62 FPUSHR	11	(real)			Pushes a real precision value onto the FPU's stack					real var = .1f;
+
+- 0x63 FPOPS	5	(int)			Pops the top value from the FPU stack into the given memory address (single precision)	float var = st(0);
+- 0x64 FPOPD	5	(int)			Pops the top value from the FPU stack into the given memory address (double precision)	double var = st(0);
+- 0x65 FPOPR	5	(int)			Pops the top value from the FPU stack into the given memory address (real precision)	real var = st(0);
+- 0x66 FPOPB	5	(int)			Pops the top value from the FPU stack into the given memory address (rounded to byte)	(byte)st(0);
+- 0x67 FPOPW	5	(int)			Pops the top value from the FPU stack into the given memory address (rounded to word)	(short)st(0);
+- 0x68 FPOPL	5	(int)			Pops the top value from the FPU stack into the given memory address (rounded to int)	(int)st(0);
+
+- 0x69 FADDS	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (float)*v;
+- 0x6A FADDD	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (double)*v;
+- 0x6B FADDR	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (real)*v;
+- 0x6C FADDB	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (byte)*v;
+- 0x6D FADDW	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (short)*v;
+- 0x6E FADDL	5	(int)			Adds the number at the given address with the top value from the FPU stack		st(0) + (int)*v;
+
+- 0x6F FSUBS	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (float)*v;
+- 0x70 FSUBD	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (double)*v;
+- 0x71 FSUBR	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (real)*v;
+- 0x72 FSUBB	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (byte)*v;
+- 0x73 FSUBW	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (short)*v;
+- 0x74 FSUBL	5	(int)			Subtracts the number at the given address with the top value from the FPU stack		st(0) - (int)*v;
+
+- 0x75 FMULS	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (float)*v;
+- 0x76 FMULD	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (double)*v;
+- 0x77 FMULR	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (real)*v;
+- 0x78 FMULB	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (byte)*v;
+- 0x79 FMULW	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (short)*v;
+- 0x7A FMULL	5	(int)			Multiplies the number at the given address with the top value from the FPU stack	st(0) * (int)*v;
+
+- 0x7B FDIVS	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (float)*v;
+- 0x7C FDIVD	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (double)*v;
+- 0x7D FDIVR	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (real)*v;
+- 0x7E FDIVB	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (byte)*v;
+- 0x7F FDIVW	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (short)*v;
+- 0x80 FDIVL	5	(int)			Divides the number at the given address with the top value from the FPU stack		st(0) / (int)*v;

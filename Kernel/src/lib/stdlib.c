@@ -22,9 +22,19 @@ void* calloc(size_t nmemb, size_t size)
 
 void* realloc(void* ptr, size_t size)
 {
-    debug_error("realloc(%p, %u) - Not yet implemented\n", ptr, size);
-    return NULL;
+    // read entry info
+    alloc_entry_t entry = heap_get_alloc_info(kernel_heap_ref(), (uintptr_t)ptr - kernel_heap_ref()->base);
+    size_t sz = entry.offset_end - entry.offset_start;
+    
+    // allocate a new entry
+    void *data = malloc(size);
+    memset(data, 0, size);
+    memcpy(data, ptr, sz > size ? size : sz);
+
+    free(ptr);
+    return data;
 }
+    
 
 void free(void* ptr)
 {
