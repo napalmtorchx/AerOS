@@ -142,6 +142,10 @@ FPU-Extended Instruction Set:
 - 0x8B FDIVRW	2	(reg)			Divides the number at the given register with the top value from the FPU stack		st(0) / (short)*v;
 - 0x8C FDIVRL	2	(reg)			Divides the number at the given register with the top value from the FPU stack		st(0) / (int)*v;
 
-- 0x8D FROUND	1	(null)			Rounds the number at the top of FPU's stack to the nearest integral number		round(st(0));
-- 0x8E FSQRT	1	(null)			Calculates the square root of the number at the top of FPU's stack			sqrt(st(0));
+- 0x8D FWAIT	1	(null)			Waits for any current FPU action							float result = fwait(.1f/.2f);
+
+- 0x8E FROUND	1	(null)			Rounds the number at the top of FPU's stack to the nearest integral number		round(st(0));
+- 0x8F FSQRT	1	(null)			Calculates the square root of the number at the top of FPU's stack			sqrt(st(0));
+
+
 

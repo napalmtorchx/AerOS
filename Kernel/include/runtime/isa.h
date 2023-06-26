@@ -28,6 +28,10 @@ typedef enum
     RTOP_FMULRB, RTOP_FMULRW, RTOP_FMULRL,
     RTOP_FDIVRB, RTOP_FDIVRW, RTOP_FDIVRL,
 
+    RTOP_FWAIT,
+
+    RTOP_FROUND, RTOP_FSQRT,
+
     RTOP_EXIT = 0xFF,
 } RUNTIME_OP;
 
@@ -169,5 +173,110 @@ void runtime_fadds(runtime_t* runtime);
 /// @brief Add the double value at the given memory location to the TOP register @param runtime Pointer to virtual machine
 void runtime_faddd(runtime_t* runtime);
 
+/// @brief Add the real value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_faddr(runtime_t* runtime);
+
 /// @brief Add the byte value at the given memory location to the TOP register @param runtime Pointer to virtual machine
 void runtime_faddb(runtime_t* runtime);
+
+/// @brief Add the short value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_faddw(runtime_t* runtime);
+
+/// @brief Add the integer value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_faddl(runtime_t* runtime);
+
+/// @brief Add the byte value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_faddrb(runtime_t* runtime);
+
+/// @brief Add the short value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_faddrw(runtime_t* runtime);
+
+/// @brief Add the integer value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_faddrl(runtime_t* runtime);
+
+/// @brief Subtract the float value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubs(runtime_t* runtime);
+
+/// @brief Subtract the double value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubd(runtime_t* runtime);
+
+/// @brief Subtract the real value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubr(runtime_t* runtime);
+
+/// @brief Subtract the byte value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubb(runtime_t* runtime);
+
+/// @brief Subtract the short value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubw(runtime_t* runtime);
+
+/// @brief Subtract the integer value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubl(runtime_t* runtime);
+
+/// @brief Subtract the byte value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubrb(runtime_t* runtime);
+
+/// @brief Subtract the short value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubrw(runtime_t* runtime);
+
+/// @brief Subtract the integer value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fsubrl(runtime_t* runtime);
+
+/// @brief Multiply the float value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmuls(runtime_t* runtime);
+
+/// @brief Multiply the double value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmuld(runtime_t* runtime);
+
+/// @brief Multiply the real value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmulr(runtime_t* runtime);
+
+/// @brief Multiply the byte value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmulb(runtime_t* runtime);
+
+/// @brief Multiply the short value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmulw(runtime_t* runtime);
+
+/// @brief Multiply the integer value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmull(runtime_t* runtime);
+
+/// @brief Multiply the byte value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmulrb(runtime_t* runtime);
+
+/// @brief Multiply the short value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmulrw(runtime_t* runtime);
+
+/// @brief Multiply the integer value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fmulrl(runtime_t* runtime);
+
+/// @brief Divide the float value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivs(runtime_t* runtime);
+
+/// @brief Divide the double value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivd(runtime_t* runtime);
+
+/// @brief Divide the real value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivr(runtime_t* runtime);
+
+/// @brief Divide the byte value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivb(runtime_t* runtime);
+
+/// @brief Divide the short value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivw(runtime_t* runtime);
+
+/// @brief Divide the integer value at the given memory location to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivl(runtime_t* runtime);
+
+/// @brief Divide the byte value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivrb(runtime_t* runtime);
+
+/// @brief Divide the short value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivrw(runtime_t* runtime);
+
+/// @brief Divide the integer value at the given register to the TOP register @param runtime Pointer to virtual machine
+void runtime_fdivrl(runtime_t* runtime);
+
+/// @brief Round the top value in FPU's stack to the nearest integer @param runtime Pointer to the virtual machine
+void runtime_fround(runtime_t* runtime);
+
+/// @brief Calculate the square root of the top value in FPU's stack @param runtime Pointer to the virtual machine
+void runtime_fround(runtime_t* runtime);
