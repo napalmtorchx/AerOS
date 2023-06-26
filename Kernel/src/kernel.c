@@ -59,7 +59,7 @@ void kernel_init_graphics()
 void kernel_loop()
 {
     debug_log("%s Entered kernel main\n", DEBUG_INFO);
-    test_all();
+    //test_all();
     taskmgr_toggle(true);
     while (true)
     {

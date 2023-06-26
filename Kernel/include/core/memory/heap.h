@@ -24,6 +24,7 @@ typedef struct alloc_entry {
   alloc_data_type_t data_type : 4;
   alloc_type_t type : 4;
 } attr_pack alloc_entry_t;
+
 typedef struct heap {
   uintptr_t base;
   alloc_entry_t *alloc_stack_base;

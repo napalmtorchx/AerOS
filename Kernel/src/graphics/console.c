@@ -6,8 +6,8 @@ console_t kconsole_init()
 {
     vbe_device_t* vbe = devmgr_from_name("vbe_controller");
 
-    image_t console_img = image_create_from(vbe->w, vbe->h, vbe->fbptr, COLORDEPTH_32, COLORORDER_ARGB);
-    console_t console = console_create(console_img, sysfont_get(), color_to_argb(COLOR_WHITE), color_to_argb(COLOR_BLACK), 64 * KILOBYTE);
+    image_t   console_img = image_create_from(vbe->w, vbe->h, vbe->fbptr, COLORDEPTH_32, COLORORDER_ARGB);
+    console_t console     = console_create(console_img, sysfont_get(), color_to_argb(COLOR_WHITE), color_to_argb(COLOR_BLACK), 64 * KILOBYTE);
     return console;
 }
 
@@ -177,13 +177,11 @@ void console_delete(console_t* console, int chars_to_del)
         {
             console->cursor.x--;
             console_drawstr(console, console->cursor.x, console->cursor.y, " ", console->fg, console->bg);
-            console->cursor.x--;
         }
-        else if (console->cursor.y > 0)
+        else if (console->cursor.y > 0) 
         {
             console_setpos(console, (point_t){ console->size.x - 1, console->cursor.y - 1});
             console_drawstr(console, console->cursor.x, console->cursor.y, " ", console->fg, console->bg);
-            console_setpos(console, (point_t){ console->size.x - 1, console->cursor.y - 1});
         }
         chars_to_del--;
     }

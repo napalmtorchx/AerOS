@@ -7,8 +7,6 @@ void pci_init()
 {
     _jsondata = NULL;
     load_pci_file();
-  
-    free(_jsondata);
 
     debug_log("%s Finished initializing PCI devices\n", DEBUG_OK);
 }
@@ -222,9 +220,18 @@ char* search_for_device(uint16_t dev_id,uint16_t ven_id,char* dev_id_m,char* ven
 //pci_list_devices
 void pci_list_devices()
 {
-    size_t unknown = 0;
+    static const char* LN1   = "|-pci-devices-----------------------------------------------------------|\n";
+    static const char* LN2   = "|%s PATH      VENDOR  DEVICE  CLASS  DESCRIPTION                          %s|\n";
+    //static const char* LN2   = "| 00:00:00  FFFF    FFFF    80     A fucking device                     |\n";
+    static const char* LNDIV = "|-----------------------------------------------------------------------|\n";
+
+    printf(LN1); 
+    printf(LNDIV); 
+    printf(LN2, ANSI_FG_DARKGRAY, ANSI_RESET); 
+    printf(LNDIV); 
 
     //query all PCI devices
+        size_t unknown = 0;
     for (uint8_t bus = 0; bus < 255; bus++)
     {
         for (uint8_t slot = 0; slot < 32; slot++)
@@ -264,18 +271,21 @@ void pci_list_devices()
                     char ven_id_mem[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
                     char outbuff[256];
                     memset(outbuff, 0, sizeof(outbuff));
-                    char* dev_name = search_for_device(device_id,vendor_id,dev_id_mem,ven_id_mem,outbuff);
-                    if (!strcmp(dev_name, "Unknown")) { unknown++; free(dev_name); continue; }
+                    search_for_device(device_id, vendor_id, dev_id_mem, ven_id_mem, outbuff);
+                    if (!strcmp(outbuff, "Unknown")) { unknown++; continue; }
+                    int len = strlen(outbuff);
+                    while (strlen(outbuff) >= 33) { strback(outbuff); }
+                    if (len >= 33) { strcat(outbuff, "..."); }
 
-                    debug_log("%s Located PCI device at %2x:%2x:%2x\n", DEBUG_INFO, bus, slot, func);
-                    debug_log("         Name  :%s\n", dev_name);
-                    debug_log("         ID    :%4x:%4x\n", vendor_id, device_id);
-                    debug_log("         Class :%2x\n", class_code);
-                    free(dev_name);
+                    while (strlen(outbuff) < 37) { stradd(outbuff, ' '); } 
+                    stradd(outbuff, '|');
+
+                    printf("| %2x:%2x:%2x  %4x    %4x    %2x     %s\n", bus, slot, func, vendor_id, device_id, class_code, outbuff);
                 }
             }
         }
     }
 
-    if (unknown > 0) { debug_log("%s %d Unknown devices detected\n", DEBUG_WARN, unknown); }
+    printf(LNDIV); 
+    if (unknown > 0) { printf("%s %d Unknown devices detected\n", DEBUG_WARN, unknown); }
 }

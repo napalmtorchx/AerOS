@@ -97,13 +97,17 @@ void kbd_update_state(void)
     }
     else if (_kbd.code < KBD_CHAR_MAX)
     {
+        char* ptr = NULL;
         char ascii = 0;
         bool caps = (((_kbd.state->l_shift || _kbd.state->r_shift) && !_kbd.state->caps) || ((!_kbd.state->l_shift && !_kbd.state->r_shift) && _kbd.state->caps));
 
-        if (caps) { ascii = _kbd.layout->upper[_kbd.code]; }
-        else      { ascii = _kbd.layout->lower[_kbd.code]; }
+        if (caps) { ascii = _kbd.layout->upper[_kbd.code]; ptr = &_kbd.layout->upper[_kbd.code]; }
+        else      { ascii = _kbd.layout->lower[_kbd.code]; ptr = &_kbd.layout->lower[_kbd.code]; }
 
-        if (ascii >= 32 && ascii <= 126 && _kbd.state->data != NULL) { stradd(_kbd.state->data, ascii); }
+        if (ascii >= 32 && ascii <= 126 && _kbd.state->data != NULL) 
+        { 
+            stradd(_kbd.state->data, ascii); 
+        }
         if (_kbd.state->fn_char != NULL) { _kbd.state->fn_char(_kbd.state->handle, (void*)ascii); }
     }
 }

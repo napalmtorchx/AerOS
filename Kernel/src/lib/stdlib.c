@@ -3,10 +3,12 @@
 
 void* malloc(size_t size)
 {
-    return heap_alloc(kernel_heap_ref(),
+    void* ptr = heap_alloc(kernel_heap_ref(),
                       size,
                       HEAP_ALLOC_TYPE_DIRECT,
                       HEAP_ALLOC_DATA_TYPE_OTHER).offset_start + kernel_heap_ref()->base;
+
+    return ptr;
 }
 
 void* calloc(size_t nmemb, size_t size)

@@ -51,7 +51,6 @@ void image_clear(image_t* img, argb_t color)
     if (img->bpp == COLORDEPTH_32) 
     { 
         COLOR value = 0;
-        debug_log("%2x %2x %2x %2x\n", color.desc.a, color.desc.r, color.desc.g, color.desc.b);
         if (img->color_order == COLORORDER_ARGB)      { value = color_from_argb(color); }
         else if (img->color_order == COLORORDER_ABGR) { value = color_from_abgr(color); }
         else if (img->color_order == COLORORDER_RGBA) { value = color_from_rgba(color); }
@@ -124,7 +123,7 @@ void image_drawchar(image_t* img, int x, int y, char c, argb_t fg, argb_t bg, co
     if (img->bpp == COLORDEPTH_32)
     {
         COLOR fgv = 0, bgv = 0;
-        if (img->color_order == COLORORDER_ARGB) { fgv = fg.value; bgv = bg.value; }
+        if (img->color_order == COLORORDER_ARGB)      { fgv = color_from_argb(fg); bgv = color_from_argb(bg); }
         else if (img->color_order == COLORORDER_ABGR) { fgv = color_from_abgr(fg); bgv = color_from_abgr(bg); }
         else if (img->color_order == COLORORDER_RGBA) { fgv = color_from_rgba(fg); bgv = color_from_rgba(bg); }
         else if (img->color_order == COLORORDER_BGRA) { fgv = color_from_bgra(fg); bgv = color_from_bgra(bg); }
@@ -150,7 +149,7 @@ void image_drawstr(image_t* img, int x, int y, const char* str, argb_t fg, argb_
     if (img->bpp == COLORDEPTH_32)
     {
         COLOR fgv = 0, bgv = 0;
-        if (img->color_order == COLORORDER_ARGB) { fgv = fg.value; bgv = bg.value; }
+        if (img->color_order == COLORORDER_ARGB)      { fgv = color_from_argb(fg); bgv = color_from_argb(bg); }
         else if (img->color_order == COLORORDER_ABGR) { fgv = color_from_abgr(fg); bgv = color_from_abgr(bg); }
         else if (img->color_order == COLORORDER_RGBA) { fgv = color_from_rgba(fg); bgv = color_from_rgba(bg); }
         else if (img->color_order == COLORORDER_BGRA) { fgv = color_from_bgra(fg); bgv = color_from_bgra(bg); }

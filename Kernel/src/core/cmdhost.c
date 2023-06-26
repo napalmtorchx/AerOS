@@ -7,6 +7,7 @@ static size_t      _qsz;
 static int         _count;
 static kbd_state_t _kb;
 static char        _kbuff[0x10000];
+static char        _path[FILENAME_MAX];
 static bool        _sending;
 static bool        _processing;
 
@@ -17,6 +18,7 @@ void cmdhost_on_char(void* handle, char c)
 
 void cmdhost_on_del(void* handle, void* unused)
 {
+    if (strlen(_kbuff) == 0) { return; }
     console_delete(kconsole_get(), 1);
 }
 
@@ -29,10 +31,14 @@ void cmdhost_init()
     _count      = 0;
     _sending    = false;
     _processing = false;
+    
     _inqueue = (char**)malloc(sizeof(char*) * _qsz);
     memset(_inqueue, 0, sizeof(char*) * _qsz);
-    memset(_kbuff, 0, sizeof(_kbuff));
 
+    memset(_path, 0, sizeof(_path));
+    strcpy(_path, "A:/");
+
+    memset(_kbuff, 0, sizeof(_kbuff));
     _kb = kbd_state_create(_kbuff, sizeof(_kbuff), NULL, false, cmdhost_on_char, cmdhost_on_del, cmdhost_on_ret);
 
     taskmgr_load(_thread);
@@ -45,7 +51,7 @@ void cmdhost_init()
 
 void cmdhost_prompt()
 {
-    console_printf(kconsole_get(), "%sA:/%s> ", ANSI_FG_CYAN, ANSI_RESET);
+    console_printf(kconsole_get(), "%s%s%s> ", ANSI_FG_CYAN, _path, ANSI_RESET);
 }
 
 KRESULT cmdhost_main(int argc, char** argv)
@@ -135,6 +141,8 @@ void cmdhost_push(const char* input)
     if (!locked) { unlock(); }
 }
 
+char* cmdhost_getpath() { return _path; }
+
 // ------------------------------------------------------------------------------------------------------------------------------------------
 
 KRESULT command_cls(int argc, char** argv)
@@ -142,11 +150,13 @@ KRESULT command_cls(int argc, char** argv)
     console_clear(kconsole_get());
     return KRESULT_SUCCESS;
 }
+
 KRESULT command_pci(int argc, char** argv)
 {
     pci_list_devices();
     return KRESULT_SUCCESS;
 }
+
 KRESULT command_help(int argc, char** argv)
 {
     console_t* term = kconsole_get();
@@ -162,5 +172,47 @@ KRESULT command_help(int argc, char** argv)
         console_writeln(term, COMMANDS[i]->help);
     }
 
+    return KRESULT_SUCCESS;
+}
+
+KRESULT command_ls(int argc, char** argv)
+{
+    console_t* term = kconsole_get();
+
+    char path[FILENAME_MAX];
+    memset(path, 0, sizeof(path));
+
+    if (argc < 2) { strcat(path, _path); } else { for (size_t i = 1; i < argc; i++) { strcat(path, argv[i]); } }
+    if (!virtfs_dexists(path)) { console_writeln(term, "No files found."); return KRESULT_SUCCESS; }
+    
+    ptrlist_t dirs  = virtfs_getdirs(path);
+    ptrlist_t files = virtfs_getfiles(path);
+    if (dirs.count == 0 && files.count == 0) { console_writeln(term, "No files found"); ptrlist_free(&dirs, true); ptrlist_free(&files, true); return KRESULT_SUCCESS; }
+
+    for (size_t i = 0; i < dirs.count; i++) 
+    { 
+        console_printf(term, "- %s%s%s\n", ANSI_FG_YELLOW, (char*)dirs.entries[i], ANSI_RESET); 
+        free(dirs.entries[i]);
+    }
+
+    for (size_t i = 0; i < files.count; i += 2) 
+    { 
+        char*  file = (char*)files.entries[i];
+        size_t sz   = (size_t)files.entries[i + 1];
+
+        console_write(term, file); 
+        console_setpos(term, (point_t){ 24, term->cursor.y });
+        console_printf(term, "%a\n", sz);
+        free(file);
+    }
+
+    free(dirs.entries);
+    free(files.entries);
+    return KRESULT_SUCCESS;
+}
+
+KRESULT command_threads(int argc, char** argv)
+{
+    taskmgr_print(true);
     return KRESULT_SUCCESS;
 }

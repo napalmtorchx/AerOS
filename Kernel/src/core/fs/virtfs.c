@@ -179,7 +179,7 @@ ptrlist_t virtfs_getfiles(const char* path)
 
 ptrlist_t virtfs_getdirs(const char* path)
 {
-
+    return ptrlist_create();
 }
 
 char* virts_formatpath(char* path, bool dir)
