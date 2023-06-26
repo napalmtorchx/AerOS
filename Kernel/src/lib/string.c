@@ -249,7 +249,7 @@ void* memcpyq(void* dest, const void* src, size_t n)
 
 void* memset(void* ptr, int c, size_t n)
 {
-    if (n >= 0x100 && n % 0x100 == 0 && kernel_booted()) { return memset_sse(ptr, c, n); }
+    if (n >= 16 && n % 16 == 0 && kernel_booted()) { return memset_sse(ptr, c, n); }
 
     uint32_t  num_dwords = n / 4;
     uint32_t  num_bytes  = n % 4;

@@ -1,7 +1,8 @@
 #include <hal/cpu.h>
 #include <kernel.h>
 
-cpu_cr0_t cpu_read_cr0() {
+cpu_cr0_t cpu_read_cr0() 
+{
   cpu_cr0_t data;
 
   // read the data from register cr0

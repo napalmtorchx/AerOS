@@ -49,9 +49,11 @@
 - ext2/ext4 file system
 - PS/2 Mouse(finished but not ported)
 - Sprite font support
-- POSIX-compliant stdio streams
+- POSIX-compliant standard library streams
 - Directories in RAMFS
+- Ubsan error checking
 
 ---- KNOWN BUGS -----------------------------------------------------------------------------------
 
 ---- NOTES ----------------------------------------------------------------------------------------
+cpu_sse_enabled() not working in memset function, temporary fix by waiting until kernel is completely finished booting before allowing sse
