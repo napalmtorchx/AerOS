@@ -95,9 +95,9 @@ file_t* virtfs_fopen(const char* fname, const char* mode)
         file->offset = ramfile->offset;
         file->vfs    = vfs;
 
-        //char* fpath = strdup(fname);
-        //ptrlist_add(&_openfiles, file);
-        //ptrlist_add(&_filepaths, fpath);
+        char* fpath = strdup(fname);
+        ptrlist_add(&_openfiles, file);
+        ptrlist_add(&_filepaths, fpath);
 
         debug_log("%s virtfs_fopen('%s', '%s') - Index:%d\n", DEBUG_INFO, mode, fname, _openfiles.count - 1);
         return file;
@@ -108,7 +108,7 @@ file_t* virtfs_fopen(const char* fname, const char* mode)
 size_t virtfs_fread(void* ptr, size_t sz, size_t nmemb, file_t* file)
 {
     if (ptr == NULL || file == NULL || sz == 0 || nmemb == 0) { return 0; }
-    //if (!virtfs_isopen(file)) { return 0; }
+    if (!virtfs_isopen(file)) { return 0; }
     size_t written = 0;
 
     if (file->vfs->type == VFS_RAMFS)
@@ -129,7 +129,6 @@ KRESULT virtfs_fclose(file_t* file)
 {
     if (file == NULL) { return KRESULT_NULL_PTR; }
 
-    /*
     int index = -1;
     for (size_t i = 0; i < _openfiles.count; i++)
     {
@@ -139,10 +138,9 @@ KRESULT virtfs_fclose(file_t* file)
 
     ptrlist_remove(&_filepaths, index, true);
     ptrlist_remove(&_openfiles, index, false);
-    */
     free(file->name);
     free(file);
-    debug_log("%s virtfs_fclose(%p) - Index:%d\n", DEBUG_INFO, file); //index);
+    debug_log("%s virtfs_fclose(%p) - Index:%d\n", DEBUG_INFO, file, index);
     return KRESULT_SUCCESS;
 }
 

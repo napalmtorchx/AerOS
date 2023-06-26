@@ -16,9 +16,10 @@
 
 #define NEWLINE '\n'
 
-#define LOW_16(x)  ((uint16_t)(x))
-#define HIGH_16(x) ((uint16_t)((x) >> 16))
-#define BIT(x)     (1 << (x))
+#define LOW_16(x)           ((uint16_t)(x))
+#define HIGH_16(x)          ((uint16_t)((x) >> 16))
+#define BIT(x)              (1 << (x))
+#define IS_ALIGNED(v, a)    (!(v & (a - 1)))
 
 #define KILOBYTE 1024L
 #define MEGABYTE (KILOBYTE * 1024L)

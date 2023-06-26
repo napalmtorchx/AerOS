@@ -23,13 +23,13 @@ static const color4_t COLOR4_PALETTE[] =
 
 COLOR color_create(uint8_t a, uint8_t r, uint8_t g, uint8_t b) { return (a << 24) | (r << 16) | (g << 8) | b; }
 
-COLOR color_from_argb(argb_t color) { return (color.desc.a << 24) | (color.desc.r << 16) | (color.desc.g << 8) | color.desc.b; }
+COLOR color_from_argb(argb_t color) { return ((uint32_t)color.desc.a << 24) | ((uint32_t)color.desc.r << 16) | ((uint32_t)color.desc.g << 8) | color.desc.b; }
 
-COLOR color_from_abgr(argb_t color) { return (color.desc.a << 24) | (color.desc.b << 16) | (color.desc.g << 8) | color.desc.r; }
+COLOR color_from_abgr(argb_t color) { return ((uint32_t)color.desc.a << 24) | ((uint32_t)color.desc.b << 16) | ((uint32_t)color.desc.g << 8) | color.desc.r; }
 
-COLOR color_from_rgba(argb_t color) { return (color.desc.r << 24) | (color.desc.g << 16) | (color.desc.b << 8) | color.desc.a; }
+COLOR color_from_rgba(argb_t color) { return ((uint32_t)color.desc.r << 24) | ((uint32_t)color.desc.g << 16) | ((uint32_t)color.desc.b << 8) | color.desc.a; }
 
-COLOR color_from_bgra(argb_t color) { return (color.desc.b << 24) | (color.desc.g << 16) | (color.desc.r << 8) | color.desc.a; }
+COLOR color_from_bgra(argb_t color) { return ((uint32_t)color.desc.b << 24) | ((uint32_t)color.desc.g << 16) | ((uint32_t)color.desc.r << 8) | color.desc.a; }
 
 argb_t color_to_argb(COLOR color) { return (argb_t){ (color & 0xFF000000) >> 24, (color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF }; }
 
