@@ -1,0 +1,52 @@
+---- WORKING -------------------------------------------------------------------------------------
+
+- Output debugger interface
+- Physical memory manager
+- Kernel heap
+- UART/Serial controller
+- Graphical console manager
+- PSF font support
+- SSFN font support
+- Color support and conversion
+- Global descriptor table(GDT)
+- Interrupt descriptor table(IDT)
+- Interrupt request subroutines
+- Programmable interrupt controller(PIC)
+- 16-bit realmode interfacing
+- Device abstraction layer
+- I/O port access
+- PCI device iteration
+- Command parser
+- Standard library:
+  - ctype.h
+
+---- WORKING BUT LACKLUSTER -----------------------------------------------------------------------
+
+- RAMFS file system
+- Virtual file system abstraction interface
+- Cooperative multithreading
+- Image abstraction interface
+- Device management interface
+- Virtual machine runtime environment
+- Graphical subsystem interface
+- Standard library:
+  - math.h
+  - stdio.h
+  - stdlib.h
+  - string.h
+  - time.h
+
+---- MOSTLY WORKING -------------------------------------------------------------------------------
+- FPU coprocessor support
+
+---- NEEDS WORK -----------------------------------------------------------------------------------
+- PCI device interfacing
+- Multicore threading
+
+---- NOT YET IMPLEMENTED --------------------------------------------------------------------------
+- FAT32 file system
+- ext2/ext4 file system
+- PS/2 Mouse(finished but not ported)
+- Sprite font support
+
+---- KNOWN BUGS -----------------------------------------------------------------------------------
