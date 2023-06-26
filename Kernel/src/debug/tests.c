@@ -59,5 +59,5 @@ void test_memcpyq()
 
 void test_graphics()
 {
-    transparent_rect(0, 0, 100, 100, COLOR_DARKCYAN);
+    //transparent_rect(0, 0, 100, 100, COLOR_DARKCYAN);
 }
