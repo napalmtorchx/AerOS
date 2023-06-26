@@ -207,6 +207,41 @@ FRESULT fpu_round();
 /// @brief calculates the square root of the value in st(0) @return FPU_success if successful 
 FRESULT fpu_sqrt();
 
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is greater, false otherwise
+bool fpu_greater_float(float value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is greater, false otherwise
+bool fpu_greater_double(double value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is greater, false otherwise
+bool fpu_greater_long_double(long double value);
+
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is smaller, false otherwise
+bool fpu_smaller_float(float value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is smaller, false otherwise
+bool fpu_smaller_double(double value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is smaller, false otherwise
+bool fpu_smaller_long_double(long double value);
+
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is equal, false otherwise
+bool fpu_equal_float(float value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is equal, false otherwise
+bool fpu_equal_double(double value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is equal, false otherwise
+bool fpu_equal_long_double(long double value);
+
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is greater or equal, false otherwise
+bool fpu_greater_or_equal_float(float value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is greater or equal, false otherwise
+bool fpu_greater_or_equal_double(double value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is greater or equal, false otherwise
+bool fpu_greater_or_equal_long_double(long double value);
+
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is smaller or equal, false otherwise
+bool fpu_smaller_or_equal_float(float value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is smaller or equal, false otherwise
+bool fpu_smaller_or_equal_double(double value);
+/// @brief compares the given value to the element in st(0) @param value the value to compare @return true if the value is smaller or equal, false otherwise
+bool fpu_smaller_or_equal_long_double(long double value);
+
 /// @brief sets the round up flag in the FPU control word
 void fpu_set_round_up();
 /// @brief sets the round down flag in the FPU control word
