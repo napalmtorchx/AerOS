@@ -9,18 +9,23 @@ void devmgr_init()
 {
     _duid = DUID_MIN;
 
-   if(probe_sse()) enable_sse();
+    debug_log("%s Initializing devices...\n", DEBUG_INFO);
+    enable_sse();
 
+    debug_log("%s Initializing video devices...\n", DEBUG_INFO);
     vga_init();
     vbe_init();
     kernel_init_graphics();
 
+    debug_log("%s Detecting CPU features...\n", DEBUG_INFO);
     fpu_init();
     get_cpu_name();
 
-    if(is_qemu()) { debug_log("%s System is running in QEMU\n", DEBUG_INFO); } else { debug_log("System is running on real hardware\n"); }
+    debug_log("%s Probing PCI devices...\n", DEBUG_INFO);
+    if(is_qemu()) { debug_log("%s System is running in QEMU\n", DEBUG_INFO); } else { debug_log("%s System is running on real hardware\n", DEBUG_INFO); }
     pci_init();
     
+    debug_log("%s Initializing required system devices...\n", DEBUG_INFO);
     pit_init();
     rtc_init();
     ps2_init();

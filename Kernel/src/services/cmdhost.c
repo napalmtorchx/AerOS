@@ -72,6 +72,7 @@ KRESULT cmdhost_main(int argc, char** argv)
             {
                 _processing = true;
                 _sending = true;
+                debug_log("%s Command '%s' has been queued\n", DEBUG_INFO, _kbuff);
                 console_newline(kconsole_get());
                 cmdhost_push(_kbuff);
                 memset(_kbuff, 0, sizeof(_kbuff));
@@ -147,6 +148,7 @@ char* cmdhost_getpath() { return _path; }
 
 KRESULT command_cls(int argc, char** argv)
 {
+    debug_log("DOING CLS\n");
     console_clear(kconsole_get());
     return KRESULT_SUCCESS;
 }

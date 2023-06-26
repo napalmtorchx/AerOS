@@ -39,7 +39,7 @@ void kernel_boot()
 
     taskmgr_init();
     cmdhost_init();
-    gfx_init();
+    //gfx_init();
 }
 
 void kernel_init_graphics()

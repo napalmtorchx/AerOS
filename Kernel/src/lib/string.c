@@ -210,7 +210,8 @@ void* memcpy_sse(void* dest, const void* src, size_t n)
 
 void* memcpy(void* dest, const void* src, size_t n)
 {
-    if (n >= 16 && n % 16 == 0 && cpu_sse_enabled()) { return memcpy_sse(dest, src, n); }
+    bool aligned = ((uintptr_t)dest % 16 == 0) && ((uintptr_t)src % 16 == 0) && (n >= 16) && (n % 16 == 0);
+    if (aligned && cpu_sse_enabled()) { return memcpy_sse(dest, src, n); }
 
     uint32_t  num_dwords = n / 4;
     uint32_t  num_bytes  = n % 4;
@@ -249,7 +250,8 @@ void* memcpyq(void* dest, const void* src, size_t n)
 
 void* memset(void* ptr, int c, size_t n)
 {
-    if (n >= 16 && n % 16 == 0 && kernel_booted()) { return memset_sse(ptr, c, n); }
+    bool aligned = ((uintptr_t)ptr % 16 == 0) && (n >= 16) && (n % 16 == 0);
+    if (aligned && kernel_booted() && cpu_sse_enabled()) { return memset_sse(ptr, c, n); }
 
     uint32_t  num_dwords = n / 4;
     uint32_t  num_bytes  = n % 4;

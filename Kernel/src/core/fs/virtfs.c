@@ -2,11 +2,15 @@
 #include <kernel.h>
 
 static ptrlist_t _list;
+static ptrlist_t _openfiles;
+static ptrlist_t _filepaths;
 static virtfs_t  _bootvfs;
 
 void virtfs_init(void)
 {
-    _list = ptrlist_create();
+    _list      = ptrlist_create();
+    _openfiles = ptrlist_create();
+    _filepaths = ptrlist_create();
 
     memblk_t* bootfs_module = memmgr_first_of(MEM_MODULE, 0);
     ramfs_init(bootfs_get(), (void*)bootfs_module->addr, bootfs_module->sz);
@@ -62,12 +66,12 @@ directory_t* virtfs_opendir(const char* dirname)
     return NULL;
 }
 
-int virtfs_closedir(directory_t* dir)
+KRESULT virtfs_closedir(directory_t* dir)
 {
-    if (dir == NULL) { return 1; }
+    if (dir == NULL) { return KRESULT_NULL_PTR; }
     free(dir->name);
     free(dir);
-    return 0;
+    return KRESULT_SUCCESS;
 }
 
 file_t* virtfs_fopen(const char* fname, const char* mode)
@@ -90,7 +94,12 @@ file_t* virtfs_fopen(const char* fname, const char* mode)
         file->hidden = ramfile->hidden;
         file->offset = ramfile->offset;
         file->vfs    = vfs;
-        debug_log("%s virtfs_fopen('%s', '%s')\n", DEBUG_INFO, mode, fname);
+
+        //char* fpath = strdup(fname);
+        //ptrlist_add(&_openfiles, file);
+        //ptrlist_add(&_filepaths, fpath);
+
+        debug_log("%s virtfs_fopen('%s', '%s') - Index:%d\n", DEBUG_INFO, mode, fname, _openfiles.count - 1);
         return file;
     }
     return NULL;
@@ -99,6 +108,7 @@ file_t* virtfs_fopen(const char* fname, const char* mode)
 size_t virtfs_fread(void* ptr, size_t sz, size_t nmemb, file_t* file)
 {
     if (ptr == NULL || file == NULL || sz == 0 || nmemb == 0) { return 0; }
+    //if (!virtfs_isopen(file)) { return 0; }
     size_t written = 0;
 
     if (file->vfs->type == VFS_RAMFS)
@@ -115,13 +125,45 @@ size_t virtfs_fread(void* ptr, size_t sz, size_t nmemb, file_t* file)
     return written;
 }
 
-int virtfs_fclose(file_t* file)
+KRESULT virtfs_fclose(file_t* file)
 {
-    if (file == NULL) { return 1; }
+    if (file == NULL) { return KRESULT_NULL_PTR; }
+
+    /*
+    int index = -1;
+    for (size_t i = 0; i < _openfiles.count; i++)
+    {
+        if (_openfiles.entries[i] == file) { index = (int)i; break; }
+    }
+    if (index < 0 || index >= _openfiles.count) { return KRESULT_INVALID_FILE; }
+
+    ptrlist_remove(&_filepaths, index, true);
+    ptrlist_remove(&_openfiles, index, false);
+    */
     free(file->name);
     free(file);
-    debug_log("%s virtfs_fclose(%p)\n", DEBUG_INFO, file);
-    return 0;
+    debug_log("%s virtfs_fclose(%p) - Index:%d\n", DEBUG_INFO, file); //index);
+    return KRESULT_SUCCESS;
+}
+
+bool virtfs_isopen(const file_t* file)
+{
+    if (file == NULL) { return false; }
+    for (size_t i = 0; i < _openfiles.count; i++)
+    {
+        if (!strcmp((char*)_openfiles.entries[i], file)) { return true; }
+    }
+    return false;
+}
+
+bool virtfs_isopen_p(const char* fname)
+{
+    if (strlen(fname) == 0) { return false; }
+    for (size_t i = 0; i < _filepaths.count; i++)
+    {
+        if (!strcmp((char*)_filepaths.entries[i], fname)) { return true; }
+    }
+    return false;
 }
 
 bool virtfs_fexists(const char* fname)
