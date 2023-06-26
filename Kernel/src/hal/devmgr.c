@@ -9,8 +9,7 @@ void devmgr_init()
 {
     _duid = DUID_MIN;
 
-    sse_enable();
-    enable_optimized_sse();
+   if(probe_sse()) enable_sse();
 
     vga_init();
     vbe_init();

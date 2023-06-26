@@ -3,22 +3,78 @@
 
 static bool _sse = false;
 
-void sse_enable()
+int probe_sse()
 {
-    unsigned int eax, cr0, cr4;
-    inline_asm("mov %%cr0, %0" : "=r"(eax));
-    inline_asm("andl $0xFFFB, %0" : "=a"(eax));
-    inline_asm("orl $0x2, %0" : "=a"(eax));
-    inline_asm("mov %0, %%cr0" : : "r"(eax));
-    inline_asm("mov %%cr4, %0" : "=r"(eax));
-    inline_asm("orl $0x600, %0" : "=a"(eax));
-    inline_asm("mov %0, %%cr4" : : "r"(eax));
-    inline_asm("mov %%cr0, %0" : "=r"(eax));
-    inline_asm("orl $0x40000000, %0" : "=a"(eax));
-    inline_asm("mov %0, %%cr0" : : "r"(eax));
-    _sse = true;
+    int result = 0;
+    asm volatile(
+        "mov $1, %%eax\n"
+        "cpuid\n"
+        "mov %%edx, %0\n"
+        : "=r"(result)
+        :
+        : "%eax", "%ebx", "%ecx", "%edx"
+    );
+    return result & (1 << 25);
 }
 
+void enable_sse()
+{
+    int cr0 = 0;
+    asm volatile(
+        "mov %%cr0, %0\n"
+        : "=r"(cr0)
+        :
+        :
+    );
+    cr0 |= (1 << 2);
+    asm volatile(
+        "mov %0, %%cr0\n"
+        :
+        : "r"(cr0)
+        :
+    );
+    int cr4 = 0;
+    asm volatile(
+        "mov %%cr4, %0\n"
+        : "=r"(cr4)
+        :
+        :
+    );
+    cr4 |= (1 << 9);
+    asm volatile(
+        "mov %0, %%cr4\n"
+        :
+        : "r"(cr4)
+        :
+    );
+
+}
+int check_sse_support() {
+    int sse_supported = 0;
+
+    // Check CPU feature flags for SSE support
+    unsigned int eax, ebx, ecx, edx;
+    __asm__ __volatile__ (
+        "cpuid\n\t"
+        : "=a" (eax), "=b" (ebx), "=c" (ecx), "=d" (edx)
+        : "a" (1) // EAX=1 for feature flags
+        : );
+
+    if (edx & (1 << 25)) {
+        sse_supported = 1;
+    }
+
+    return sse_supported;
+}
+void cpuid(uint32_t* eax, uint32_t* ebx, uint32_t* ecx, uint32_t* edx)
+{
+    asm volatile(
+        "cpuid"
+        : "=a"(*eax), "=b"(*ebx), "=c"(*ecx), "=d"(*edx)
+        : "a"(*eax)
+        : "memory"
+    );
+}
 bool is_qemu()
 {
     uint32_t eax, ebx, ecx, edx;
@@ -32,41 +88,7 @@ bool is_qemu()
     if(strstr("TCGTCGTC",(char*)&edx) != NULL) return true;
     return false;
 }
-void cpuid(uint32_t* eax, uint32_t* ebx, uint32_t* ecx, uint32_t* edx)
-{
-    asm volatile("cpuid"
-        : "=a" (*eax),
-        "=b" (*ebx),
-        "=c" (*ecx),
-        "=d" (*edx)
-        : "a" (*eax)
-    );
-}
-void enable_optimized_sse()
-{
-    unsigned int eax, ebx, ecx, edx;
-    inline_asm("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(1));
-    if (ecx & (1 << 26))
-    {
-        inline_asm("mov %%cr4, %0" : "=r"(eax));
-        inline_asm("orl $0x200, %0" : "=a"(eax));
-        inline_asm("mov %0, %%cr4" : : "r"(eax));
-        //check if sse is enabled
-        inline_asm("mov %%cr4, %0" : "=r"(eax));
-        if (eax & (1 << 9))
-        {
-            printf("%s SSE enabled\n", DEBUG_INFO);
-        }
-        else
-        {
-            printf("%s SSE not enabled\n", DEBUG_ERROR);
-        }
-    }
-    else
-    {
-        printf("%s SSE not supported\n", DEBUG_ERROR);
-    }
-}
+
 void get_cpu_name()
 {
 //get the full cpu name and vendor
