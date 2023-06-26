@@ -1,4 +1,4 @@
-#include <core/cmdhost.h>
+#include <services/cmdhost.h>
 #include <kernel.h>
 
 static thread_t*   _thread;

@@ -167,7 +167,7 @@ bool vbe_setmode(int w, int h)
 
 void vbe_swap(COLOR* src)
 {
-    memcpy(_vbe.fbptr, src, _vbe.w * _vbe.h * 4);
+    memcpy_sse(_vbe.fbptr, src, _vbe.w * _vbe.h * 4);
 }
 
 void vbe_clear(COLOR bg)

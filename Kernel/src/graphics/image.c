@@ -55,7 +55,7 @@ void image_clear(image_t* img, argb_t color)
         else if (img->color_order == COLORORDER_ABGR) { value = color_from_abgr(color); }
         else if (img->color_order == COLORORDER_RGBA) { value = color_from_rgba(color); }
         else if (img->color_order == COLORORDER_BGRA) { value = color_from_bgra(color); }
-        memset(img->buffer, value, img->sz.x * img->sz.y * 4); 
+        memset_sse(img->buffer, value, img->sz.x * img->sz.y * 4); 
     }
 }
 
@@ -165,8 +165,7 @@ void image_drawstr(image_t* img, int x, int y, const char* str, argb_t fg, argb_
                 yy += font->charsz.y + font->spacing.y;
             }
             else
-            {
-                
+            {         
                 ssfn_src     = font->ssfn;
                 ssfn_dst.ptr = (uint8_t*)img->buffer;
                 ssfn_dst.p   = img->pitch;

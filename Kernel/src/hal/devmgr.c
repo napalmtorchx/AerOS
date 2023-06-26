@@ -8,13 +8,15 @@ static uint32_t  _duid;
 void devmgr_init()
 {
     _duid = DUID_MIN;
+
+    sse_enable();
+    enable_optimized_sse();
+
     vga_init();
     vbe_init();
     kernel_init_graphics();
 
     fpu_init();
-    sse_enable();
-    enable_optimized_sse();
     get_cpu_name();
 
     if(is_qemu()) { debug_log("%s System is running in QEMU\n", DEBUG_INFO); } else { debug_log("System is running on real hardware\n"); }

@@ -188,47 +188,20 @@ char* strrev(char* str)
         str[j] = temp;
     }
 }
+
 //sse optimized memcpy
-void* memcpy_sse(void* dest, const void* src, size_t count)
+void* memcpy_sse(void* dest, const void* src, size_t n)
 {
-    if (count < 8) return memcpy(dest, src, count);
-    if (count < 16)
+    uint8_t* d = dest, *s = src;
+    for (size_t i = 0; i < n / 16; i++)
     {
-        inline_asm("movups (%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
-        return dest;
+        asm volatile("movups (%0), %%xmm0\n" "movntdq %%xmm0, (%1)\n"::"r"(s), "r"(d) : "memory");
+        d += 16;
+        s += 16;
     }
-    if (count < 32)
-    {
-        inline_asm("movups (%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
-        inline_asm("movups 16(%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, 16(%0)" : : "r"(dest));
-        return dest;
-    }
-    if (count < 64)
-    {
-        inline_asm("movups (%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
-        inline_asm("movups 16(%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, 16(%0)" : : "r"(dest));
-        inline_asm("movups 32(%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, 32(%0)" : : "r"(dest));
-        return dest;
-    }
-    if (count < 128)
-    {
-        inline_asm("movups (%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, (%0)" : : "r"(dest));
-        inline_asm("movups 16(%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, 16(%0)" : : "r"(dest));
-        inline_asm("movups 32(%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, 32(%0)" : : "r"(dest));
-        inline_asm("movups 48(%0), %%xmm0" : : "r"(src));
-        inline_asm("movups %%xmm0, 48(%0)" : : "r"(dest));
-        return dest;
-    }
+    return dest;
 }
+
 void* memcpy(void* dest, const void* src, size_t n)
 {
     uint32_t  num_dwords = n / 4;
@@ -274,6 +247,18 @@ void* memset(void* ptr, int c, size_t n)
     uint8_t*  dest8      = ((uint8_t*)ptr) + num_dwords * 4;
     inline_asm("cld;rep stosl" : "+D"(dest32), "+c"(num_dwords) : "a"(c) : "memory");
     inline_asm("cld;rep stosb" : "+D"(dest8),  "+c"(num_bytes)  : "a"(c) : "memory");
+    return ptr;
+}
+
+void* memset_sse(void* ptr, int c, size_t n)
+{
+    uint8_t* dest = (uint8_t*)ptr;
+    uint32_t values[4] = { (uint32_t)c, (uint32_t)c, (uint32_t)c, (uint32_t)c };
+    for (size_t i = 0; i < n / 16; i++)
+    {
+        asm volatile("movups (%0), %%xmm0\n" "movntdq %%xmm0, (%1)\n"::"r"(values), "r"(dest) : "memory");
+        dest += 16;
+    }
     return ptr;
 }
 

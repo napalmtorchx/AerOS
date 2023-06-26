@@ -10,7 +10,6 @@
 #include <lib/numerics/point.h>
 #include <lib/numerics/rect.h>
 #include <core/multiboot.h>
-#include <core/cmdhost.h>
 #include <core/memory/memmgr.h>
 #include <core/memory/heap.h>
 #include <core/fs/ramfs.h>
@@ -41,6 +40,8 @@
 #include <hal/devices/sys/rtc.h>
 #include <hal/devices/sys/pci.h>
 #include <hal/devices/sys/cpu_opt.h>
+#include <services/cmdhost.h>
+#include <services/gfxhost.h>
 #include <runtime/executable.h>
 #include <runtime/runtime.h>
 

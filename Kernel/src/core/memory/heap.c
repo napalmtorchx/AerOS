@@ -96,6 +96,8 @@ alloc_entry_t heap_alloc(
     alloc_type_t type,
     alloc_data_type_t data_type) {
     
+    sz = memalign(sz, 0x1000);
+
     // create the template entry
     alloc_entry_t entry = (alloc_entry_t) {
         .offset_start = INT32_MAX,

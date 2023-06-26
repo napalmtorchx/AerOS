@@ -25,7 +25,6 @@ void kernel_boot()
     debug_init();
     debug_print("Starting AerOS v2.0...\nBootloader:");
     debug_println(_multiboot->bootloader_name);
-    sse_enable();
     gdt_init();
     idt_init();
 
@@ -38,6 +37,7 @@ void kernel_boot()
 
     taskmgr_init();
     cmdhost_init();
+    gfx_init();
 }
 
 void kernel_init_graphics()
