@@ -20,7 +20,7 @@ mkdir Bin
 recursive_io file_in.asm file_out.o Kernel/src Bin : nasm -felf32 #IN -o #OUT
 
 ;---COMPILE-KERNEL-FILES-------------------------------------------------------------;
-recursive_io file_in.c file_out.o Kernel/src Bin : gcc -g -c #IN -o #OUT -IKernel/include -w -nostdlib -ffreestanding -Wall -Wextra -O2 -fno-rtti -fno-exceptions -fshort-enums -fsanitize=undefined
+recursive_io file_in.c file_out.o Kernel/src Bin : gcc -g -c #IN -o #OUT -IKernel/include -w -nostdlib -ffreestanding -Wall -Wextra -O2 -fno-rtti -fno-exceptions -fshort-enums -fsanitize=undefined -Werror=implicit-fallthrough -Werror=implicit-function-declaration -Werror=return-type
 
 ;---LINK-KERNEL-FILES----------------------------------------------------------------;
 recursive .o Bin : ld -g -T Kernel/linker.ld -o Bin/kernel.elf #IN 

@@ -79,3 +79,11 @@ uint32_t color_bpp_multiplier(COLORDEPTH bpp)
     }
     return bpp_mult;
 }
+
+COLOR color_blend(COLOR c1, COLOR c2, float alpha)
+{
+    float r = (1.0f - alpha) * ((c1 >> 16) & 0xFF) + alpha * ((c2 >> 16) & 0xFF);
+    float g = (1.0f - alpha) * ((c1 >> 8) & 0xFF)  + alpha * ((c2 >> 8) & 0xFF);
+    float b = (1.0f - alpha) * (c1 & 0xFF)         + alpha * (c2 & 0xFF);
+    return (uint32_t)r << 16 | (uint32_t)g << 8 | (uint32_t)b;
+}

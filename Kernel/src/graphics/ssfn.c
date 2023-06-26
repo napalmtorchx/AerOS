@@ -24,22 +24,22 @@ const char *ssfn_errstr[] = { "",
 uint32_t ssfn_utf8(char **s)
 {
     uint32_t c = 0, c2 = 0, c3 = 0, c4 = 0, d = 0;
-    if(!s || !*s) return 0;
+    if (!s || !*s) return 0;
     c = (uint32_t)(unsigned char)*(*s)++;
-    if(c >= 0x80) {
-        if((c & 0xE0) == 0xC0) {
+    if (c >= 0x80) {
+        if ((c & 0xE0) == 0xC0) {
             c2 = (uint32_t)(unsigned char)*(*s)++;
             c = ((c & 0x1F)<<6) | (c2 & 0x3F);
-        } else if((c & 0xF0) == 0xE0) {
+        } else if ((c & 0xF0) == 0xE0) {
             c2 = (uint32_t)(unsigned char)*(*s)++;
             c3 = (uint32_t)(unsigned char)*(*s)++;
             c = ((c & 0x0F)<<12) | ((c2 & 0x3F)<<6) | (c3 & 0x3F);
-        } else if((c & 0xF8) == 0xF0) {
+        } else if ((c & 0xF8) == 0xF0) {
             c2 = (uint32_t)(unsigned char)*(*s)++;
             c3 = (uint32_t)(unsigned char)*(*s)++;
             c4 = (uint32_t)(unsigned char)*(*s)++;
             d = ((c & 0x07)<<18) | ((c2 & 0x3F)<<12) | ((c3 & 0x3F)<<6) | (c4 & 0x3F);
-            if(d > 0xFFFF) { c = 0xFFFD; } else { c = d; }
+            if (d > 0xFFFF) { c = 0xFFFD; } else { c = d; }
         } else { c = 0xFFFD; }
     }
     return c;
@@ -73,7 +73,7 @@ extern void *memset (void *__s, int __c, size_t __n) __THROW;
 #   else
 static int SSFN_memcmp(const void *__s1, const void *__s2, size_t __n)
 {   unsigned char *a = (unsigned char *)__s1, *b = (unsigned char *)__s2;
-    if(__n > 0) { while(__n-- > 0) { if(*a != *b) { return *a - *b; } a++; b++; } } return 0; }
+    if (__n > 0) { while(__n-- > 0) { if (*a != *b) { return *a - *b; } a++; b++; } } return 0; }
 #   endif
 #  endif
 # endif
@@ -86,7 +86,7 @@ static int SSFN_memcmp(const void *__s1, const void *__s2, size_t __n)
 #    define SSFN_memset memset
 #   else
 static void *SSFN_memset(void *__s, int __c, size_t __n)
-{ unsigned char *a = __s; if(__n > 0) { while(__n-- > 0) *a++ = __c; } return __s; }
+{ unsigned char *a = __s; if (__n > 0) { while(__n-- > 0) *a++ = __c; } return __s; }
 #   endif
 #  endif
 # endif
@@ -123,33 +123,33 @@ static uint8_t *_ssfn_c(const ssfn_font_t *font, const char *str, int *len, uint
     uint8_t *ptr, *s;
 
     *len = 0; *unicode = 0;
-    if(!font || !font->characters_offs || !str || !*str) return NULL;
+    if (!font || !font->characters_offs || !str || !*str) return NULL;
 
-    if(font->ligature_offs) {
-        for(l = (uint16_t*)((uint8_t*)font + font->ligature_offs), i = 0; l[i] && u == -1U; i++) {
-            for(ptr = (uint8_t*)font + l[i], s = (uint8_t*)str; *ptr && *ptr == *s; ptr++, s++);
-            if(!*ptr) { u = SSFN_LIG_FIRST + i; break; }
+    if (font->ligature_offs) {
+        for (l = (uint16_t*)((uint8_t*)font + font->ligature_offs), i = 0; l[i] && u == -1U; i++) {
+            for (ptr = (uint8_t*)font + l[i], s = (uint8_t*)str; *ptr && *ptr == *s; ptr++, s++);
+            if (!*ptr) { u = SSFN_LIG_FIRST + i; break; }
         }
     }
-    if(u == -1U) {
+    if (u == -1U) {
         /* inline ssfn_utf8 to workaround -O2 bug in gcc 11.1 */
         s = (uint8_t*)str; u = *s;
-        if((*s & 128) != 0) {
-            if(!(*s & 32)) { u = ((*s & 0x1F)<<6)|(*(s+1) & 0x3F); s++; } else
-            if(!(*s & 16)) { u = ((*s & 0xF)<<12)|((*(s+1) & 0x3F)<<6)|(*(s+2) & 0x3F); s += 2; } else
-            if(!(*s & 8)) { u = ((*s & 0x7)<<18)|((*(s+1) & 0x3F)<<12)|((*(s+2) & 0x3F)<<6)|(*(s+3) & 0x3F); s += 3; }
+        if ((*s & 128) != 0) {
+            if (!(*s & 32)) { u = ((*s & 0x1F)<<6)|(*(s+1) & 0x3F); s++; } else
+            if (!(*s & 16)) { u = ((*s & 0xF)<<12)|((*(s+1) & 0x3F)<<6)|(*(s+2) & 0x3F); s += 2; } else
+            if (!(*s & 8)) { u = ((*s & 0x7)<<18)|((*(s+1) & 0x3F)<<12)|((*(s+2) & 0x3F)<<6)|(*(s+3) & 0x3F); s += 3; }
             else u = 0;
         }
         s++;
     }
     *len = (int)(s - (uint8_t*)str);
     *unicode = u;
-    for(ptr = (uint8_t*)font + font->characters_offs, i = 0; i < 0x110000; i++) {
-        if(ptr[0] == 0xFF) { i += 65535; ptr++; }
-        else if((ptr[0] & 0xC0) == 0xC0) { j = (((ptr[0] & 0x3F) << 8) | ptr[1]); i += j; ptr += 2; }
-        else if((ptr[0] & 0xC0) == 0x80) { j = (ptr[0] & 0x3F); i += j; ptr++; }
+    for (ptr = (uint8_t*)font + font->characters_offs, i = 0; i < 0x110000; i++) {
+        if (ptr[0] == 0xFF) { i += 65535; ptr++; }
+        else if ((ptr[0] & 0xC0) == 0xC0) { j = (((ptr[0] & 0x3F) << 8) | ptr[1]); i += j; ptr += 2; }
+        else if ((ptr[0] & 0xC0) == 0x80) { j = (ptr[0] & 0x3F); i += j; ptr++; }
         else {
-            if(i == u) return ptr;
+            if (i == u) return ptr;
             ptr += 6 + ptr[1] * (ptr[0] & 0x40 ? 6 : 5);
         }
     }
@@ -159,19 +159,19 @@ static uint8_t *_ssfn_c(const ssfn_font_t *font, const char *str, int *len, uint
 /* add a line to contour */
 static void _ssfn_l(ssfn_t *ctx, int p, int h, int x, int y)
 {
-    if(x < 0 || y < 0 || x >= p || y >= h || (
+    if (x < 0 || y < 0 || x >= p || y >= h || (
         ((ctx->lx + (1 << (SSFN_PREC-1))) >> SSFN_PREC) == ((x + (1 << (SSFN_PREC-1))) >> SSFN_PREC) &&
         ((ctx->ly + (1 << (SSFN_PREC-1))) >> SSFN_PREC) == ((y + (1 << (SSFN_PREC-1))) >> SSFN_PREC))) return;
 #ifdef SSFN_MAXLINES
-    if(ctx->np >= SSFN_MAXLINES*2-2) return;
+    if (ctx->np >= SSFN_MAXLINES*2-2) return;
 #else
-    if(ctx->ap <= ctx->np) {
+    if (ctx->ap <= ctx->np) {
         ctx->ap = ctx->np + 512;
         ctx->p = (uint16_t*)SSFN_realloc(ctx->p, ctx->ap * sizeof(uint16_t));
-        if(!ctx->p) { ctx->ap = ctx->np = 0; return; }
+        if (!ctx->p) { ctx->ap = ctx->np = 0; return; }
     }
 #endif
-    if(!ctx->np) {
+    if (!ctx->np) {
         ctx->p[0] = ctx->mx;
         ctx->p[1] = ctx->my;
         ctx->np += 2;
@@ -186,7 +186,7 @@ static void _ssfn_l(ssfn_t *ctx, int p, int h, int x, int y)
 static void _ssfn_b(ssfn_t *ctx, int p,int h, int x0,int y0, int x1,int y1, int x2,int y2, int x3,int y3, int l)
 {
     int m0x, m0y, m1x, m1y, m2x, m2y, m3x, m3y, m4x, m4y,m5x, m5y;
-    if(l<4 && (x0!=x3 || y0!=y3)) {
+    if (l<4 && (x0!=x3 || y0!=y3)) {
         m0x = ((x1-x0)/2) + x0;     m0y = ((y1-y0)/2) + y0;
         m1x = ((x2-x1)/2) + x1;     m1y = ((y2-y1)/2) + y1;
         m2x = ((x3-x2)/2) + x2;     m2y = ((y3-y2)/2) + y2;
@@ -196,20 +196,20 @@ static void _ssfn_b(ssfn_t *ctx, int p,int h, int x0,int y0, int x1,int y1, int 
         _ssfn_b(ctx, p,h, x0,y0, m0x,m0y, m3x,m3y, m5x,m5y, l+1);
         _ssfn_b(ctx, p,h, m5x,m5y, m4x,m4y, m2x,m2y, x3,y3, l+1);
     }
-    if(l) _ssfn_l(ctx, p,h, x3, y3);
+    if (l) _ssfn_l(ctx, p,h, x3, y3);
 }
 
 #ifndef SSFN_MAXLINES
 static void _ssfn_fc(ssfn_t *ctx)
 {
     int i, j, k;
-    if(!ctx) return;
-    for(k = 0; k <= 16; k++)
-        if(ctx->c[k]) {
-            for(j = 0; j < 256; j++)
-                if(ctx->c[k][j]) {
-                    for(i = 0; i < 256; i++)
-                        if(ctx->c[k][j][i]) SSFN_free(ctx->c[k][j][i]);
+    if (!ctx) return;
+    for (k = 0; k <= 16; k++)
+        if (ctx->c[k]) {
+            for (j = 0; j < 256; j++)
+                if (ctx->c[k][j]) {
+                    for (i = 0; i < 256; i++)
+                        if (ctx->c[k][j][i]) SSFN_free(ctx->c[k][j][i]);
                     SSFN_free(ctx->c[k][j]);
                 }
             SSFN_free(ctx->c[k]);
@@ -367,7 +367,7 @@ static int _ssfn__zexpand(_ssfn__zbuf *z, char *zout)
 #pragma GCC diagnostic ignored "-Wuse-after-free"
 #endif
    z->zout = zout; cur = (unsigned int) (z->zout - z->zout_start); limit = (unsigned int) (z->zout_end - z->zout_start);
-   if(limit == 8) { if(z->zout_start[0] != 'S' || z->zout_start[1] != 'F' || z->zout_start[2] != 'N') return 0; limit = *((uint32_t*)&z->zout_start[4]); } else return 0;
+   if (limit == 8) { if (z->zout_start[0] != 'S' || z->zout_start[1] != 'F' || z->zout_start[2] != 'N') return 0; limit = *((uint32_t*)&z->zout_start[4]); } else return 0;
    q = (char *) SSFN_realloc(z->zout_start, limit);
    if (q == NULL) return 0;
    z->zout_start = q; z->zout = q + cur; z->zout_end = q + limit;
@@ -385,7 +385,7 @@ static int _ssfn__zdist_extra[32]={0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,1
 static int _ssfn__parse_huffman_block(_ssfn__zbuf *a)
 {
    char *zout = a->zout;
-   for(;;) {
+   for (;;) {
       int z = _ssfn__zhuffman_decode(a, &a->z_length);
       if (z < 256) {
          if (z < 0) return 0;
@@ -479,7 +479,7 @@ inline static int _ssfn__parse_uncompressed_block(_ssfn__zbuf *a)
    if (nlen != (len ^ 0xffff)) return 0;
    if (a->zout + len > a->zout_end)
       if (!_ssfn__zexpand(a, a->zout)) return 0;
-   for(k = 0; k < len; k++)
+   for (k = 0; k < len; k++)
        a->zout[k] = a->zbuffer[k];
    a->zbuffer += len;
    a->zout += len;
@@ -550,33 +550,33 @@ int ssfn_load(ssfn_t *ctx, const void *data)
 #ifndef SSFN_MAXLINES
     uint8_t c, r, *ptr = (uint8_t *)font;
 #endif
-    if(!ctx || !font)
+    if (!ctx || !font)
         return SSFN_ERR_INVINP;
-    if(((uint8_t *)font)[0] == 0x1f && ((uint8_t *)font)[1] == 0x8b) {
+    if (((uint8_t *)font)[0] == 0x1f && ((uint8_t *)font)[1] == 0x8b) {
 #ifdef SSFN_MAXLINES
         return SSFN_ERR_BADFILE;
 #else
         ptr += 2;
-        if(*ptr++ != 8) return SSFN_ERR_BADFILE;
+        if (*ptr++ != 8) return SSFN_ERR_BADFILE;
         c = *ptr++; ptr += 6;
-        if(c & 4) { r = *ptr++; r += (*ptr++ << 8); ptr += r; }
-        if(c & 8) { while(*ptr++ != 0); }
-        if(c & 16) { while(*ptr++ != 0); }
+        if (c & 4) { r = *ptr++; r += (*ptr++ << 8); ptr += r; }
+        if (c & 8) { while(*ptr++ != 0); }
+        if (c & 16) { while(*ptr++ != 0); }
         font = (ssfn_font_t*)_ssfn_zlib_decode((const char*)ptr);
-        if(!font) return SSFN_ERR_BADFILE;
+        if (!font) return SSFN_ERR_BADFILE;
         ctx->bufs = (char**)SSFN_realloc(ctx->bufs, (ctx->numbuf + 1) * sizeof(char*));
-        if(!ctx->bufs) { ctx->numbuf = 0; return SSFN_ERR_ALLOC; }
+        if (!ctx->bufs) { ctx->numbuf = 0; return SSFN_ERR_ALLOC; }
         ctx->bufs[ctx->numbuf++] = (char*)font;
         ctx->lenbuf += font->size;
 #endif
     }
-    if(!SSFN_memcmp(font->magic, SSFN_COLLECTION, 4)) {
+    if (!SSFN_memcmp(font->magic, SSFN_COLLECTION, 4)) {
         end = (ssfn_font_t*)((uint8_t*)font + font->size);
-        for(fnt = (ssfn_font_t*)((uint8_t*)font + 8); fnt < end && !ssfn_load(ctx, (const void *)fnt);
+        for (fnt = (ssfn_font_t*)((uint8_t*)font + 8); fnt < end && !ssfn_load(ctx, (const void *)fnt);
             fnt = (ssfn_font_t*)((uint8_t*)fnt + fnt->size));
     } else {
         family = SSFN_TYPE_FAMILY(font->type);
-        if(SSFN_memcmp(font->magic, SSFN_MAGIC, 4) || SSFN_memcmp((uint8_t*)font + font->size - 4, SSFN_ENDMAGIC, 4) ||
+        if (SSFN_memcmp(font->magic, SSFN_MAGIC, 4) || SSFN_memcmp((uint8_t*)font + font->size - 4, SSFN_ENDMAGIC, 4) ||
             family > SSFN_FAMILY_HAND || font->fragments_offs >= font->size || font->characters_offs >= font->size ||
             font->ligature_offs >= font->size || font->kerning_offs >= font->size || font->cmap_offs >= font->size ||
             font->fragments_offs >= font->characters_offs) {
@@ -584,10 +584,10 @@ int ssfn_load(ssfn_t *ctx, const void *data)
         } else {
             ctx->len[family]++;
 #ifdef SSFN_MAXLINES
-            if(ctx->len[family] > 15) return SSFN_ERR_ALLOC;
+            if (ctx->len[family] > 15) return SSFN_ERR_ALLOC;
 #else
             ctx->fnt[family] = (const ssfn_font_t**)SSFN_realloc(ctx->fnt[family], ctx->len[family]*sizeof(void*));
-            if(!ctx->fnt[family]) {
+            if (!ctx->fnt[family]) {
                 ctx->len[family] = 0;
                 return SSFN_ERR_ALLOC;
             } else
@@ -611,17 +611,17 @@ void ssfn_free(ssfn_t *ctx)
 #ifndef SSFN_MAXLINES
     int i;
 #endif
-    if(!ctx) return;
+    if (!ctx) return;
 #ifndef SSFN_MAXLINES
     _ssfn_fc(ctx);
-    if(ctx->bufs) {
-        for(i = 0; i < ctx->numbuf; i++)
-            if(ctx->bufs[i]) SSFN_free(ctx->bufs[i]);
+    if (ctx->bufs) {
+        for (i = 0; i < ctx->numbuf; i++)
+            if (ctx->bufs[i]) SSFN_free(ctx->bufs[i]);
         SSFN_free(ctx->bufs);
     }
-    for(i = 0; i < 5; i++)
-        if(ctx->fnt[i]) SSFN_free(ctx->fnt[i]);
-    if(ctx->p) SSFN_free(ctx->p);
+    for (i = 0; i < 5; i++)
+        if (ctx->fnt[i]) SSFN_free(ctx->fnt[i]);
+    if (ctx->p) SSFN_free(ctx->p);
 #endif
     SSFN_memset(ctx, 0, sizeof(ssfn_t));
 }
@@ -639,21 +639,21 @@ int ssfn_mem(ssfn_t *ctx)
 #else
     int i, j, k, ret = sizeof(ssfn_t);
 
-    if(!ctx) return 0;
-    for(i = 0; i < 5; i++) ret += ctx->len[i] * sizeof(ssfn_font_t*);
+    if (!ctx) return 0;
+    for (i = 0; i < 5; i++) ret += ctx->len[i] * sizeof(ssfn_font_t*);
     ret += ctx->lenbuf;
-    for(k = 0; k <= 16; k++) {
-        if(ctx->c[k]) {
-            for(j = 0; j < 256; j++)
-                if(ctx->c[k][j]) {
-                    for(i = 0; i < 256; i++)
-                        if(ctx->c[k][j][i]) ret += 8 + ctx->c[k][j][i]->p * ctx->c[k][j][i]->h;
+    for (k = 0; k <= 16; k++) {
+        if (ctx->c[k]) {
+            for (j = 0; j < 256; j++)
+                if (ctx->c[k][j]) {
+                    for (i = 0; i < 256; i++)
+                        if (ctx->c[k][j][i]) ret += 8 + ctx->c[k][j][i]->p * ctx->c[k][j][i]->h;
                     ret += 256 * sizeof(void*);
                 }
             ret += 256 * sizeof(void*);
         }
     }
-    if(ctx->p) ret += ctx->ap * sizeof(uint16_t);
+    if (ctx->p) ret += ctx->ap * sizeof(uint16_t);
     return ret;
 #endif
 }
@@ -672,19 +672,19 @@ int ssfn_select(ssfn_t *ctx, int family, const char *name, int style, int size)
 {
     int i, j, l;
 
-    if(!ctx) return SSFN_ERR_INVINP;
+    if (!ctx) return SSFN_ERR_INVINP;
 #ifndef SSFN_MAXLINES
     _ssfn_fc(ctx);
 #endif
-    if((style & ~0x5FFF)) return SSFN_ERR_BADSTYLE;
-    if(size < 8 || size > SSFN_SIZE_MAX) return SSFN_ERR_BADSIZE;
+    if ((style & ~0x5FFF)) return SSFN_ERR_BADSTYLE;
+    if (size < 8 || size > SSFN_SIZE_MAX) return SSFN_ERR_BADSIZE;
 
-    if(family == SSFN_FAMILY_BYNAME) {
-        if(!name || !name[0]) return SSFN_ERR_INVINP;
-        for(l=0; name[l]; l++);
-        for(i=0; i < 5; i++) {
-            for(j=0; j < ctx->len[i]; j++) {
-                if(!SSFN_memcmp(name, (uint8_t*)&ctx->fnt[i][j]->magic + sizeof(ssfn_font_t), l)) {
+    if (family == SSFN_FAMILY_BYNAME) {
+        if (!name || !name[0]) return SSFN_ERR_INVINP;
+        for (l=0; name[l]; l++);
+        for (i=0; i < 5; i++) {
+            for (j=0; j < ctx->len[i]; j++) {
+                if (!SSFN_memcmp(name, (uint8_t*)&ctx->fnt[i][j]->magic + sizeof(ssfn_font_t), l)) {
                     ctx->s = ctx->fnt[i][j];
                     goto familyfound;
                 }
@@ -692,7 +692,7 @@ int ssfn_select(ssfn_t *ctx, int family, const char *name, int style, int size)
         }
         return SSFN_ERR_NOFACE;
     } else {
-        if(family != SSFN_FAMILY_ANY && (family > SSFN_FAMILY_HAND || !ctx->len[family])) return SSFN_ERR_NOFACE;
+        if (family != SSFN_FAMILY_ANY && (family > SSFN_FAMILY_HAND || !ctx->len[family])) return SSFN_ERR_NOFACE;
         ctx->s = NULL;
     }
 familyfound:
@@ -730,75 +730,75 @@ int ssfn_render(ssfn_t *ctx, ssfn_buf_t *dst, const char *str)
     bB += ((fB - bB) * fA) >> 8; bG += ((fG - bG) * fA) >> 8; bR += ((fR - bR) * fA) >> 8;\
     *Ol = (ctx->style & SSFN_STYLE_A ? O & 0xFF000000 : ((uint32_t)fA << 24)) | (bR << (16 - cs)) | (bG << 8) | (bB << cs);
 
-    if(!ctx || !str) return SSFN_ERR_INVINP;
-    if(!*str) return 0;
-    if(*str == '\r') { dst->x = 0; return 1; }
-    if(*str == '\n') { dst->x = 0; dst->y += ctx->line ? ctx->line : ctx->size; return 1; }
+    if (!ctx || !str) return SSFN_ERR_INVINP;
+    if (!*str) return 0;
+    if (*str == '\r') { dst->x = 0; return 1; }
+    if (*str == '\n') { dst->x = 0; dst->y += ctx->line ? ctx->line : ctx->size; return 1; }
 
-    if(ctx->s) {
+    if (ctx->s) {
         ctx->f = ctx->s;
         ptr = _ssfn_c(ctx->f, str, &ret, &unicode);
     } else {
         /* find best match */
         p = ctx->family;
         ctx->f = NULL;
-again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
-        for(; n <= m; n++) {
+again:  if (p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
+        for (; n <= m; n++) {
             fl = (ssfn_font_t **)ctx->fnt[n];
-            if(ctx->style & 3) {
+            if (ctx->style & 3) {
                 /* check if we have a specific ctx->f for the requested style and size */
-                for(i=0;i<ctx->len[n];i++)
-                    if(((fl[i]->type>>4) & 3) == (ctx->style & 3) && fl[i]->height == ctx->size &&
+                for (i=0;i<ctx->len[n];i++)
+                    if (((fl[i]->type>>4) & 3) == (ctx->style & 3) && fl[i]->height == ctx->size &&
                         (ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
                 /* if not, check if we have the requested size (for bitmap fonts) */
-                if(!ptr)
-                    for(i=0;i<ctx->len[n];i++)
-                        if(fl[i]->height == ctx->size && (ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
+                if (!ptr)
+                    for (i=0;i<ctx->len[n];i++)
+                        if (fl[i]->height == ctx->size && (ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
                 /* if neither size+style nor size matched, look for style match */
-                if(!ptr)
-                    for(i=0;i<ctx->len[n];i++)
-                        if(((fl[i]->type>>4) & 3) == (ctx->style & 3) && (ptr = _ssfn_c(fl[i], str, &ret, &unicode)))
+                if (!ptr)
+                    for (i=0;i<ctx->len[n];i++)
+                        if (((fl[i]->type>>4) & 3) == (ctx->style & 3) && (ptr = _ssfn_c(fl[i], str, &ret, &unicode)))
                             { ctx->f = fl[i]; break; }
                 /* if bold italic was requested, check if we have at least bold or italic */
-                if(!ptr && (ctx->style & 3) == 3)
-                    for(i=0;i<ctx->len[n];i++)
-                        if(((fl[i]->type>>4) & 3) && (ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
+                if (!ptr && (ctx->style & 3) == 3)
+                    for (i=0;i<ctx->len[n];i++)
+                        if (((fl[i]->type>>4) & 3) && (ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
             }
             /* last resort, get the first ctx->f which has a glyph for this multibyte, no matter style */
-            if(!ptr) {
-                for(i=0;i<ctx->len[n];i++)
-                    if((ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
+            if (!ptr) {
+                for (i=0;i<ctx->len[n];i++)
+                    if ((ptr = _ssfn_c(fl[i], str, &ret, &unicode))) { ctx->f = fl[i]; break; }
             }
         }
         /* if glyph still not found, try any family group */
-        if(!ptr && p != SSFN_FAMILY_ANY) { p = SSFN_FAMILY_ANY; goto again; }
+        if (!ptr && p != SSFN_FAMILY_ANY) { p = SSFN_FAMILY_ANY; goto again; }
     }
-    if(!ptr) {
-        if(ctx->style & SSFN_STYLE_NODEFGLYPH) return SSFN_ERR_NOGLYPH;
+    if (!ptr) {
+        if (ctx->style & SSFN_STYLE_NODEFGLYPH) return SSFN_ERR_NOGLYPH;
         else {
             unicode = 0;
-            if(ctx->family >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = ctx->family;
-            for(; n <= m && !ptr; n++)
-                if(ctx->len[n] && ctx->fnt[n][0] && !(*((uint8_t*)ctx->fnt[n][0] + ctx->fnt[n][0]->characters_offs) & 0x80))
+            if (ctx->family >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = ctx->family;
+            for (; n <= m && !ptr; n++)
+                if (ctx->len[n] && ctx->fnt[n][0] && !(*((uint8_t*)ctx->fnt[n][0] + ctx->fnt[n][0]->characters_offs) & 0x80))
                     { ctx->f = ctx->fnt[n][0]; ptr = (uint8_t*)ctx->f + ctx->f->characters_offs; }
         }
-        if(!ptr) return SSFN_ERR_NOGLYPH;
+        if (!ptr) return SSFN_ERR_NOGLYPH;
     }
-    if(!ctx->f || !ctx->f->height || !ctx->size) return SSFN_ERR_NOFACE;
-    if((unicode >> 16) > 0x10) return SSFN_ERR_INVINP;
+    if (!ctx->f || !ctx->f->height || !ctx->size) return SSFN_ERR_NOFACE;
+    if ((unicode >> 16) > 0x10) return SSFN_ERR_INVINP;
     ctx->rc = (ssfn_chr_t*)ptr; ptr += sizeof(ssfn_chr_t);
     H = (ctx->style & SSFN_STYLE_ABS_SIZE) || SSFN_TYPE_FAMILY(ctx->f->type) == SSFN_FAMILY_MONOSPACE || !ctx->f->baseline ?
         ctx->size : ctx->size * ctx->f->height / ctx->f->baseline;
 
 #ifdef SSFN_PROFILING
     gettimeofday(&tv1, NULL); tvd.tv_sec = tv1.tv_sec - tv0.tv_sec; tvd.tv_usec = tv1.tv_usec - tv0.tv_usec;
-    if(tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
+    if (tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
     ctx->lookup += tvd.tv_sec * 1000000L + tvd.tv_usec;
     memcpy(&tv0, &tv1, sizeof(struct timeval));
 #endif
     /* render glyph into cache */
 #ifndef SSFN_MAXLINES
-    if(!(ctx->style & SSFN_STYLE_NOCACHE) && ctx->c[unicode >> 16] && ctx->c[unicode >> 16][(unicode >> 8) & 0xFF] &&
+    if (!(ctx->style & SSFN_STYLE_NOCACHE) && ctx->c[unicode >> 16] && ctx->c[unicode >> 16][(unicode >> 8) & 0xFF] &&
         ctx->c[unicode >> 16][(unicode >> 8) & 0xFF][unicode & 0xFF]) {
             ctx->g = ctx->c[unicode >> 16][(unicode >> 8) & 0xFF][unicode & 0xFF];
     } else
@@ -808,24 +808,24 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
         ci = (ctx->style & SSFN_STYLE_ITALIC) && !(SSFN_TYPE_STYLE(ctx->f->type) & SSFN_STYLE_ITALIC);
         cb = (ctx->style & SSFN_STYLE_BOLD) && !(SSFN_TYPE_STYLE(ctx->f->type) & SSFN_STYLE_BOLD) ? (ctx->f->height+64)>>6 : 0;
         w = (ctx->rc->w * h + ctx->f->height - 1) / ctx->f->height;
-        if(w > SSFN_SIZE_MAX) { h = h * SSFN_SIZE_MAX / w; w = SSFN_SIZE_MAX; }
+        if (w > SSFN_SIZE_MAX) { h = h * SSFN_SIZE_MAX / w; w = SSFN_SIZE_MAX; }
         p = w + (ci ? h / SSFN_ITALIC_DIV : 0) + cb;
         /* failsafe, should never happen */
-        if(p * h >= SSFN_DATA_MAX) return SSFN_ERR_BADSIZE;
+        if (p * h >= SSFN_DATA_MAX) return SSFN_ERR_BADSIZE;
 #ifndef SSFN_MAXLINES
-        if(!(ctx->style & SSFN_STYLE_NOCACHE)) {
-            if(!ctx->c[unicode >> 16]) {
+        if (!(ctx->style & SSFN_STYLE_NOCACHE)) {
+            if (!ctx->c[unicode >> 16]) {
                 ctx->c[unicode >> 16] = (ssfn_glyph_t***)SSFN_realloc(NULL, 256 * sizeof(void*));
-                if(!ctx->c[unicode >> 16]) return SSFN_ERR_ALLOC;
+                if (!ctx->c[unicode >> 16]) return SSFN_ERR_ALLOC;
                 SSFN_memset(ctx->c[unicode >> 16], 0, 256 * sizeof(void*));
             }
-            if(!ctx->c[unicode >> 16][(unicode >> 8) & 0xFF]) {
+            if (!ctx->c[unicode >> 16][(unicode >> 8) & 0xFF]) {
                 ctx->c[unicode >> 16][(unicode >> 8) & 0xFF] = (ssfn_glyph_t**)SSFN_realloc(NULL, 256 * sizeof(void*));
-                if(!ctx->c[unicode >> 16][(unicode >> 8) & 0xFF]) return SSFN_ERR_ALLOC;
+                if (!ctx->c[unicode >> 16][(unicode >> 8) & 0xFF]) return SSFN_ERR_ALLOC;
                 SSFN_memset(ctx->c[unicode >> 16][(unicode >> 8) & 0xFF], 0, 256 * sizeof(void*));
             }
             ctx->g = ctx->c[unicode >> 16][(unicode >> 8) & 0xFF][unicode & 0xFF] = (ssfn_glyph_t*)SSFN_realloc(NULL, p * h + 8);
-            if(!ctx->c[unicode >> 16][(unicode >> 8) & 0xFF][unicode & 0xFF]) return SSFN_ERR_ALLOC;
+            if (!ctx->c[unicode >> 16][(unicode >> 8) & 0xFF][unicode & 0xFF]) return SSFN_ERR_ALLOC;
         } else
 #endif
             ctx->g = &ctx->ga;
@@ -837,18 +837,18 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
         ctx->g->o = (ctx->rc->t & 0x3F) + x;
         SSFN_memset(&ctx->g->data, 0xFF, p * h);
         color = 0xFE; ctx->g->a = ctx->g->d = 0;
-        for(n = 0; n < ctx->rc->n; n++) {
-            if(ptr[0] == 255 && ptr[1] == 255) { color = ptr[2]; ptr += ctx->rc->t & 0x40 ? 6 : 5; continue; }
+        for (n = 0; n < ctx->rc->n; n++) {
+            if (ptr[0] == 255 && ptr[1] == 255) { color = ptr[2]; ptr += ctx->rc->t & 0x40 ? 6 : 5; continue; }
             x = ((ptr[0] + cb) << SSFN_PREC) * h / ctx->f->height; y = (ptr[1] << SSFN_PREC) * h / ctx->f->height;
-            if(ctx->rc->t & 0x40) { m = (ptr[5] << 24) | (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]; ptr += 6; }
+            if (ctx->rc->t & 0x40) { m = (ptr[5] << 24) | (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]; ptr += 6; }
             else { m = (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]; ptr += 5; }
             frg = (uint8_t*)ctx->f +  m;
-            if(!(frg[0] & 0x80)) {
+            if (!(frg[0] & 0x80)) {
                 /* contour */
                 j = (frg[0] & 0x3F);
-                if(frg[0] & 0x40) { j <<= 8; j |= frg[1]; frg++; }
+                if (frg[0] & 0x40) { j <<= 8; j |= frg[1]; frg++; }
                 j++; frg++; tmp = frg; frg += (j+3)/4; ctx->np = 0;
-                for(i = 0; i < j; i++) {
+                for (i = 0; i < j; i++) {
                     k = (frg[0] << SSFN_PREC) * h / ctx->f->height + x; m = (frg[1] << SSFN_PREC) * h / ctx->f->height + y;
                     switch((tmp[i >> 2] >> ((i & 3) << 1)) & 3) {
                         case SSFN_CONTOUR_MOVE: ctx->mx = ctx->lx = k; ctx->my = ctx->ly = m; frg += 2; break;
@@ -868,130 +868,130 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
                     }
                 }
                 /* close path */
-                if(ctx->mx != ctx->lx || ctx->my != ctx->ly) { ctx->p[ctx->np+0] = ctx->mx; ctx->p[ctx->np+1] = ctx->my; ctx->np += 2; }
+                if (ctx->mx != ctx->lx || ctx->my != ctx->ly) { ctx->p[ctx->np+0] = ctx->mx; ctx->p[ctx->np+1] = ctx->my; ctx->np += 2; }
                 /* add rasterized vector layers to cached glyph */
-                if(ctx->np > 4) {
-                    for(b = A = B = o = 0; b < h; b++, B += p) {
+                if (ctx->np > 4) {
+                    for (b = A = B = o = 0; b < h; b++, B += p) {
                         a = b << SSFN_PREC;
-                        for(nr = 0, i = 0; i < ctx->np - 3; i += 2) {
-                            if( (ctx->p[i+1] < a && ctx->p[i+3] >= a) ||
+                        for (nr = 0, i = 0; i < ctx->np - 3; i += 2) {
+                            if ( (ctx->p[i+1] < a && ctx->p[i+3] >= a) ||
                                 (ctx->p[i+3] < a && ctx->p[i+1] >= a)) {
-                                    if((ctx->p[i+1] >> SSFN_PREC) == (ctx->p[i+3] >> SSFN_PREC))
+                                    if ((ctx->p[i+1] >> SSFN_PREC) == (ctx->p[i+3] >> SSFN_PREC))
                                         x = (((int)ctx->p[i]+(int)ctx->p[i+2])>>1);
                                     else
                                         x = ((int)ctx->p[i]) + ((a - (int)ctx->p[i+1])*
                                             ((int)ctx->p[i+2] - (int)ctx->p[i])/
                                             ((int)ctx->p[i+3] - (int)ctx->p[i+1]));
                                     x >>= SSFN_PREC;
-                                    if(ci) x += (h - b) / SSFN_ITALIC_DIV;
-                                    if(cb && !o) {
-                                        if(ctx->g->data[B + x] != color) { o = -cb; A = cb; }
+                                    if (ci) x += (h - b) / SSFN_ITALIC_DIV;
+                                    if (cb && !o) {
+                                        if (ctx->g->data[B + x] != color) { o = -cb; A = cb; }
                                         else { o = cb; A = -cb; }
                                     }
-                                    for(k = 0; k < nr && x > r[k]; k++);
-                                    for(l = nr; l > k; l--) r[l] = r[l-1];
+                                    for (k = 0; k < nr && x > r[k]; k++);
+                                    for (l = nr; l > k; l--) r[l] = r[l-1];
                                     r[k] = x;
                                     nr++;
                             }
                         }
-                        if(nr > 1 && nr & 1) { r[nr - 2] = r[nr - 1]; nr--; }
-                        if(nr) {
-                            if(ctx->g->d < y + b) ctx->g->d = y + b;
-                            for(i = 0; i < nr - 1; i += 2) {
+                        if (nr > 1 && nr & 1) { r[nr - 2] = r[nr - 1]; nr--; }
+                        if (nr) {
+                            if (ctx->g->d < y + b) ctx->g->d = y + b;
+                            for (i = 0; i < nr - 1; i += 2) {
                                 l = r[i] + o; m = r[i + 1] + A;
-                                if(l < 0) l = 0;
-                                if(m > p) m = p;
-                                if(i > 0 && l < r[i - 1] + A) l = r[i - 1] + A;
-                                for(; l < m; l++)
+                                if (l < 0) l = 0;
+                                if (m > p) m = p;
+                                if (i > 0 && l < r[i - 1] + A) l = r[i - 1] + A;
+                                for (; l < m; l++)
                                     ctx->g->data[B + l] = ctx->g->data[B + l] == color ? 0xFF : color;
                             }
                         }
                     }
                 }
-            } else if((frg[0] & 0x60) == 0x00) {
+            } else if ((frg[0] & 0x60) == 0x00) {
                 /* bitmap */
                 B = ((frg[0] & 0x1F) + 1) << 3; A = frg[1] + 1; x >>= SSFN_PREC; y >>= SSFN_PREC;
                 b = B * h / ctx->f->height; a = A * h / ctx->f->height;
-                if(ctx->g->d < y + a) ctx->g->d = y + a;
+                if (ctx->g->d < y + a) ctx->g->d = y + a;
                 frg += 2;
-                for(j = 0; j < a; j++) {
+                for (j = 0; j < a; j++) {
                     k = j * A / a;
                     l = (y + j) * p + x + (ci ? (h - y - j) / SSFN_ITALIC_DIV : 0);
-                    for(i = 0; i < b; i++) {
+                    for (i = 0; i < b; i++) {
                         m = i * B / b;
-                        if(frg[(k * B + m) >> 3] & (1 << (m & 7))) {
-                            for(o = 0; o <= cb; o++)
+                        if (frg[(k * B + m) >> 3] & (1 << (m & 7))) {
+                            for (o = 0; o <= cb; o++)
                                 ctx->g->data[l + i + o] = color;
                         }
                     }
                 }
-                if(!(ctx->style & (SSFN_STYLE_NOAA|SSFN_STYLE_NOSMOOTH))) {
+                if (!(ctx->style & (SSFN_STYLE_NOAA|SSFN_STYLE_NOSMOOTH))) {
                     m = color == 0xFD ? 0xFC : 0xFD; o = y * p + p + x;
-                    for(k = h; k > ctx->f->height + 4; k -= 2*ctx->f->height) {
-                        for(j = 1, l = o; j < a - 1; j++, l += p)
-                            for(i = 1; i < b - 1; i++) {
-                                if(ctx->g->data[l + i] == 0xFF && (ctx->g->data[l + i - p] == color ||
+                    for (k = h; k > ctx->f->height + 4; k -= 2*ctx->f->height) {
+                        for (j = 1, l = o; j < a - 1; j++, l += p)
+                            for (i = 1; i < b - 1; i++) {
+                                if (ctx->g->data[l + i] == 0xFF && (ctx->g->data[l + i - p] == color ||
                                     ctx->g->data[l + i + p] == color) && (ctx->g->data[l + i - 1] == color ||
                                     ctx->g->data[l + i + 1] == color)) ctx->g->data[l + i] = m;
                             }
-                        for(j = 1, l = o; j < a - 1; j++, l += p)
-                            for(i = 1; i < b - 1; i++) {
-                                if(ctx->g->data[l + i] == m) ctx->g->data[l + i] = color;
+                        for (j = 1, l = o; j < a - 1; j++, l += p)
+                            for (i = 1; i < b - 1; i++) {
+                                if (ctx->g->data[l + i] == m) ctx->g->data[l + i] = color;
                             }
                     }
                 }
-            } else if((frg[0] & 0x60) == 0x20) {
+            } else if ((frg[0] & 0x60) == 0x20) {
                 /* pixmap */
                 k = (((frg[0] & 0x1F) << 8) | frg[1]) + 1; B = frg[2] + 1; A = frg[3] + 1; x >>= SSFN_PREC; y >>= SSFN_PREC;
                 b = B * h / ctx->f->height; a = A * h / ctx->f->height;
-                if(ctx->g->d < y + a) ctx->g->d = y + a;
+                if (ctx->g->d < y + a) ctx->g->d = y + a;
                 frg += 4; end = frg + k; i = 0;
                 while(frg < end) {
                     l = ((*frg++) & 0x7F) + 1;
-                    if(frg[-1] & 0x80) {
+                    if (frg[-1] & 0x80) {
                         while(l--) dec[i++] = *frg;
                         frg++;
                     } else while(l--) dec[i++] = *frg++;
                 }
-                for(j = 0; j < a; j++) {
+                for (j = 0; j < a; j++) {
                     k = j * A / a * B;
                     l = (y + j) * p + x + (ci ? (h - y - j) / SSFN_ITALIC_DIV : 0);
-                    for(i = 0; i < b; i++) {
+                    for (i = 0; i < b; i++) {
                         m = dec[k + i * B / b];
-                        if(m != 0xFF) ctx->g->data[l + i] = m;
+                        if (m != 0xFF) ctx->g->data[l + i] = m;
                     }
                 }
             }
             color = 0xFE;
         }
         ctx->g->a = ctx->f->baseline;
-        if(ctx->g->d > ctx->g->a + 1) ctx->g->d -= ctx->g->a + 1; else ctx->g->d = 0;
+        if (ctx->g->d > ctx->g->a + 1) ctx->g->d -= ctx->g->a + 1; else ctx->g->d = 0;
 #ifdef SSFN_DEBUGGLYPH
         printf("\nU+%06X size %d p %d h %d base %d under %d overlap %d ascender %d descender %d advance x %d advance y %d cb %d\n",
             unicode, ctx->size,p,h,ctx->f->baseline,ctx->f->underline,ctx->g->o,ctx->g->a,ctx->g->d,ctx->g->x,ctx->g->y,cb);
-        for(j = 0; j < h; j++) { printf("%3d: ", j); for(i = 0; i < p; i++) { if(ctx->g->data[j*p+i] == 0xFF) printf(j == ctx->g->a ? "_" : "."); else printf("%x", ctx->g->data[j*p+i] & 0xF); } printf("\n"); }
+        for (j = 0; j < h; j++) { printf("%3d: ", j); for (i = 0; i < p; i++) { if (ctx->g->data[j*p+i] == 0xFF) printf(j == ctx->g->a ? "_" : "."); else printf("%x", ctx->g->data[j*p+i] & 0xF); } printf("\n"); }
 #endif
 #ifdef SSFN_PROFILING
         gettimeofday(&tv1, NULL); tvd.tv_sec = tv1.tv_sec - tv0.tv_sec; tvd.tv_usec = tv1.tv_usec - tv0.tv_usec;
-        if(tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
+        if (tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
         ctx->raster += tvd.tv_sec * 1000000L + tvd.tv_usec;
         memcpy(&tv0, &tv1, sizeof(struct timeval));
 #endif
     }
-    if(dst) {
+    if (dst) {
         /* blit glyph from cache into buffer */
         h = H;
-        if(h > ctx->line) ctx->line = h;
+        if (h > ctx->line) ctx->line = h;
         w = ctx->g->p * h / ctx->g->h;
         s = ((ctx->g->x - ctx->g->o) * h + ctx->f->height - 1) / ctx->f->height;
         n = ctx->size > 16 ? 2 : 1;
-        if(w < n) w = n;
-        if(s < n) s = n;
-        if(ctx->g->x) {
+        if (w < n) w = n;
+        if (s < n) s = n;
+        if (ctx->g->x) {
             ctx->ox = ox = ((ctx->g->o * h + ctx->f->height - 1) / ctx->f->height) + (ctx->style & SSFN_STYLE_RTL ? w : 0);
             ctx->oy = oy = (ctx->g->a * h + ctx->f->height - 1) / ctx->f->height;
         } else { ctx->ox = ox = w / 2; ctx->oy = oy = 0; }
-        if(dst->ptr) {
+        if (dst->ptr) {
             j = dst->w < 0 ? -dst->w : dst->w;
             cs = dst->w < 0 ? 16 : 0;
             cb = (h + 64) >> 6; uix = w > s ? w : s; uax = 0;
@@ -1004,12 +1004,12 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
             bR = (dst->bg >> 16) & 0xFF; bG = (dst->bg >> 8) & 0xFF; bB = (dst->bg >> 0) & 0xFF; O = 0xFF000000;
             Op = (uint32_t*)(dst->ptr + dst->p * (dst->y - oy) + ((dst->x - ox) << 2));
             for (y = 0; y < h && dst->y + y - oy < dst->h; y++, Op += dst->p >> 2) {
-                if(dst->y + y - oy < 0) continue;
+                if (dst->y + y - oy < 0) continue;
                 y0 = (y << 8) * ctx->g->h / h; Y0 = y0 >> 8; y1 = ((y + 1) << 8) * ctx->g->h / h; Y1 = y1 >> 8; Ol = Op;
                 for (x = 0; x < w && dst->x + x - ox < j; x++, Ol++) {
-                    if(dst->x + x - ox < 0) continue;
+                    if (dst->x + x - ox < 0) continue;
                     m = 0; sR = sG = sB = sA = 0;
-                    if(!dst->bg) {
+                    if (!dst->bg) {
                         /* real linear frame buffers should be accessed only as uint32_t on 32 bit boundary */
                         O = *Ol;
                         bR = (O >> (16 - cs)) & 0xFF;
@@ -1017,28 +1017,28 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
                         bB = (O >> cs) & 0xFF;
                     }
                     x0 = (x << 8) * ctx->g->p / w; X0 = x0 >> 8; x1 = ((x + 1) << 8) * ctx->g->p / w; X1 = x1 >> 8;
-                    for(ys = y0; ys < y1; ys += 256) {
-                        if(ys >> 8 == Y0) { yp = 256 - (ys & 0xFF); ys &= ~0xFF; if(yp > y1 - y0) yp = y1 - y0; }
-                        else if(ys >> 8 == Y1) yp = y1 & 0xFF; else yp = 256;
+                    for (ys = y0; ys < y1; ys += 256) {
+                        if (ys >> 8 == Y0) { yp = 256 - (ys & 0xFF); ys &= ~0xFF; if (yp > y1 - y0) yp = y1 - y0; }
+                        else if (ys >> 8 == Y1) yp = y1 & 0xFF; else yp = 256;
                         X2 = (ys >> 8) * ctx->g->p;
-                        for(xs = x0; xs < x1; xs += 256) {
+                        for (xs = x0; xs < x1; xs += 256) {
                             if (xs >> 8 == X0) {
-                                k = 256 - (xs & 0xFF); xs &= ~0xFF; if(k > x1 - x0) k = x1 - x0; pc = k == 256 ? yp : (k * yp)>>8;
+                                k = 256 - (xs & 0xFF); xs &= ~0xFF; if (k > x1 - x0) k = x1 - x0; pc = k == 256 ? yp : (k * yp)>>8;
                             } else
                             if (xs >> 8 == X1) { k = x1 & 0xFF; pc = k == 256 ? yp : (k * yp) >> 8; }
                             else pc = yp;
                             m += pc;
                             k = ctx->g->data[X2 + (xs >> 8)];
-                            if(k == 0xFF) {
+                            if (k == 0xFF) {
                                 sB += bB * pc; sG += bG * pc; sR += bR * pc; sA += 255;
                             } else {
-                                if(k == 0xFE || !ctx->f->cmap_offs) {
+                                if (k == 0xFE || !ctx->f->cmap_offs) {
                                     dB = fB; dG = fG; dR = fR; dA = fA;
                                 } else {
                                     P = *((uint32_t*)((uint8_t*)ctx->f + ctx->f->cmap_offs + (k << 2)));
                                     dR = (P >> 16) & 0xFF; dG = (P >> 8) & 0xFF; dB = (P >> 0) & 0xFF; dA = (P >> 24) & 0xFF;
                                 }
-                                if(dA == 255) {
+                                if (dA == 255) {
                                     sB += dB * pc; sG += dG * pc; sR += dR * pc; sA += dA * pc;
                                 } else {
                                     sB += (dB * dA + bB * (255 - dA)) * pc / 255; sG += (dG * dA + bG * (255 - dA)) * pc / 255;
@@ -1047,42 +1047,42 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
                             }
                         }
                     }
-                    if(m) { sR /= m; sG /= m; sB /= m; sA /= m; } else { sR >>= 8; sG >>= 8; sB >>= 8; sA >>= 8; }
-                    if(ctx->style & SSFN_STYLE_NOAA) sA = sA > 127 ? 255 : 0;
-                    if(sA > 15) {
+                    if (m) { sR /= m; sG /= m; sB /= m; sA /= m; } else { sR >>= 8; sG >>= 8; sB >>= 8; sA >>= 8; }
+                    if (ctx->style & SSFN_STYLE_NOAA) sA = sA > 127 ? 255 : 0;
+                    if (sA > 15) {
                         *Ol = (ctx->style & SSFN_STYLE_A ? O & 0xFF000000 : ((sA > 255 ? 255 : sA) << 24)) |
                             ((sR > 255 ? 255 : sR) << (16 - cs)) | ((sG > 255 ? 255 : sG) << 8) | ((sB > 255 ? 255 : sB) << cs);
-                        if(y == n) { if(uix > x) { uix = x; } if(uax < x) { uax = x; } }
+                        if (y == n) { if (uix > x) { uix = x; } if (uax < x) { uax = x; } }
                     }
                 }
             }
-            if(ctx->style & SSFN_STYLE_UNDERLINE) {
+            if (ctx->style & SSFN_STYLE_UNDERLINE) {
                 uix -= cb + 1; uax += cb + 2;
-                if(uax < uix) uax = uix + 1;
+                if (uax < uix) uax = uix + 1;
                 k = (w > s ? w : s);
                 Op = (uint32_t*)(dst->ptr + dst->p * (dst->y - oy + n) + ((dst->x - ox - 1) << 2));
                 for (y = n; y < n + cb && dst->y + y - oy < dst->h; y++, Op += dst->p >> 2) {
-                    if(dst->y + y - oy < 0) continue;
+                    if (dst->y + y - oy < 0) continue;
                     for (Ol = Op, x = 0; x <= k && dst->x + x - ox < j; x++, Ol++) {
-                        if(dst->x + x - ox < 0 || (x > uix && x < uax)) continue;
+                        if (dst->x + x - ox < 0 || (x > uix && x < uax)) continue;
                         PUTPIXEL;
                     }
                 }
             }
-            if(ctx->style & SSFN_STYLE_STHROUGH) {
+            if (ctx->style & SSFN_STYLE_STHROUGH) {
                 n = (h >> 1); k = (w > s ? w : s) + 1;
                 Op = (uint32_t*)(dst->ptr + dst->p * (dst->y - oy + n) + ((dst->x - ox - 1) << 2));
                 for (y = n; y < n + cb && dst->y + y - oy < dst->h; y++, Op += dst->p >> 2) {
-                    if(dst->y + y - oy < 0) continue;
+                    if (dst->y + y - oy < 0) continue;
                     for (Ol = Op, x = 0; x <= k && dst->x + x - ox < j; x++, Ol++) {
-                        if(dst->x + x - ox < 0) continue;
+                        if (dst->x + x - ox < 0) continue;
                         PUTPIXEL;
                     }
                 }
             }
 #ifdef SSFN_PROFILING
             gettimeofday(&tv1, NULL); tvd.tv_sec = tv1.tv_sec - tv0.tv_sec;tvd.tv_usec = tv1.tv_usec - tv0.tv_usec;
-            if(tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
+            if (tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
             ctx->blit += tvd.tv_sec * 1000000L + tvd.tv_usec;
             memcpy(&tv0, &tv1, sizeof(struct timeval));
 #endif
@@ -1092,31 +1092,31 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
         dst->x += ctx->ax;
         dst->y += (ctx->g->y * h + ctx->f->height - 1) / ctx->f->height;
         ptr = (uint8_t*)str + ret;
-        if(!(ctx->style & SSFN_STYLE_NOKERN) && ctx->f->kerning_offs && _ssfn_c(ctx->f, (const char*)ptr, &i, &P) && P > 32) {
+        if (!(ctx->style & SSFN_STYLE_NOKERN) && ctx->f->kerning_offs && _ssfn_c(ctx->f, (const char*)ptr, &i, &P) && P > 32) {
             ptr = (uint8_t*)ctx->rc + sizeof(ssfn_chr_t);
             /* check all kerning fragments, because we might have both vertical and horizontal kerning offsets */
-            for(n = 0; n < ctx->rc->n; n++) {
-                if(ptr[0] == 255 && ptr[1] == 255) { ptr += ctx->rc->t & 0x40 ? 6 : 5; continue; }
+            for (n = 0; n < ctx->rc->n; n++) {
+                if (ptr[0] == 255 && ptr[1] == 255) { ptr += ctx->rc->t & 0x40 ? 6 : 5; continue; }
                 x = ptr[0];
-                if(ctx->rc->t & 0x40) { m = (ptr[5] << 24) | (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]; ptr += 6; }
+                if (ctx->rc->t & 0x40) { m = (ptr[5] << 24) | (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]; ptr += 6; }
                 else { m = (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]; ptr += 5; }
                 frg = (uint8_t*)ctx->f +  m;
-                if((frg[0] & 0xE0) == 0xC0) {
+                if ((frg[0] & 0xE0) == 0xC0) {
                     k = (((frg[0] & 0x1F) << 8) | frg[1]) + 1; frg += 2;
                     while(k--) {
                         m = ((frg[2] & 0xF) << 16) | (frg[1] << 8) | frg[0];
-                        if(P >= (uint32_t)m && P <= (uint32_t)(((frg[5] & 0xF) << 16) | (frg[4] << 8) | frg[3])) {
+                        if (P >= (uint32_t)m && P <= (uint32_t)(((frg[5] & 0xF) << 16) | (frg[4] << 8) | frg[3])) {
                             P -= m;
                             m = ctx->f->kerning_offs + ((((frg[2] >> 4) & 0xF) << 24) | (((frg[5] >> 4) & 0xF) << 16) |
                                 (frg[7] << 8) | frg[6]);
                             tmp = (uint8_t*)ctx->f + m;
                             while(tmp < (uint8_t*)ctx->f + ctx->f->size - 4) {
-                                if((tmp[0] & 0x7F) < P) {
+                                if ((tmp[0] & 0x7F) < P) {
                                     P -= (tmp[0] & 0x7F) + 1;
                                     tmp += 2 + (tmp[0] & 0x80 ? 0 : tmp[0] & 0x7F);
                                 } else {
                                     y = (int)((signed char)tmp[1 + ((tmp[0] & 0x80) ? 0 : P)]) * h / ctx->f->height;
-                                    if(x) dst->x += y; else dst->y += y;
+                                    if (x) dst->x += y; else dst->y += y;
                                     break;
                                 }
                             }
@@ -1128,7 +1128,7 @@ again:  if(p >= SSFN_FAMILY_BYNAME) { n = 0; m = 4; } else n = m = p;
             }
 #ifdef SSFN_PROFILING
             gettimeofday(&tv1, NULL); tvd.tv_sec = tv1.tv_sec - tv0.tv_sec; tvd.tv_usec = tv1.tv_usec - tv0.tv_usec;
-            if(tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
+            if (tvd.tv_usec < 0) { tvd.tv_sec--; tvd.tv_usec += 1000000L; }
             ctx->kern += tvd.tv_sec * 1000000L + tvd.tv_usec;
 #endif
         }
@@ -1152,25 +1152,25 @@ int ssfn_bbox(ssfn_t *ctx, const char *str, int *w, int *h, int *left, int *top)
     ssfn_buf_t buf;
     int ret, f = 1, l = 0, t = 0;
 
-    if(!ctx || !str) return SSFN_ERR_INVINP;
-    if(w) {*w = 0;} if(h) {*h = 0;} if(top) {*top = 0;} if(left) {*left = 0;}
-    if(!*str) return SSFN_OK;
+    if (!ctx || !str) return SSFN_ERR_INVINP;
+    if (w) {*w = 0;} if (h) {*h = 0;} if (top) {*top = 0;} if (left) {*left = 0;}
+    if (!*str) return SSFN_OK;
     SSFN_memset(&buf, 0, sizeof(ssfn_buf_t)); ctx->line = 0;
     while((ret = ssfn_render(ctx, &buf, str))) {
-        if(ret < 0 || !ctx->g) return ret;
-        if(f) { f = 0; l = ctx->ox; buf.x += l; }
-        if(ctx->g->x) {
-            if(ctx->oy > t) t = ctx->oy;
+        if (ret < 0 || !ctx->g) return ret;
+        if (f) { f = 0; l = ctx->ox; buf.x += l; }
+        if (ctx->g->x) {
+            if (ctx->oy > t) t = ctx->oy;
         } else {
-            if(buf.w < ctx->g->p) buf.w = ctx->g->p;
+            if (buf.w < ctx->g->p) buf.w = ctx->g->p;
             buf.h += ctx->g->y ? ctx->g->y : ctx->g->h;
         }
         str += ret;
     }
-    if((ctx->style & SSFN_STYLE_ITALIC) && !(SSFN_TYPE_STYLE(ctx->f->type) & SSFN_STYLE_ITALIC))
+    if ((ctx->style & SSFN_STYLE_ITALIC) && !(SSFN_TYPE_STYLE(ctx->f->type) & SSFN_STYLE_ITALIC))
         buf.x +=  ctx->size / SSFN_ITALIC_DIV - l;
-    if(ctx->g->x) { if(w) {*w = buf.x;} if(h) {*h = ctx->line;} if(left) {*left = l;} if(top) {*top = t;} }
-    else { if(w) {*w = buf.w;} if(h) {*h = buf.y;} if(top) {*top = 0;} if(left) {*left = 0;} }
+    if (ctx->g->x) { if (w) {*w = buf.x;} if (h) {*h = ctx->line;} if (left) {*left = l;} if (top) {*top = t;} }
+    else { if (w) {*w = buf.w;} if (h) {*h = buf.y;} if (top) {*top = 0;} if (left) {*left = 0;} }
     return SSFN_OK;
 }
 
@@ -1187,12 +1187,12 @@ ssfn_buf_t *ssfn_text(ssfn_t *ctx, const char *str, unsigned int fg)
     ssfn_buf_t *buf;
     int ret;
 
-    if(!ctx || !str) return NULL;
+    if (!ctx || !str) return NULL;
     buf = (ssfn_buf_t*)SSFN_realloc(NULL, sizeof(ssfn_buf_t));
-    if(!buf) return NULL;
+    if (!buf) return NULL;
     SSFN_memset(buf, 0, sizeof(ssfn_buf_t));
     buf->fg = fg;
-    if(!*str || ssfn_bbox(ctx, str, (int*)&buf->w, (int*)&buf->h, (int*)&buf->x, (int*)&buf->y) != SSFN_OK)
+    if (!*str || ssfn_bbox(ctx, str, (int*)&buf->w, (int*)&buf->h, (int*)&buf->x, (int*)&buf->y) != SSFN_OK)
         return buf;
     buf->p = buf->w * sizeof(uint32_t);
     buf->ptr = (uint8_t*)SSFN_realloc(NULL, buf->p * buf->h);
@@ -1200,7 +1200,7 @@ ssfn_buf_t *ssfn_text(ssfn_t *ctx, const char *str, unsigned int fg)
     ctx->style &= ~SSFN_STYLE_A;
     while((ret = ssfn_render(ctx, buf, str)) > 0)
         str += ret;
-    if(ret != SSFN_OK) { SSFN_free(buf->ptr); SSFN_free(buf); return NULL; }
+    if (ret != SSFN_OK) { SSFN_free(buf->ptr); SSFN_free(buf); return NULL; }
     return buf;
 #else
     (void)ctx;
@@ -1215,75 +1215,94 @@ ssfn_buf_t *ssfn_text(ssfn_t *ctx, const char *str, unsigned int fg)
 #if defined(SSFN_CONSOLEBITMAP_PALETTE) || defined(SSFN_CONSOLEBITMAP_HICOLOR) || defined(SSFN_CONSOLEBITMAP_TRUECOLOR)
 /*** special console bitmap font renderer (ca. 1.5k, no dependencies, no memory allocation and no error checking) ***/
 
-/**
- * public variables to configure
- */
-ssfn_font_t *ssfn_src;          /* font buffer with an inflated bitmap font */
-ssfn_buf_t ssfn_dst;            /* destination frame buffer */
 
-/**
- * Minimal OS kernel console renderer
- *
- * @param unicode character
- * @return error code
- */
-int ssfn_putc(uint32_t unicode)
+ssfn_font_t *ssfn_src;          // font buffer with an inflated bitmap font
+ssfn_buf_t ssfn_dst;            // destination frame buffer
+
+//// @brief Write a unicode character to current ssfn destination @param unicode Unicode character @return Error code on failure
+int ssfn_putc(uint32_t unicode, bool trans)
 {
     register SSFN_PIXEL *o, *p;
     register uint8_t *ptr, *chr = NULL, *frg;
     register int i, j, k, l, m, y = 0, w, s = ssfn_dst.p / sizeof(SSFN_PIXEL);
 
-    if(!ssfn_src || ssfn_src->magic[0] != 'S' || ssfn_src->magic[1] != 'F' || ssfn_src->magic[2] != 'N' ||
-        ssfn_src->magic[3] != '2' || !ssfn_dst.ptr || !ssfn_dst.p) return SSFN_ERR_INVINP;
+    if (!ssfn_src || ssfn_src->magic[0] != 'S' || ssfn_src->magic[1] != 'F' || ssfn_src->magic[2] != 'N' ||
+                     ssfn_src->magic[3] != '2' || !ssfn_dst.ptr || !ssfn_dst.p) { return SSFN_ERR_INVINP; }
+
     w = ssfn_dst.w < 0 ? -ssfn_dst.w : ssfn_dst.w;
-    for(ptr = (uint8_t*)ssfn_src + ssfn_src->characters_offs, i = 0; i < 0x110000; i++) {
-        if(ptr[0] == 0xFF) { i += 65535; ptr++; }
-        else if((ptr[0] & 0xC0) == 0xC0) { j = (((ptr[0] & 0x3F) << 8) | ptr[1]); i += j; ptr += 2; }
-        else if((ptr[0] & 0xC0) == 0x80) { j = (ptr[0] & 0x3F); i += j; ptr++; }
-        else { if((uint32_t)i == unicode) { chr = ptr; break; } ptr += 6 + ptr[1] * (ptr[0] & 0x40 ? 6 : 5); }
+
+    for (ptr = (uint8_t*)ssfn_src + ssfn_src->characters_offs, i = 0; i < 0x110000; i++)
+    {
+        if (ptr[0] == 0xFF) { i += 65535; ptr++; }
+        else if ((ptr[0] & 0xC0) == 0xC0) { j = (((ptr[0] & 0x3F) << 8) | ptr[1]); i += j; ptr += 2; }
+        else if ((ptr[0] & 0xC0) == 0x80) { j = (ptr[0] & 0x3F); i += j; ptr++; }
+        else { if ((uint32_t)i == unicode) { chr = ptr; break; } ptr += 6 + ptr[1] * (ptr[0] & 0x40 ? 6 : 5); }
     }
-#ifdef SSFN_CONSOLEBITMAP_CONTROL
-    i = ssfn_src->height; j = ssfn_dst.h - i - (ssfn_dst.h % i);
-    if(chr && w) {
-        if(unicode == '\t') ssfn_dst.x -= ssfn_dst.x % chr[4];
-        if(ssfn_dst.x + chr[4] > w) { ssfn_dst.x = 0; ssfn_dst.y += i; }
-    }
-    if(unicode == '\n') ssfn_dst.y += i;
-    if(j > 0 && ssfn_dst.y > j) {
-        ssfn_dst.y = j;
-        for(k = 0; k < j; k++)
-            for(l = 0; l < ssfn_dst.p; l++) ssfn_dst.ptr[k * ssfn_dst.p + l] = ssfn_dst.ptr[(k + i) * ssfn_dst.p + l];
-    }
-    if(unicode == '\r' || unicode == '\n') { ssfn_dst.x = 0; return SSFN_OK; }
-#endif
-    if(!chr) return SSFN_ERR_NOGLYPH;
+
+    #ifdef SSFN_CONSOLEBITMAP_CONTROL
+        i = ssfn_src->height; j = ssfn_dst.h - i - (ssfn_dst.h % i);
+        if (chr && w) 
+        {
+            if (unicode == '\t') ssfn_dst.x -= ssfn_dst.x % chr[4];
+            if (ssfn_dst.x + chr[4] > w) { ssfn_dst.x = 0; ssfn_dst.y += i; }
+        }
+        if (unicode == '\n') { ssfn_dst.y += i; }
+        if (j > 0 && ssfn_dst.y > j) 
+        {
+            ssfn_dst.y = j;
+            for (k = 0; k < j; k++)
+            {
+                for (l = 0; l < ssfn_dst.p; l++) { ssfn_dst.ptr[k * ssfn_dst.p + l] = ssfn_dst.ptr[(k + i) * ssfn_dst.p + l]; }
+            } 
+        }
+        if (unicode == '\r' || unicode == '\n') { ssfn_dst.x = 0; return SSFN_OK; }
+    #endif
+
+    if (!chr) return SSFN_ERR_NOGLYPH;
     ptr = chr + 6; o = (SSFN_PIXEL*)(ssfn_dst.ptr + ssfn_dst.y * ssfn_dst.p + ssfn_dst.x * sizeof(SSFN_PIXEL));
-    for(i = 0; i < chr[1]; i++, ptr += chr[0] & 0x40 ? 6 : 5) {
-        if(ptr[0] == 255 && ptr[1] == 255) continue;
-        frg = (uint8_t*)ssfn_src + (chr[0] & 0x40 ? ((ptr[5] << 24) | (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]) :
-            ((ptr[4] << 16) | (ptr[3] << 8) | ptr[2]));
-        if((frg[0] & 0xE0) != 0x80) continue;
-        if(ssfn_dst.bg) {
-            for(; y < ptr[1] && (!ssfn_dst.h || ssfn_dst.y + y < ssfn_dst.h); y++, o += s) {
-                for(p = o, j = 0; j < chr[2] && (!w || ssfn_dst.x + j < w); j++, p++)
+
+    for (i = 0; i < chr[1]; i++, ptr += chr[0] & 0x40 ? 6 : 5) 
+    {
+        if (ptr[0] == 255 && ptr[1] == 255) { continue; }
+
+        frg = (uint8_t*)ssfn_src + (chr[0] & 0x40 ? ((ptr[5] << 24) | (ptr[4] << 16) | (ptr[3] << 8) | ptr[2]) : ((ptr[4] << 16) | (ptr[3] << 8) | ptr[2]));
+        if ((frg[0] & 0xE0) != 0x80) { continue; }
+
+        if (ssfn_dst.bg) 
+        {
+            for (; y < ptr[1] && (!ssfn_dst.h || ssfn_dst.y + y < ssfn_dst.h); y++, o += s) 
+            {
+                for (p = o, j = 0; j < chr[2] && (!w || ssfn_dst.x + j < w); j++, p++) 
+                { 
                     *p = ssfn_dst.bg;
-            }
-        } else { o += (int)(ptr[1] - y) * s; y = ptr[1]; }
-        k = ((frg[0] & 0x1F) + 1) << 3; j = frg[1] + 1; frg += 2;
-        for(m = 1; j && (!ssfn_dst.h || ssfn_dst.y + y < ssfn_dst.h); j--, y++, o += s)
-            for(p = o, l = 0; l < k; l++, p++, m <<= 1) {
-                if(m > 0x80) { frg++; m = 1; }
-                if(ssfn_dst.x + l >= 0 && (!w || ssfn_dst.x + l < w)) {
-                    if(*frg & m) *p = ssfn_dst.fg; else
-                    if(ssfn_dst.bg) *p = ssfn_dst.bg;
                 }
             }
-    }
-    if(ssfn_dst.bg)
-        for(; y < chr[3] && (!ssfn_dst.h || ssfn_dst.y + y < ssfn_dst.h); y++, o += s) {
-            for(p = o, j = 0; j < chr[2] && (!w || ssfn_dst.x + j < w); j++, p++)
-                *p = ssfn_dst.bg;
+        } 
+        else { o += (int)(ptr[1] - y) * s; y = ptr[1]; }
+
+        k = ((frg[0] & 0x1F) + 1) << 3; j = frg[1] + 1; frg += 2;
+
+        for (m = 1; j && (!ssfn_dst.h || ssfn_dst.y + y < ssfn_dst.h); j--, y++, o += s)
+        {
+            for (p = o, l = 0; l < k; l++, p++, m <<= 1) 
+            {
+                if (m > 0x80) { frg++; m = 1; }
+                if (ssfn_dst.x + l >= 0 && (!w || ssfn_dst.x + l < w)) 
+                {
+                    if (*frg & m) { *p = ssfn_dst.fg; } else if (ssfn_dst.bg) { *p = ssfn_dst.bg; }
+                }
+            }
         }
+    }
+    
+    if (ssfn_dst.bg)
+    {
+        for (; y < chr[3] && (!ssfn_dst.h || ssfn_dst.y + y < ssfn_dst.h); y++, o += s) 
+        {
+            for (p = o, j = 0; j < chr[2] && (!w || ssfn_dst.x + j < w); j++, p++) { *p = ssfn_dst.bg; }
+        }
+    }
+
     ssfn_dst.x += chr[4]; ssfn_dst.y += chr[5];
     return SSFN_OK;
 }

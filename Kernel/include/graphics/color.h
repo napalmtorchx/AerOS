@@ -68,3 +68,5 @@ color4_t color4_from_argb(argb_t color);
 uint8_t  color4_bg_index(color4_t color);
 
 uint32_t color_bpp_multiplier(COLORDEPTH bpp);
+
+COLOR color_blend(COLOR c1, COLOR c2, float alpha);

@@ -119,7 +119,7 @@ void console_write(console_t* console, const char* str)
             size_t seq_len = cstr - &str[i];
             
             unicode = ssfn_utf8(&cstr);
-            if (unicode != 0) { ssfn_putc(unicode); }
+            if (unicode != 0) { ssfn_putc(unicode, false); }
 
             console->cursor.x++;
             xx += fontsz.x;

@@ -211,7 +211,7 @@ extern const char *ssfn_errstr[];
 /* simple renderer */
 extern ssfn_font_t *ssfn_src;                                                     /* font buffer */
 extern ssfn_buf_t ssfn_dst;                                                       /* destination frame buffer */
-int ssfn_putc(uint32_t unicode);                                                  /* render console bitmap font */
+int ssfn_putc(uint32_t unicode, bool trans);                                                  /* render console bitmap font */
 
 /***** renderer implementations *****/
 

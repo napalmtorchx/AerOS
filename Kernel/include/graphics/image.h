@@ -4,6 +4,12 @@
 #include <graphics/color.h>
 #include <graphics/font.h>
 
+typedef enum
+{
+    GRADIENT_XLINEAR,
+    GRADIENT_YLINEAR,
+} GRADIENT_TYPE;
+
 typedef struct image_t image_t;
 struct image_t
 {
@@ -24,6 +30,7 @@ void image_free(image_t* img);
 void image_clear(image_t* img, argb_t color);
 void image_blit(image_t* img, int x, int y, argb_t color);
 void image_fill_rect(image_t* img, int x, int y, int w, int h, argb_t color);
+void image_fill_rectg(image_t* img, int x, int y, int w, int h, GRADIENT_TYPE type, argb_t c1, argb_t c2);
 void image_draw_rect(image_t* img, int x, int y, int w, int h, int thickness, argb_t color);
 void image_drawchar(image_t* img, int x, int y, char c, argb_t fg, argb_t bg, const font_t* font);
 void image_drawstr(image_t* img, int x, int y, const char* str, argb_t fg, argb_t bg, const font_t* font);

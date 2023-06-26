@@ -10,15 +10,17 @@ static char        _kbuff[0x10000];
 static char        _path[FILENAME_MAX];
 static bool        _sending;
 static bool        _processing;
+static bool        _enabled;
 
 void cmdhost_on_char(void* handle, char c)
 {
+    if (!_enabled) { return; }
     console_printf(kconsole_get(), "%c", c);
 }
 
 void cmdhost_on_del(void* handle, void* unused)
 {
-    if (strlen(_kbuff) == 0) { return; }
+    if (!_enabled || strlen(_kbuff) == 0) { return; }
     console_delete(kconsole_get(), 1);
 }
 
@@ -44,6 +46,7 @@ void cmdhost_init()
     taskmgr_load(_thread);
     taskmgr_start(_thread);
 
+    _enabled = true;
     debug_log("%s Initialized command host\n", DEBUG_OK);
     console_clear(kconsole_get());
     console_printf(kconsole_get(), "AerOS version 2.0\nRAM Usage:%u/%u KB\n", heap_get_used_mem(kernel_heap_ref()) / KILOBYTE, heap_get_total_mem(kernel_heap_ref()) / KILOBYTE);
@@ -64,20 +67,22 @@ KRESULT cmdhost_main(int argc, char** argv)
     {
         lock();
 
-        kbd_setstate(&_kb);
-
-        if (!_processing)
+        if (_enabled)
         {
-            if (kbd_keydown(KEY_ENTER) && !_sending)
+            kbd_setstate(&_kb);
+            if (!_processing)
             {
-                _processing = true;
-                _sending = true;
-                debug_log("%s Command '%s' has been queued\n", DEBUG_INFO, _kbuff);
-                console_newline(kconsole_get());
-                cmdhost_push(_kbuff);
-                memset(_kbuff, 0, sizeof(_kbuff));
-            }   
-            if (kbd_keyup(KEY_ENTER)) { _sending = false; }
+                if (kbd_keydown(KEY_ENTER) && !_sending)
+                {
+                    _processing = true;
+                    _sending = true;
+                    debug_log("%s Command '%s' has been queued\n", DEBUG_INFO, _kbuff);
+                    console_newline(kconsole_get());
+                    cmdhost_push(_kbuff);
+                    memset(_kbuff, 0, sizeof(_kbuff));
+                }   
+                if (kbd_keyup(KEY_ENTER)) { _sending = false; }
+            }
         }
         
         int pos = 0;
@@ -141,6 +146,8 @@ void cmdhost_push(const char* input)
 
     if (!locked) { unlock(); }
 }
+
+void cmdhost_toggle(bool enabled) { _enabled = enabled; }
 
 char* cmdhost_getpath() { return _path; }
 
@@ -216,5 +223,12 @@ KRESULT command_ls(int argc, char** argv)
 KRESULT command_threads(int argc, char** argv)
 {
     taskmgr_print(true);
+    return KRESULT_SUCCESS;
+}
+
+KRESULT command_gui(int argc, char** argv)
+{
+    gfx_init();
+    _enabled = false;
     return KRESULT_SUCCESS;
 }
