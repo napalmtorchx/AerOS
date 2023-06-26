@@ -57,6 +57,8 @@ uintptr_t kernel_stack_start();
 uintptr_t kernel_stack_end();
 size_t    kernel_stack_size();
 
+bool kernel_booted();
+
 heap_t* kernel_heap_ref();
 
 multiboot_t* mboot_get();

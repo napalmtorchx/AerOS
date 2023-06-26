@@ -1,6 +1,8 @@
 #include <hal/devices/sys/cpu_opt.h>
 #include <kernel.h>
 
+static bool _sse = false;
+
 void sse_enable()
 {
     unsigned int eax, cr0, cr4;
@@ -14,7 +16,7 @@ void sse_enable()
     inline_asm("mov %%cr0, %0" : "=r"(eax));
     inline_asm("orl $0x40000000, %0" : "=a"(eax));
     inline_asm("mov %0, %%cr0" : : "r"(eax));
-
+    _sse = true;
 }
 
 bool is_qemu()
@@ -99,3 +101,5 @@ void get_cpu_name()
         printf("%s CPU Name: %s\n", DEBUG_INFO, name);
     }
 }
+
+bool cpu_sse_enabled() { return _sse; }

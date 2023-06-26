@@ -42,11 +42,16 @@
 ---- NEEDS WORK -----------------------------------------------------------------------------------
 - PCI device interfacing
 - Multicore threading
+- Unicode PS/2 keyboard support
 
 ---- NOT YET IMPLEMENTED --------------------------------------------------------------------------
 - FAT32 file system
 - ext2/ext4 file system
 - PS/2 Mouse(finished but not ported)
 - Sprite font support
+- POSIX-compliant stdio streams
+- Directories in RAMFS
 
 ---- KNOWN BUGS -----------------------------------------------------------------------------------
+
+---- NOTES ----------------------------------------------------------------------------------------

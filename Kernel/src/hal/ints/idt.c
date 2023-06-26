@@ -130,6 +130,7 @@ void idt_init()
     _idt_flush((uintptr_t)&_reg);
     irq_register(IRQ7,  irq_default_protocol);
     irq_register(IRQ15, irq_default_protocol);
+    irq_register(IRQ13, irq_default_protocol);
     IRQ_ENABLE;
 
     debug_log("%s Initialized interrupt descriptor table and handlers\n", DEBUG_OK);

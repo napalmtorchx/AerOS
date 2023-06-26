@@ -192,18 +192,26 @@ char* strrev(char* str)
 //sse optimized memcpy
 void* memcpy_sse(void* dest, const void* src, size_t n)
 {
-    uint8_t* d = dest, *s = src;
-    for (size_t i = 0; i < n / 16; i++)
+    void*       start = dest;
+    const char* s     = (const char*)src;
+    char*       d     = (char*)dest;
+    size_t      blks  = n / 16, bytes = n % 16;
+
+    for (size_t i = 0; i < blks; i++) 
     {
-        asm volatile("movups (%0), %%xmm0\n" "movntdq %%xmm0, (%1)\n"::"r"(s), "r"(d) : "memory");
-        d += 16;
+        asm volatile("movups (%0), %%xmm0\nmovntdq %%xmm0, (%1)\n" : : "r"(s), "r"(d) : "memory");
         s += 16;
+        d += 16;
     }
-    return dest;
+
+    if (bytes > 0) { for (size_t i = 0; i < bytes; i++) { *d++ = *s++; } }
+    return start;
 }
 
 void* memcpy(void* dest, const void* src, size_t n)
 {
+    if (n >= 16 && n % 16 == 0 && cpu_sse_enabled()) { return memcpy_sse(dest, src, n); }
+
     uint32_t  num_dwords = n / 4;
     uint32_t  num_bytes  = n % 4;
     uint32_t* dest32     = (uint32_t*)dest;
@@ -241,6 +249,8 @@ void* memcpyq(void* dest, const void* src, size_t n)
 
 void* memset(void* ptr, int c, size_t n)
 {
+    if (n >= 0x100 && n % 0x100 == 0 && kernel_booted()) { return memset_sse(ptr, c, n); }
+
     uint32_t  num_dwords = n / 4;
     uint32_t  num_bytes  = n % 4;
     uint32_t* dest32     = (uint32_t*)ptr;
@@ -253,12 +263,15 @@ void* memset(void* ptr, int c, size_t n)
 void* memset_sse(void* ptr, int c, size_t n)
 {
     uint8_t* dest = (uint8_t*)ptr;
-    uint32_t values[4] = { (uint32_t)c, (uint32_t)c, (uint32_t)c, (uint32_t)c };
+    uint32_t values[4] = { c, c, c, c };
+
     for (size_t i = 0; i < n / 16; i++)
     {
         asm volatile("movups (%0), %%xmm0\n" "movntdq %%xmm0, (%1)\n"::"r"(values), "r"(dest) : "memory");
         dest += 16;
     }
+
+    for (size_t i = 0; i < n % 16; i++) { *dest++ = (uint8_t)c; }
     return ptr;
 }
 

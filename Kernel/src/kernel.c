@@ -11,9 +11,11 @@ static ramfs_t      _bootfs;
 static heap_t       _kernel_heap;
 static font_t*      _sysfont;
 static console_t    _console;
+static bool         _booted;
 
 void kernel_main(multiboot_t* mboot)
 {
+    _booted = false;
     _multiboot = mboot;
     
     kernel_boot();
@@ -59,7 +61,9 @@ void kernel_init_graphics()
 void kernel_loop()
 {
     debug_log("%s Entered kernel main\n", DEBUG_INFO);
+
     //test_all();
+    _booted = true;
     taskmgr_toggle(true);
     while (true)
     {
@@ -67,6 +71,8 @@ void kernel_loop()
         taskmgr_schedule(true);
     }   
 }
+
+bool kernel_booted() { return _booted; }
 
 uintptr_t kernel_addr_start() { return (uint32_t)&_kernel_start; }
 
