@@ -34,4 +34,6 @@ void image_fill_rectg(image_t* img, int x, int y, int w, int h, GRADIENT_TYPE ty
 void image_draw_rect(image_t* img, int x, int y, int w, int h, int thickness, argb_t color);
 void image_drawchar(image_t* img, int x, int y, char c, argb_t fg, argb_t bg, const font_t* font);
 void image_drawstr(image_t* img, int x, int y, const char* str, argb_t fg, argb_t bg, const font_t* font);
+uint32_t* image_load_tga(const char* filepath);
+void image_draw_tga(image_t* img, unsigned int x, unsigned int y, uint32_t* data);
 argb_t image_getpixel(image_t* img, int x, int y);

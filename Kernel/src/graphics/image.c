@@ -1,9 +1,10 @@
 #include <graphics/image.h>
 #include <graphics/ssfn.h>
+#include <graphics/tga.h>
 #include <kernel.h>
 
 static char unicode_buff[64];
-
+static uint32_t* tga_data;
 image_t image_create(int w, int h, COLORDEPTH bpp, COLORORDER color_order)
 {   
     if (w == 0 || h == 0) { debug_error("image_create(%d, %d, %d, %d) - Invalid size", w, h, bpp, color_order); return NULL_IMAGE; }
@@ -163,6 +164,38 @@ void image_fill_rectg(image_t* img, int x, int y, int w, int h, GRADIENT_TYPE ty
                     ((uint32_t*)img->buffer)[(y + yy) * img->sz.x + (x + xx)] = color;
                 }
             }
+        }
+    }
+}
+
+uint32_t* image_load_tga(const char* filepath)
+{
+    FILE* file = fopen(filepath, "rb");
+    if (file == NULL) { debug_error("image_load_tga(\"%s\") - Failed to open file", filepath); return; }
+    tga_data = malloc(file->sz);
+    fread(tga_data, file->sz,1, file);
+    unsigned int* mouse_cursor = tga_parse(tga_data, file->sz);
+    fclose(file);
+    return mouse_cursor;
+}
+
+void image_draw_tga(image_t* img, unsigned int x, unsigned int y, uint32_t* data)
+{
+    unsigned int w, h;
+    w = data[0];
+    h = data[1];
+    uint32_t* pixels = data;
+    unsigned int xx, yy;
+    argb_t color;
+    for (yy = 0; yy < h; yy++)
+    {
+        if (y + yy >= img->sz.y) { break; }
+        for (xx = 0; xx < w; xx++)
+        {
+            color.value = pixels[yy * w + xx];
+            uint32_t alpha = color.desc.a;
+            COLOR colors = color_blend(color.value, color_from_argb(image_getpixel(gfx_backbuffer(), x + xx, y + yy)), (float)alpha / 255.0f);
+            image_blit(img, x + xx, y + yy, color_to_argb(colors));
         }
     }
 }
