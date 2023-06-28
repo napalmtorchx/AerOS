@@ -194,7 +194,19 @@ void image_draw_tga(image_t* img, unsigned int x, unsigned int y, uint32_t* data
         {
             color.value = pixels[yy * w + xx];
             uint32_t alpha = color.desc.a;
-            COLOR colors = color_blend(color.value, color_from_argb(image_getpixel(gfx_backbuffer(), x + xx, y + yy)), (float)alpha / 255.0f);
+            COLOR colors = color_blend(color.value, color_from_argb(image_getpixel(gfx_backbuffer(), x + xx, y + yy)), (float)alpha / 256.0f);
+            //fix the damn alpha and do a cheap attempt at anti-aliasing the edges
+            if (alpha != 255) {
+                colors = color.value;
+                if (xx == 0 || xx == w - 1 || yy == 0 || yy == h - 1)
+                {
+                    colors = color_blend(color.value, color_from_argb(image_getpixel(gfx_backbuffer(), x + xx, y + yy)), (float)alpha / 256.0f);
+                }
+                else if (xx == 1 || xx == w - 2 || yy == 1 || yy == h - 2)
+                {
+                    colors = color_blend(color.value, color_from_argb(image_getpixel(gfx_backbuffer(), x + xx, y + yy)), (float)alpha / 256.0f);
+                }
+            }
             image_blit(img, x + xx, y + yy, color_to_argb(colors));
         }
     }
