@@ -171,17 +171,18 @@ void console_newline(console_t* console)
 
 void console_delete(console_t* console, int chars_to_del)
 {
+    point_t fontsz = font_getsz(console->font, true);
     while (chars_to_del > 0)
     {
         if (console->cursor.x > 0)
         {
-            console->cursor.x--;
-            console_drawstr(console, console->cursor.x, console->cursor.y, " ", console->fg, console->bg);
+            console_setpos(console, (point_t){ console->cursor.x - 1, console->cursor.y });
+            image_fill_rect(&console->img, console->cursor.x * fontsz.x, console->cursor.y * fontsz.y, fontsz.x, fontsz.y, console->bg);
         }
         else if (console->cursor.y > 0) 
         {
-            console_setpos(console, (point_t){ console->size.x - 1, console->cursor.y - 1});
-            console_drawstr(console, console->cursor.x, console->cursor.y, " ", console->fg, console->bg);
+            console_setpos(console, (point_t){ console->size.x - 1, console->cursor.y - 1 });
+            image_fill_rect(&console->img, console->cursor.x * fontsz.x, console->cursor.y * fontsz.y, fontsz.x, fontsz.y, console->bg);
         }
         chars_to_del--;
     }
@@ -194,14 +195,14 @@ void console_scroll(console_t* console, int lines)
     uint32_t size = console->img.sz.x * console->img.sz.y * 4;
     memcpy(console->img.buffer, (uint32_t*)((uint32_t)console->img.buffer + line), size - line);
     image_fill_rect(&console->img, 0, console->img.sz.y - fh, console->img.sz.x, fh, console->bg);
-    //memset((uint32_t*)((uint32_t)console->img.buffer + (size - line)), console->bg.value, line);
     console_setpos(console, (point_t){ 0, console->size.y - 1 });
 }
 
 void console_setpos(console_t* console, point_t pos)
 {
     if (console == NULL) { return; }
-    console->cursor = pos;
+    console->cursor.x = pos.x;
+    console->cursor.y = pos.y;
 }
 
 void console_setfg(console_t* console, argb_t fg)

@@ -8,8 +8,8 @@
 void devmgr_init();
 duid_t devmgr_register(device_t* dev);
 void devmgr_unregister(duid_t dev);
-bool devmgr_start(duid_t dev, void* arg);
-int devmgr_stop(duid_t dev);
+KRESULT devmgr_start(duid_t dev, void* arg);
+KRESULT devmgr_stop(duid_t dev);
 
 device_t* devmgr_from_uid(duid_t dev);
 device_t* devmgr_from_name(const char* name);

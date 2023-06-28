@@ -41,18 +41,18 @@ void kbd_init(void)
     devmgr_start(_kbd.base.uid, NULL);
 }
 
-bool kbd_start(kbd_device_t* dev, void* unused)
+KRESULT kbd_start(kbd_device_t* dev, void* unused)
 {
     _kbd.code   = 0;
     _kbd.state  = NULL;
     _kbd.layout = &KB_LAYOUT_US;
     memset(_kbd.keymap, 0, sizeof(_kbd.keymap));
-    return true;
+    return KRESULT_SUCCESS;
 }
 
-int kbd_stop(kbd_device_t* dev)
+KRESULT kbd_stop(kbd_device_t* dev)
 {
-    return true;
+    return KRESULT_SUCCESS;
 }
 
 void kbd_handle(uint8_t code)
@@ -77,10 +77,7 @@ void kbd_update_state(void)
     if (_kbd.code == KEY_BACKSPACE)
     {
         if (_kbd.state->fn_del != NULL) { _kbd.state->fn_del(_kbd.state->handle, NULL); }
-        if (strlen(_kbd.state->data) > 0)
-        {
-            strback(_kbd.state->data);
-        }
+        if (strlen(_kbd.state->data) > 0) { strback(_kbd.state->data); }
     }
     else if (_kbd.code == KEY_LSHIFT)       { _kbd.state->l_shift = true; }
     else if (_kbd.code == KEY_RSHIFT)       { _kbd.state->r_shift = true; }

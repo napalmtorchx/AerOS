@@ -14,7 +14,7 @@ time_t time(time_t* tm)
     if (_rtc == NULL) 
     { 
         _rtc = (rtc_device_t*)devmgr_from_name("rtc_timer"); 
-        if (_rtc == NULL) { return time_create(0, 0, 0, 0, 0, 0, 0, 0); }
+        if (_rtc == NULL) { debug_error("RTC:%p\n", _rtc); return time_create(0, 0, 0, 0, 0, 0, 0, 0); }
     }
 
     time_t now = _rtc->tm;

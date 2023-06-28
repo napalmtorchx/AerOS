@@ -25,44 +25,47 @@ void rtc_init(void)
     devmgr_start(_rtc.base.uid, NULL);
 }
 
-bool rtc_start(rtc_device_t* dev, void* unused)
+KRESULT rtc_start(rtc_device_t* dev, void* unused)
 {
     bool ints = irqs_enabled();
     IRQ_DISABLE;
-
-    outb(RTC_CMD, 0x8B);	
-    char prev = inb(RTC_DATA);
-    outb(RTC_CMD, 0x8B);
-    outb(RTC_DATA, prev | 0x40);
-    outb(RTC_CMD, 0x0C);
-    inb(RTC_DATA);
-
+    rtc_flush();
     irq_register(IRQ8, rtc_callback);
     if (ints) { IRQ_ENABLE; }
-    return true;
+    return KRESULT_SUCCESS;
 }
 
-int rtc_stop(rtc_device_t* dev)
+KRESULT rtc_stop(rtc_device_t* dev)
 {
     irq_unregister(IRQ8);
     outb(RTC_CMD, 0x0C);
     inb(RTC_DATA);
-    return true;
+    return KRESULT_SUCCESS;
 }
 
 void rtc_callback(irq_context_t* context)
 {
-    irq_ack(context);
-
     if (_rtc.base.running)
     {
         _rtc.ticks++;
         _rtc.timer++;
         _rtc.seconds += RTC_MILLIS_TIME / 1000.0f;
         _rtc.millis_t = (uint32_t)(_rtc.seconds * 1000.0f);
-        rtc_update();
+
+        if (_rtc.timer >= 250) { _rtc.timer = 0; rtc_update(); }
     }
 
+    outb(RTC_CMD, 0x0C);
+    inb(RTC_DATA);
+    irq_ack(context);
+}
+
+void rtc_flush(void)
+{
+    outb(RTC_CMD, 0x8B);	
+    char prev = inb(RTC_DATA);
+    outb(RTC_CMD, 0x8B);
+    outb(RTC_DATA, prev | 0x40);
     outb(RTC_CMD, 0x0C);
     inb(RTC_DATA);
 }

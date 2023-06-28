@@ -3,13 +3,12 @@
 ;------------------------------------------------------------------------------------;
 
 ;---SET-VARIABLES--------------------------------------------------------------------;
-setdir       C:/Users/Will/Desktop/AerOS
-setvar nasm  C:/nasm.exe
-setvar gcc   C:/GCC/bin/i686-elf-gcc.exe
-setvar ld    C:/GCC/bin/i686-elf-ld.exe
-setvar dbg   C:/GCC/bin/i686-elf-gdb.exe
-setvar vm    C:/Program Files (x86)/VMware/VMware Player/vmplayer.exe
-setvar qemu  C:/Program Files/qemu/qemu-system-i386.exe
+setdir       C:/Users/Will/Documents/Github Projects/AerOS
+setvar nasm  C:/GCC_7_1_0/bin/nasm.exe
+setvar gcc   C:/GCC_7_1_0/bin/i686-elf-gcc.exe
+setvar ld    C:/GCC_7_1_0/bin/i686-elf-ld.exe
+setvar dbg   C:/GCC_7_1_0/bin/i686-elf-gdb.exe
+setvar vm    C:\Program Files (x86)\VMware\VMware Workstation/vmrun.exe
 setvar ramfs Tools/RAMFS/bin/Debug/net7.0/RAMFS.exe
 
 ;---CLEANUP-BIN-DIRECTORY------------------------------------------------------------;
@@ -33,4 +32,4 @@ mkiso Tools/Limine Images/AerOS.iso Images/ISO Bin/kernel.elf Images/ramdisk.img
 
 ;---START-DEBUGGER-PIPE-AND-RUN-VMWARE-----------------------------------------------;
 pipe AerOS
-vm Tools/VMWare/vmware_mach.vmx
+vm -T ws start Tools/VMWare/vmware_mach.vmx

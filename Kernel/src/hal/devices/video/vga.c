@@ -21,15 +21,15 @@ void vga_init(void)
     devmgr_start(_vga.base.uid, VGA_BLACK);
 }
 
-bool vga_start(vga_device_t* dev, VGA_COLOR bg)
+KRESULT vga_start(vga_device_t* dev, VGA_COLOR bg)
 {
     vga_clear(bg);
-    return true;
+    return KRESULT_SUCCESS;
 }
 
-int vga_stop(vga_device_t* dev)
+KRESULT vga_stop(vga_device_t* dev)
 {
-    return true;
+    return KRESULT_SUCCESS;
 }
 
 void vga_clear(VGA_COLOR bg)

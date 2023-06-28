@@ -12,6 +12,6 @@ typedef struct
 } pit_device_t;
 
 void pit_init(void);
-bool pit_start(pit_device_t* dev, void* unused);
-int  pit_stop(pit_device_t* dev);
+KRESULT pit_start(pit_device_t* dev, void* unused);
+KRESULT  pit_stop(pit_device_t* dev);
 void pit_callback(irq_context_t* context);

@@ -25,6 +25,7 @@ void vbe_clear(COLOR bg);
 void vbe_blit(int x, int y, COLOR color);
 void vbe_fill(int x, int y, int w, int h, COLOR color);
 
+bool        vbe_checkmode(int w, int h);
 vbe_mode_t* vbe_modes();
 vbe_mode_t* vbe_mode_lowest();
 vbe_mode_t* vbe_mode_highest();

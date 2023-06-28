@@ -137,8 +137,8 @@ typedef struct
 kbd_state_t kbd_state_create(void* data, size_t sz, void* handle, bool enable_nl, kbd_event_t fn_ch, kbd_event_t fn_del, kbd_event_t fn_ret);
 
 void kbd_init(void);
-bool kbd_start(kbd_device_t* dev, void* unused);
-int  kbd_stop(kbd_device_t* dev);
+KRESULT kbd_start(kbd_device_t* dev, void* unused);
+KRESULT  kbd_stop(kbd_device_t* dev);
 void kbd_handle(uint8_t code);
 void kbd_update_keymap(void);
 void kbd_update_state(void);

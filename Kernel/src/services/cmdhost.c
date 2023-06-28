@@ -155,7 +155,6 @@ char* cmdhost_getpath() { return _path; }
 
 KRESULT command_cls(int argc, char** argv)
 {
-    debug_log("DOING CLS\n");
     console_clear(kconsole_get());
     return KRESULT_SUCCESS;
 }
@@ -228,7 +227,33 @@ KRESULT command_threads(int argc, char** argv)
 
 KRESULT command_gui(int argc, char** argv)
 {
-    gfx_init();
+    kbd_setstate(NULL);
     _enabled = false;
+    gfx_init();
+    return KRESULT_SUCCESS;
+}
+
+KRESULT command_vmode(int argc, char** argv)
+{
+    if (argc != 3) { printf("%s Expected width and height as arguments\n", DEBUG_ERROR); return KRESULT_INVALID_ARG; }
+
+    int w = atol(argv[1]);
+    int h = atol(argv[2]);
+    if (w == 0) { printf("%s Invalid width\n",  DEBUG_ERROR); return KRESULT_INVALID_ARG; }
+    if (h == 0) { printf("%s Invalid height\n", DEBUG_ERROR); return KRESULT_INVALID_ARG; }
+
+    bool valid = vbe_checkmode(w, h);
+    if (!valid) { printf("%s Unsupported video mode %dx%dx32bpp\n", DEBUG_ERROR, w, h); return KRESULT_FAILURE; }
+
+    vbe_setmode(w, h);
+    kconsole_get()->img.sz.x = w;
+    kconsole_get()->img.sz.y = h;
+
+    console_free(kconsole_get());
+    kconsole_get()->img.sz = (point_t){ w, h };
+    *kconsole_get() = console_create(kconsole_get()->img, sysfont_get(), color_to_argb(COLOR_WHITE), color_to_argb(COLOR_BLACK), 64 * KILOBYTE);
+    console_clear(kconsole_get());
+
+    printf("%s Set video mode to %dx%dx32bpp\n", DEBUG_INFO, w, h);
     return KRESULT_SUCCESS;
 }

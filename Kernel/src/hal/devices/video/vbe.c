@@ -48,7 +48,7 @@ KRESULT vbe_stop(vbe_device_t* dev)
     memset(&regs, 0, sizeof(irq_context16_t));
     regs.ax = 0x4F02;
     regs.bx = 0x0003;
-    int32(0x10, &regs);
+    realmode_irq(0x10, &regs);
     return KRESULT_SUCCESS;
 }
 
@@ -61,7 +61,7 @@ void vbe_getheaders(void)
     context.ax = 0x4F00;
     context.es = 0x8000;
     context.di = 0x0000;
-    int32(0x10, &context);
+    realmode_irq(0x10, &context);
 
     if (context.ax != 0x4F) { debug_error("vbe_getheaders() - VBE not supported on this machine"); return; }
     _vbe.ctrl_hdr = ctrlinfo;
@@ -83,7 +83,7 @@ void vbe_probe()
         regs.cx = modes[i];
         regs.es = SEG(minfo);
         regs.di = OFF(minfo);
-        int32(0x10, &regs);
+        realmode_irq(0x10, &regs);
         if (minfo != NULL && minfo->bpp == 32) { _modes[j] = *minfo; j++; }
         i++;
     }
@@ -105,19 +105,21 @@ bool vbe_setmode(int w, int h)
         regs.cx = modes[i];
         regs.es = SEG(minfo);
         regs.di = OFF(minfo);
-        int32(0x10, &regs);
+        realmode_irq(0x10, &regs);
 
         if (minfo->res_x == w && minfo->res_y == h && minfo->bpp == 32)
         {
             mode = modes[i];
             regs.ax = 0x4F02;
             regs.bx = mode | 0x4000;
-            int32(0x10, &regs);
+            realmode_irq(0x10, &regs);
+
             _vbe.mode_hdr = minfo;
             _vbe.fbptr    = minfo->physical_base;
             _vbe.w        = minfo->res_x;
             _vbe.h        = minfo->res_y;
             _vbe.pitch    = minfo->pitch;
+            _vbe.ctrl_hdr = (vbe_ctrl_t*)VBE_CTRL_PTR;
             debug_log("%s Set VBE mode to %dx%dx32bpp\n", DEBUG_INFO, _vbe.mode_hdr->res_x, _vbe.mode_hdr->res_y);
             return true;
         }
@@ -162,6 +164,16 @@ uint32_t vbe_getpixel(int x, int y)
     return _vbe.fbptr[y * _vbe.w + x];
 }
 
+bool vbe_checkmode(int w, int h)
+{
+    for (size_t i = 0; i < VBE_MAX_MODES; i++)
+    {
+        if (_modes[i].res_x == 0 || _modes[i].res_y == 0 || _modes[i].bpp != 32) { continue; }
+        if (_modes[i].res_x == w && _modes[i].res_y == h) { return true; }
+    }
+    return false;
+}
+
 vbe_mode_t* vbe_modes() { return _modes; }
 
 vbe_mode_t* vbe_mode_lowest()
@@ -171,6 +183,7 @@ vbe_mode_t* vbe_mode_lowest()
     vbe_mode_t* lowest = NULL;
     for (size_t i = 0; i < VBE_MAX_MODES; i++)
     {
+        if (_modes[i].res_x == 0 || _modes[i].res_y == 0 || _modes[i].bpp != 32) { continue; }
         if (_modes[i].res_x < w && _modes[i].res_y < h) { lowest = &_modes[i]; w = _modes[i].res_x; h = _modes[i].res_y; }
     }
     return lowest;

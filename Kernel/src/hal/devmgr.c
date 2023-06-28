@@ -69,21 +69,22 @@ void devmgr_unregister(duid_t dev)
     debug_error("devmgr_unregister(%p) - Failed to unregister device %p", dev);
 }
 
-bool devmgr_start(duid_t dev, void* arg)
+KRESULT devmgr_start(duid_t dev, void* arg)
 {
     device_t* device = devmgr_from_uid(dev);
     if (device == NULL) { debug_error("devmgr_start(%p, %p) - Failed to start device", dev, arg); return false; }
     if (device->fn_start == NULL) { return false; }
     
     device->running = true;
-    bool res = device->fn_start(device, arg);
-    device->running = res;
+    KRESULT res = device->fn_start(device, arg);
+    device->running = (res == KRESULT_SUCCESS);
 
-    if (res) { debug_log("%s Started device - UID:%p Name:%s\n", DEBUG_INFO, device->uid, device->name); }
+    if (res == KRESULT_SUCCESS) { debug_log("%s Started device - UID:%p Name:%s\n", DEBUG_INFO, device->uid, device->name); return res; }
+    debug_error("devmgr_start(%p, %p) - Failed to start device, error code %2x\n", dev, arg, res);
     return res;
 }
 
-int devmgr_stop(duid_t dev)
+KRESULT devmgr_stop(duid_t dev)
 {
     device_t* device = devmgr_from_uid(dev);
     if (device == NULL) { debug_error("devmgr_stop(%p) - Failed to stop device", dev); return false; }
@@ -92,7 +93,9 @@ int devmgr_stop(duid_t dev)
     {
         device->running = false; 
         debug_log("%s Stopped device - UID:%p Name:%s\n", DEBUG_INFO, device->uid, device->name); 
+        return res;
     }
+    debug_error("devmgr_stop(%p) - Failed to start device, error code %2x\n", dev, res);
     return res;
 }
 

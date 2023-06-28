@@ -190,3 +190,9 @@ bool irqs_enabled(void)
     uint32_t eflags = _regrd_eflags();
     return (eflags & 0x200) >> 9;
 }
+
+void realmode_irq(uint8_t irq, irq_context16_t* context)
+{
+    int32(irq, context);
+    rtc_flush();
+}

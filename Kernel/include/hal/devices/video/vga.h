@@ -33,8 +33,8 @@ typedef struct
 } vga_device_t;
 
 void vga_init(void);
-bool vga_start(vga_device_t* dev, VGA_COLOR bg);
-int  vga_stop(vga_device_t* dev);
+KRESULT vga_start(vga_device_t* dev, VGA_COLOR bg);
+KRESULT  vga_stop(vga_device_t* dev);
 void vga_clear(VGA_COLOR bg);
 void vga_drawchar(int x, int y, char c, VGA_COLOR fg, VGA_COLOR bg);
 void vga_drawstr(int x, int y, const char* str, VGA_COLOR fg, VGA_COLOR bg);

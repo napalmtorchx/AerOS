@@ -40,6 +40,7 @@ void image_free(image_t* img)
 {
     if (img == NULL) { debug_error("image_free(%p) - Null image pointer"); return; }
     if (img->is_malloc && img->buffer != NULL) { free(img->buffer); }
+    *img = NULL_IMAGE;
 }
 
 void image_clear(image_t* img, argb_t color)
@@ -73,7 +74,10 @@ void image_blit(image_t* img, int x, int y, argb_t color)
         else if (img->color_order == COLORORDER_ABGR) { value = color_from_abgr(color); }
         else if (img->color_order == COLORORDER_RGBA) { value = color_from_rgba(color); }
         else if (img->color_order == COLORORDER_BGRA) { value = color_from_bgra(color); }
-        if (color.desc.a != 255) { value = color_blend(value, color_from_argb(image_getpixel(img, x, y)), (float)color.desc.a / 256.0f); }
+        if (color.desc.a != 255) 
+        { 
+            value = color_blend(value, color_from_argb(image_getpixel(gfx_backbuffer(), x, y)), (float)color.desc.a / 255.0f); 
+        }
 
         ((uint32_t*)img->buffer)[y * img->sz.x + x] = value;
     }
@@ -92,7 +96,6 @@ void image_fill_rect(image_t* img, int x, int y, int w, int h, argb_t color)
         else if (img->color_order == COLORORDER_ABGR) { value = color_from_abgr(color); }
         else if (img->color_order == COLORORDER_RGBA) { value = color_from_rgba(color); }
         else if (img->color_order == COLORORDER_BGRA) { value = color_from_bgra(color); }
-        if (color.desc.a != 255) { value = color_blend(value, color_from_argb(image_getpixel(img, x, y)), (float)color.desc.a / 255.0f); }
 
         int xx, yy, i;
         for (i = 0; i < w * h; i++)
@@ -103,6 +106,7 @@ void image_fill_rect(image_t* img, int x, int y, int w, int h, argb_t color)
             xx = x + (i % w);
             if (xx >= img->sz.x) { continue; }
 
+            if (color.desc.a != 255) { value = color_blend(value, color_from_argb(image_getpixel(gfx_backbuffer(), x, y)), (float)color.desc.a / 255.0f); }
             ((uint32_t*)img->buffer)[yy * img->sz.x + xx] = value;
         }   
     }

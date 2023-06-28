@@ -1,5 +1,6 @@
 #pragma once
 #include <lib/types.h>
+#include <hal/ints/realmode.h>
 
 #define IDT_COUNT 256
 
@@ -91,3 +92,4 @@ void irq_register(IRQ irq, irq_protocol_t protocol);
 void irq_unregister(IRQ irq);
 void irq_ack(irq_context_t* context);
 bool irqs_enabled(void);
+void realmode_irq(uint8_t irq, irq_context16_t* context);

@@ -23,7 +23,7 @@ void pit_init(void)
     devmgr_start(_pit.base.uid, NULL);
 }
 
-bool pit_start(pit_device_t* dev, void* unused)
+KRESULT pit_start(pit_device_t* dev, void* unused)
 {
     bool ints = irqs_enabled();
     IRQ_DISABLE;
@@ -38,17 +38,17 @@ bool pit_start(pit_device_t* dev, void* unused)
 
     irq_register(IRQ0, pit_callback);
     if (ints) { IRQ_ENABLE; }
-    return true;
+    return KRESULT_SUCCESS;
 }
 
-int pit_stop(pit_device_t* dev)
+KRESULT pit_stop(pit_device_t* dev)
 {
     irq_unregister(IRQ0);
     _pit.ticks    = 0;
     _pit.timer    = 0;
     _pit.millis   = 0;
     _pit.millis_t = 0;
-    return true;
+    return KRESULT_SUCCESS;
 }
 
 void pit_callback(irq_context_t* context)
