@@ -23,4 +23,4 @@ MK_RAMDISK Kernel/build_ramdisk.script
 ; LIMINE ../Images/AerOS.iso --force-mbr
 ; PIPE
 ; RUN  Tools/VMWare/vmware_mach.vmx
-; RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio -enable-kvm -rtc base=localtime -cpu host -vga std -smp 6
+; RUN -cdrom Images/AerOS.iso -m 2048M -serial stdio 

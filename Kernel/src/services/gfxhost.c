@@ -7,6 +7,7 @@ static char          _dbgbuff[256];
 static vbe_device_t* _vbe;
 static image_t       _backbuffer;
 static bool          _running;
+static uint32_t*     _mouse_cursor;
 
 KRESULT gfx_main(int argc, char** argv)
 {
@@ -44,6 +45,8 @@ void gfx_init()
     taskmgr_start(_thread);
 
     debug_log("%s Initialized graphics management host\n", DEBUG_OK);
+    _mouse_cursor = image_load_tga("A:/pc.tga");
+
 }
 
 void gfx_update()
@@ -69,20 +72,12 @@ void gfx_update()
 
 void gfx_render()
 {
-    image_clear(&_backbuffer, color_to_argb(0xFF3F003F));
+    image_clear(&_backbuffer, color_to_argb(COLOR_DARKCYAN));
     image_drawstr(&_backbuffer, 0, 0, _dbgbuff, color_to_argb(COLOR_WHITE), color_to_argb(0), sysfont_get());
-
-
-    image_fill_rect(&_backbuffer, 100, 100, 100, 100, color_to_argb(0xFFFFFF00));
-
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < 100; j++)
-        {
-            image_blit(&_backbuffer, 50 + i, 50 + j, color_to_argb(0x40FF0000));
-        }
-    }
-
+    
+    image_fill_rectg(&_backbuffer, 90,  90,  200, 100, GRADIENT_XLINEAR, color_to_argb(0x00FFFFFF), color_to_argb(0xFFFFFFFF));
+    image_fill_rectg(&_backbuffer, 128, 128, 200, 100, GRADIENT_YLINEAR, color_to_argb(0x50FFFF00), color_to_argb(0x20202020));
+    image_drawstr(&_backbuffer, 100, 110, "Hello world\nThis is some text", color_to_argb(0x20000000), color_to_argb(0), sysfont_get());
 
     vbe_swap(_backbuffer.buffer);
     _frames++;
